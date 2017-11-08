@@ -26,16 +26,16 @@ public class PlayerControls : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		
-		float h = 0f;
-		float v = 0f;
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
 						 
-		if(Input.GetKeyDown(KeyCode.W)||Input.GetKeyDown(KeyCode.UpArrow)) h = 10;
-		if(Input.GetKeyDown(KeyCode.S)||Input.GetKeyDown(KeyCode.DownArrow)) h = -10;
-		if(Input.GetKeyDown(KeyCode.A)||Input.GetKeyDown(KeyCode.LeftArrow)) v = 10;
-		if(Input.GetKeyDown(KeyCode.D)||Input.GetKeyDown(KeyCode.RightArrow)) v = -10;
 
-        Vector3 movement = new Vector3(h,0,v);
+
+        Vector3 movement = new Vector3(0,0, -v);
+		movement.Normalize();
+		currentVel += movement;
  
-        rigidBody.MovePosition(GetComponent<Transform>().position + movement);
+        rigidBody.MovePosition(currentVel);
+		//transform.rotation = Quaternion.LookRotation (currentVel);
 	}
 }
