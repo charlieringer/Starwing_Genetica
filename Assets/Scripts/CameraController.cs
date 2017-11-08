@@ -16,7 +16,10 @@ public class CameraController : MonoBehaviour {
 		Vector3 targetVec = target.transform.position;
 		targetVec += offset;
 		transform.position = Vector3.SmoothDamp (transform.position, targetVec, ref velocity, 0);
+	
+	
 	}
+
 }
 	
 	

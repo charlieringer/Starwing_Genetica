@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 
 public class EnemyBrain : MonoBehaviour {
+
+
 	public StateMachine<EnemyBrain> stateMachine;
 	
 	public GameObject player = null;
@@ -156,4 +158,5 @@ public class EnemyBrain : MonoBehaviour {
 		target = player.transform.position;
 	}
 		
+
 }
