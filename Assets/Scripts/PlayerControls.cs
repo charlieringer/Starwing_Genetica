@@ -86,7 +86,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			health -= damage;
-			Destroy(collision.gameObject);
+			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
 	}
 
