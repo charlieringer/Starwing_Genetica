@@ -73,22 +73,22 @@ public class PlayerControls : MonoBehaviour {
 	{
 		GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
 		bullet.GetComponent<Rigidbody> ().velocity = (bullet.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
-		bullet.GetComponent<BulletLogic>().damage = bulletDamage;
-		bullet.GetComponent<BulletLogic>().parentShip = "Player";
+		bullet.GetComponent<BulletData>().damage = bulletDamage;
+		bullet.GetComponent<BulletData>().parentShip = "Player";
 		Destroy (bullet, 2.0f);
 	}
 
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Player")
+		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
 		{
-			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
+			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
 
-		if(collision.gameObject.name.Contains("Enemy"))
+		if(collision.gameObject.name.Contains("Enemy(Clone)"))
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			health -= damage;

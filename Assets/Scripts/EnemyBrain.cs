@@ -126,8 +126,8 @@ public class EnemyBrain : MonoBehaviour {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);				
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
-				bullet.GetComponent<BulletLogic>().damage = bulletDamage;
-				bullet.GetComponent<BulletLogic>().parentShip = "Enemy";
+				bullet.GetComponent<BulletData>().damage = bulletDamage;
+				bullet.GetComponent<BulletData>().parentShip = "Enemy";
 				bullets.Add (bullet);
 				Destroy (bullet, 2.0f);
 			}
@@ -147,7 +147,6 @@ public class EnemyBrain : MonoBehaviour {
 		if (player == null) return;	
 		if (Vector3.Distance (transform.position, target) < playerSeekDistance) {
 			stateMachine.changeState (new Seeking ());
-			Debug.Log ("Seeking Player");
 		}
 
 	}
@@ -157,7 +156,6 @@ public class EnemyBrain : MonoBehaviour {
 		if (player == null) return;	
 		if (Vector3.Distance (transform.position, target) > playerSeekDistance) {
 			stateMachine.changeState (new Roaming ());
-			Debug.Log ("Roaming");
 		}
 
 	}
@@ -166,7 +164,6 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		if (player == null) return;	
 		if (Vector3.Distance (transform.position, target) < playerFleeDistance) {
-			Debug.Log ("Fleeing Player");
 			stateMachine.changeState (new FleeingPlayer ());
 		}
 	}
@@ -185,10 +182,9 @@ public class EnemyBrain : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Enemy")
+		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Enemy")
 		{
-			Debug.Log(collision.gameObject.GetComponent<BulletLogic>().parentShip);
-			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
+			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
