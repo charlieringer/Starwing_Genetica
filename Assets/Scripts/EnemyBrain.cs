@@ -193,7 +193,7 @@ public class EnemyBrain : MonoBehaviour {
 			Destroy(collision.gameObject);
 		}
 
-		if(collision.gameObject.name.Contains("Enemy"))
+		if(collision.gameObject.name == "Enemy(Clone)")
 		{
 			health = 0;
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
