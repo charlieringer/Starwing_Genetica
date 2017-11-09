@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class EnemyBrain : MonoBehaviour {
 
+	public float health;
+
 
 	public StateMachine<EnemyBrain> stateMachine;
 	
@@ -18,6 +20,7 @@ public class EnemyBrain : MonoBehaviour {
 	public float playerFleeBuffer;
 	public float fireSpeed;
 	public float bulletSpeed;
+	public float bulletDamage;
 
 	public float speed;
 	protected static float NEARBY = 5f;
@@ -66,7 +69,6 @@ public class EnemyBrain : MonoBehaviour {
 		currentVelocity = Vector3.ClampMagnitude (currentVelocity, speed);
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
-
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
 	}
 
@@ -113,6 +115,7 @@ public class EnemyBrain : MonoBehaviour {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
+				bullet.GetComponent<BulletLogic>().damage = bulletDamage;
 				bullets.Add (bullet);
 				Destroy (bullet, 2.0f);
 
@@ -171,10 +174,10 @@ public class EnemyBrain : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log ("Enemy Hit");
-
-		if(collision.gameObject.name == "Bullet")
+		if(collision.gameObject.name.Contains("Bullet"))
 		{
+			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
+			health -= damage;
 			Destroy(collision.gameObject);
 		}
 	}

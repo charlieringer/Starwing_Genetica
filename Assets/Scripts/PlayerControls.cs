@@ -10,6 +10,7 @@ public class PlayerControls : MonoBehaviour {
 	public float turnSpeed;
     public float maxTurn;
 
+	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
 
@@ -65,19 +66,15 @@ public class PlayerControls : MonoBehaviour {
 
 	public void fire()
 	{
-		Debug.Log ("FIRE");
 		GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
 		bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity; 
-		//bullets.Add (bullet);
-
+		bullet.GetComponent<BulletLogic>().damage = bulletDamage;
 		Destroy (bullet, 2.0f);
 	}
 
 
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log ("Player Hit");
-
 		if(collision.gameObject.name == "Bullet")
 		{
 			Destroy(collision.gameObject);
