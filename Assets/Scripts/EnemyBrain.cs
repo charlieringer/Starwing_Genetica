@@ -21,6 +21,8 @@ public class EnemyBrain : MonoBehaviour {
 	public float bulletSpeed;
 	public float bulletDamage;
 	public float enemiesAvoidDistance;
+	public float arriveDampingOffset;
+	public float arriveDampingDistance;
 
 	public float speed;
 	public float maxTurn;
@@ -61,6 +63,14 @@ public class EnemyBrain : MonoBehaviour {
 	public void seekTarget(){
 		Vector3 desiredVelocity = target - transform.position;
 
+		float arriveDistance = Vector3.Distance (target, transform.position);
+
+		if (arriveDistance < arriveDampingDistance) {
+			float mappedSpeed = map (arriveDistance+arriveDampingOffset, 0, arriveDampingDistance, 0, speed);
+			desiredVelocity *= mappedSpeed;
+		}
+		else desiredVelocity *= speed;
+
 		desiredVelocity.Normalize ();
 		desiredVelocity *= speed;
 
@@ -75,6 +85,11 @@ public class EnemyBrain : MonoBehaviour {
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
+	}
+
+	float map(float s, float a1, float a2, float b1, float b2)
+	{
+		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
 	}
 
 	public void fleeTarget(){
