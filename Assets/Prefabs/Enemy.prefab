@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
-  player: {fileID: 0}
+  player: {fileID: 1378946538589800, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   bulletPreFab: {fileID: 1409719596160028, guid: d1f5a476e30fd49be83cca3ad9132fb3,
     type: 2}
   playerSeekDistance: 150
@@ -195,8 +195,8 @@ MonoBehaviour:
   bulletFleeDistance: 20
   playerFleeBuffer: 100
   fireSpeed: 1
-  bulletSpeed: 10
-  bulletDamage: 0
+  bulletSpeed: 100
+  bulletDamage: 10
   speed: 80
   maxTurn: 60
 --- !u!136 &136171334461945924

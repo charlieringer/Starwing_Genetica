@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyManager : MonoBehaviour {
     //public PlayerHealth playerHealth;       // Reference to the player's heatlh.
@@ -36,7 +37,9 @@ public class EnemyManager : MonoBehaviour {
                     //print("destroied an enemy");
                 }
             }
-        }
+        } else {
+			SceneManager.LoadScene ("NextWave");
+		}
     }
 
     void Spawn (GameObject privateEnemy)

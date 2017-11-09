@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControls : MonoBehaviour {
     
@@ -26,6 +27,11 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		if(health <= 0)
+		{
+			SceneManager.LoadScene ("NextWave");
+		}
 		
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
@@ -75,7 +81,8 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name == "Bullet" && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Player")
+		Debug.Log("Fire!!");
+		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
 			health -= damage;
