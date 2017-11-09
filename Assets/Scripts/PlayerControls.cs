@@ -10,8 +10,13 @@ public class PlayerControls : MonoBehaviour {
 	public float turnSpeed;
     public float maxTurn;
 
+	public float bulletSpeed;
+	public GameObject bulletPreFab;
+
 	private float currentSpeed = 0;
 	private float currentTurn = 0;
+
+	List<GameObject> bullets = new List<GameObject>();
 	
 	void Awake(){}
     
@@ -33,13 +38,16 @@ public class PlayerControls : MonoBehaviour {
 
 
 		if (currentTurn > maxTurn) currentTurn = maxTurn;
-		Debug.Log (currentTurn);
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
 
 		thrust(currentSpeed);
 		turn(currentTurn);
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			fire ();
+		}
 	}
 
 
@@ -54,4 +62,26 @@ public class PlayerControls : MonoBehaviour {
 		float yaw = currentTurn * Time.fixedDeltaTime;
 		transform.Rotate (0, yaw, 0);
 	}
+
+	public void fire()
+	{
+		Debug.Log ("FIRE");
+		GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
+		bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity; 
+		//bullets.Add (bullet);
+
+		Destroy (bullet, 2.0f);
+	}
+
+
+	void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log ("Player Hit");
+
+		if(collision.gameObject.name == "Bullet")
+		{
+			Destroy(collision.gameObject);
+		}
+	}
+
 }

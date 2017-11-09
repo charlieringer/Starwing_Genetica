@@ -23,6 +23,8 @@ public class EnemyManager : MonoBehaviour {
 		
 	}
 
+
+
 	//GameObject spawnEnemy()
 	//{
 	//}

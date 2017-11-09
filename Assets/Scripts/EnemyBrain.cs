@@ -112,8 +112,9 @@ public class EnemyBrain : MonoBehaviour {
 			if(dotProd > 0.95) {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
-				bullet.GetComponent<Rigidbody> ().velocity = currentVelocity * bulletSpeed;
+				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
 				bullets.Add (bullet);
+				Destroy (bullet, 2.0f);
 
 			}
 		}
@@ -166,6 +167,16 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		if (player == null) return;	
 		target = player.transform.position;
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log ("Enemy Hit");
+
+		if(collision.gameObject.name == "Bullet")
+		{
+			Destroy(collision.gameObject);
+		}
 	}
 		
 
