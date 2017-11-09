@@ -9,6 +9,7 @@ public class PlayerControls : MonoBehaviour {
 	public float accel;
 	public float turnSpeed;
     public float maxTurn;
+	public float health;
 
 	public float bulletDamage;
 	public float bulletSpeed;
@@ -16,8 +17,6 @@ public class PlayerControls : MonoBehaviour {
 
 	private float currentSpeed = 0;
 	private float currentTurn = 0;
-
-	List<GameObject> bullets = new List<GameObject>();
 	
 	void Awake(){}
     
@@ -73,10 +72,23 @@ public class PlayerControls : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider collision)
 	{
 		if(collision.gameObject.name == "Bullet")
 		{
+			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
+			health -= damage;
+			Destroy(collision.gameObject);
+		}
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log(collision.gameObject.name);
+		if(collision.gameObject.name.Contains("Enemy"))
+		{
+			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
+			health -= damage;
 			Destroy(collision.gameObject);
 		}
 	}

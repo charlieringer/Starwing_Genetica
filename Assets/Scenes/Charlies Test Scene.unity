@@ -186,7 +186,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4325702458956202, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 36.9
       objectReference: {fileID: 0}
     - target: {fileID: 4325702458956202, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
       propertyPath: m_LocalPosition.y
@@ -194,7 +194,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4325702458956202, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -100
+      value: -87.1
       objectReference: {fileID: 0}
     - target: {fileID: 4325702458956202, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
       propertyPath: m_LocalRotation.x
@@ -240,6 +240,43 @@ Prefab:
       propertyPath: bulletDamage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: speed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerSeekDistance
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: maxTurn
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerFleeDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerFleeBuffer
+      value: 200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
   m_IsPrefabParent: 0
@@ -260,7 +297,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8389ef36f8417434eb82d60365a22242, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8389ef36f8417434eb82d60365a22242, type: 3}
       propertyPath: m_LocalRotation.x
@@ -523,6 +560,43 @@ Prefab:
       propertyPath: bulletDamage
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: speed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerSeekDistance
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955071674244050, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: maxTurn
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerFleeDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114170753233646684, guid: d283b17ef2de6415bbbd0406f426a40e,
+        type: 2}
+      propertyPath: playerFleeBuffer
+      value: 200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d283b17ef2de6415bbbd0406f426a40e, type: 2}
   m_IsPrefabParent: 0
@@ -563,6 +637,7 @@ MonoBehaviour:
   accel: 6
   turnSpeed: 30
   maxTurn: 30
+  health: 200
   bulletDamage: 10
   bulletSpeed: 200
   bulletPreFab: {fileID: 1409719596160028, guid: d1f5a476e30fd49be83cca3ad9132fb3,

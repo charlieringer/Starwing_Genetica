@@ -23,6 +23,7 @@ public class EnemyBrain : MonoBehaviour {
 	public float bulletDamage;
 
 	public float speed;
+	public float maxTurn;
 	protected static float NEARBY = 5f;
 	protected static System.Random random = new System.Random();
 
@@ -31,7 +32,7 @@ public class EnemyBrain : MonoBehaviour {
 	private Vector3 currentAccel = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
-	private float maxTurn = 2f;
+	
 	private float breakingForce = 0.1f;
 
 	List<GameObject> bullets = new List<GameObject>();
@@ -57,15 +58,13 @@ public class EnemyBrain : MonoBehaviour {
 		desiredVelocity.Normalize ();
 		desiredVelocity *= speed;
 
-
 		Vector3 steering = desiredVelocity - currentVelocity;
 		steering = Vector3.ClampMagnitude (steering, maxTurn);
+		steering *= Time.fixedDeltaTime;
 		steering.y = 0f;
 
-		steering *= Time.fixedDeltaTime;
-
-		currentAccel += steering;
-		currentVelocity += currentAccel;
+		//currentAccel += steering;
+		currentVelocity += steering;
 		currentVelocity = Vector3.ClampMagnitude (currentVelocity, speed);
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
@@ -96,12 +95,12 @@ public class EnemyBrain : MonoBehaviour {
 
 	public void checkDecel()
 	{
-		Vector3 dirFromAtoB = (transform.position - target).normalized;
-		float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
+		// Vector3 dirFromAtoB = (transform.position - target).normalized;
+		// float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-		if (dotProd > 0.95) {
-			currentAccel *= 1-breakingForce;
-		}
+		// if (dotProd > 0.95) {
+		// 	currentAccel *= 1-breakingForce;
+		// }
 	}
 
 	public void fire()
@@ -172,11 +171,22 @@ public class EnemyBrain : MonoBehaviour {
 		target = player.transform.position;
 	}
 
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider collision)
 	{
 		if(collision.gameObject.name.Contains("Bullet"))
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
+			health -= damage;
+			Destroy(collision.gameObject);
+		}
+	}
+
+	void OnCollisionEnter(Collision collision)
+	{
+		Debug.Log(collision.gameObject.name);
+		if(collision.gameObject.name.Contains("Enemy"))
+		{
+			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
