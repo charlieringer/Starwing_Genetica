@@ -343,7 +343,7 @@ MonoBehaviour:
   health: 200
   bulletDamage: 10
   bulletSpeed: 200
-  bulletPreFab: {fileID: 1409719596160028, guid: d1f5a476e30fd49be83cca3ad9132fb3,
+  bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
     type: 2}
 --- !u!124 &124151612446107450
 Behaviour:

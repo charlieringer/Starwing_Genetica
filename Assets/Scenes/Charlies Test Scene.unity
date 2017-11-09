@@ -291,6 +291,11 @@ Prefab:
       propertyPath: health
       value: 20000
       objectReference: {fileID: 0}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: bulletDamage
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
@@ -359,7 +364,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1867055425199836, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}

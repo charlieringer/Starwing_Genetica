@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  parentShip: 
 --- !u!136 &136058367169236836
 CapsuleCollider:
   m_ObjectHideFlags: 1
