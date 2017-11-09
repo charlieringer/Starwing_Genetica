@@ -246,6 +246,10 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 1587995941}
+    - target: {fileID: 1122906853839692, guid: 618625cac564e463e8b1ae75bce972d4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 618625cac564e463e8b1ae75bce972d4, type: 2}
   m_IsPrefabParent: 0
@@ -577,10 +581,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 20
-  decel: 0.4
-  accel: 50
-  maxTurn: 75
+  topSpeed: 50
+  decel: 0.5
+  accel: 6
+  turnSpeed: 20
+  maxTurn: 40
 --- !u!4 &1587995943
 Transform:
   m_ObjectHideFlags: 0

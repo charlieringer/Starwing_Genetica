@@ -8,9 +8,9 @@ public interface State<A>
 	void exit (A agent);
 	void execute (A agent);
 }
-	
+
 public class StateMachine<A> {
-	
+
 	public A agent;
 	public State<A> current;
 	public StateMachine(A a) { agent = a; }
@@ -19,7 +19,7 @@ public class StateMachine<A> {
 		current = start;
 		current.enter (agent);
 	}
-		
+
 	public void changeState(State<A> next) {
 		current.exit(agent);
 		current = next;

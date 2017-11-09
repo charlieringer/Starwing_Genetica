@@ -7,23 +7,17 @@ public class PlayerControls : MonoBehaviour {
     public float topSpeed;
 	public float decel;
 	public float accel;
+	public float turnSpeed;
     public float maxTurn;
 
-    Rigidbody rigidBody;
-
 	private float currentSpeed = 0;
-	Vector3 current = new Vector3(0,0,0);
+	private float currentTurn = 0;
 	
-	void Awake()
-	{
-		rigidBody = GetComponent <Rigidbody>();
-	}
+	void Awake(){}
     
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start () {}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -33,11 +27,19 @@ public class PlayerControls : MonoBehaviour {
 
 		currentSpeed += v * Time.fixedDeltaTime;
 		currentSpeed -= decel * Time.fixedDeltaTime;
+
+		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+		currentTurn -= decel * Time.fixedDeltaTime;
+
+
+		if (currentTurn > maxTurn) currentTurn = maxTurn;
+		Debug.Log (currentTurn);
+
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
 
-		if (currentSpeed > 0) thrust (currentSpeed);
-		turn(h);
+		thrust(currentSpeed);
+		turn(currentTurn);
 	}
 
 
@@ -49,11 +51,7 @@ public class PlayerControls : MonoBehaviour {
 
 	private void turn(float amount)
 	{
-		float yaw = amount * maxTurn * Time.fixedDeltaTime;
-		float roll = amount * maxTurn * Time.fixedDeltaTime * 1 ;
+		float yaw = currentTurn * Time.fixedDeltaTime;
 		transform.Rotate (0, yaw, 0);
-		Vector3 fixedY = transform.position;
-		fixedY.y = 0.0f;
-		transform.position = fixedY;
 	}
 }
