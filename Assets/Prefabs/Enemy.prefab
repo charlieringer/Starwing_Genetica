@@ -150,4 +150,4 @@ MonoBehaviour:
   playerFleeBuffer: 0
   fireSpeed: 1
   bulletSpeed: 0.5
-  speed: 5
+  speed: 20

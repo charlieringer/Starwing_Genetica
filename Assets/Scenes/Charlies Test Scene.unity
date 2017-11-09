@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 42554c560692bab44948be1eca99837f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -241,6 +241,11 @@ Prefab:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114792472177064530, guid: 618625cac564e463e8b1ae75bce972d4,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1587995941}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 618625cac564e463e8b1ae75bce972d4, type: 2}
   m_IsPrefabParent: 0
@@ -360,13 +365,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 409274381}
-  m_LocalRotation: {x: -0, y: 0.9396927, z: -0.3420201, w: 0}
-  m_LocalPosition: {x: 0, y: 100, z: 50}
+  m_LocalRotation: {x: 0, y: 0.9961947, z: -0.08715578, w: 0}
+  m_LocalPosition: {x: 0, y: 75, z: 130}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1587995943}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 40, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: 180, z: 0}
 --- !u!45 &409274386
 Skybox:
   m_ObjectHideFlags: 0
@@ -430,7 +435,7 @@ Prefab:
         type: 2}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1605437002}
+      objectReference: {fileID: 1587995941}
     - target: {fileID: 114792472177064530, guid: 618625cac564e463e8b1ae75bce972d4,
         type: 2}
       propertyPath: bulletPreFab
@@ -554,7 +559,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1587995943}
   - component: {fileID: 1587995942}
-  - component: {fileID: 1587995944}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -573,9 +577,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 0
-  maxTurn: 0
-  rigidBody: {fileID: 0}
+  topSpeed: 20
+  decel: 0.4
+  accel: 50
+  maxTurn: 75
 --- !u!4 &1587995943
 Transform:
   m_ObjectHideFlags: 0
@@ -591,23 +596,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1587995944
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1587995941}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!1 &1605437002 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1122906853839692, guid: 618625cac564e463e8b1ae75bce972d4,
-    type: 2}
-  m_PrefabInternal: {fileID: 341496126}

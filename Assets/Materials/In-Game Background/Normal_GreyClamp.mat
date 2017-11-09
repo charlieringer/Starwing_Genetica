@@ -25,7 +25,7 @@ Material:
     - _Darkmatter: 555
     - _Distfading: 55
     - _Formuparam: 420
-    - _Iterations: 15
+    - _Iterations: 9.5
     - _Saturation: 77
     - _StepSize: 355
     - _Tile: 700
