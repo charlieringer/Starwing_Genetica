@@ -8,7 +8,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float health;
 
-
 	public StateMachine<EnemyBrain> stateMachine;
 	
 	public GameObject player = null;
@@ -21,6 +20,7 @@ public class EnemyBrain : MonoBehaviour {
 	public float fireSpeed;
 	public float bulletSpeed;
 	public float bulletDamage;
+	public float enemiesAvoidDistance;
 
 	public float speed;
 	public float maxTurn;
@@ -32,9 +32,11 @@ public class EnemyBrain : MonoBehaviour {
 	private Vector3 currentAccel = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
+	public List<GameObject> otherEnemies;
+
 	List<GameObject> bullets = new List<GameObject>();
 
-	void Start () {
+	void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
 	}
@@ -42,6 +44,7 @@ public class EnemyBrain : MonoBehaviour {
 	void Update () {}
 		
 	void FixedUpdate() {
+		avoidOthers();
 		stateMachine.update ();
 	}
 
@@ -88,6 +91,29 @@ public class EnemyBrain : MonoBehaviour {
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
+	}
+
+	public void avoidOthers()
+	{
+		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
+		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+
+		for(int i = 0; i < otherEnemies.Count; i++)
+		{
+			float rad = 18.0f;
+			Vector3 otherEnemyLocation = otherEnemies[i].transform.position;
+
+			bool willCollide = Vector3.Distance(otherEnemyLocation, ahead) <= rad ? true : Vector3.Distance(otherEnemyLocation, ahead2) <= rad;
+
+			if(willCollide)
+			{
+				Vector3 avoidForce = ahead - otherEnemyLocation;
+				avoidForce = avoidForce.normalized * maxTurn*10;
+				avoidForce.y = 0.0f;
+				currentVelocity += avoidForce * Time.fixedDeltaTime;
+			}
+
+		}
 	}
 
 	public void fire()
@@ -161,6 +187,7 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Enemy")
 		{
+			Debug.Log(collision.gameObject.GetComponent<BulletLogic>().parentShip);
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
 			health -= damage;
 			Destroy(collision.gameObject);

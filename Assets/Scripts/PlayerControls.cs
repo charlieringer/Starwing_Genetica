@@ -72,7 +72,7 @@ public class PlayerControls : MonoBehaviour {
 	public void fire()
 	{
 		GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
-		bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity; 
+		bullet.GetComponent<Rigidbody> ().velocity = (bullet.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
 		bullet.GetComponent<BulletLogic>().damage = bulletDamage;
 		bullet.GetComponent<BulletLogic>().parentShip = "Player";
 		Destroy (bullet, 2.0f);
@@ -81,7 +81,6 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		Debug.Log("Fire!!");
 		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;

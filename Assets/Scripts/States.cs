@@ -19,14 +19,17 @@ public class Roaming: State<EnemyBrain> {
 }
 
 public class Seeking : State<EnemyBrain> {
-	public void enter(EnemyBrain agent){}
+	public void enter(EnemyBrain agent)
+	{
+		agent.setPlayerAsTarget ();
+	}
 
 	public void exit(EnemyBrain agent){}
 
 	public void execute(EnemyBrain agent)
 	{
 		agent.setPlayerAsTarget ();
-		agent.seekTarget ();
+		agent.seekTarget (); 
 		agent.checkPlayerAvoidProximity ();
 		agent.fire ();
 		agent.checkSeekOrRoamProximity ();

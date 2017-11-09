@@ -15,10 +15,10 @@ public class EnemyManager : MonoBehaviour {
 
     void Start ()
 	{
-        GameObject privateEnemy = enemy;
+        //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
-        Spawn(privateEnemy);
+        Spawn(enemy);
 	}
 
     private void Update()
@@ -32,10 +32,16 @@ public class EnemyManager : MonoBehaviour {
                 //print("enemyIndex:" + enemyIndex + " enemies[enemyIndex].GetComponent<EnemyBrain>().health:" + enemies[enemyIndex].GetComponent<EnemyBrain>().health);
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
                 {
-                    Destroy(enemies[enemyIndex]);
-                    enemies.RemoveAt(enemyIndex);
+					enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
+                    //Destroy(enemies[enemyIndex]);
+                    //enemies.RemoveAt(enemyIndex);
                     //print("destroied an enemy");
                 }
+				if(enemies[enemyIndex].transform.position.y < -200)
+				{
+					Destroy(enemies[enemyIndex]);
+                    enemies.RemoveAt(enemyIndex);
+				}
             }
         } else {
 			SceneManager.LoadScene ("NextWave");
@@ -44,27 +50,20 @@ public class EnemyManager : MonoBehaviour {
 
     void Spawn (GameObject privateEnemy)
 	{
-        //TO ADD the player health!
-        // If the player has no health left...
-        //if(playerHealth.currentHealth <= 0f)
-        //{
-        // ... exit the function.
-        //		return;
-        //	}
-
-        
 		for (int i = 0; i < waveSize; i++) { 
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
             GameObject newEnemy = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
+			newEnemy.GetComponent<EnemyBrain>().player = this.player;
+			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
             enemies.Add(newEnemy); //adding all enemies created to the list
 		}
 	}
        
 	Vector3 GenerateRandomTransform(){
         Vector3 pos;
-        float x = Random.Range(player.transform.position.x-1000, player.transform.position.x + 1000);
+        float x = Random.Range(player.transform.position.x-2000, player.transform.position.x + 2000);
         float y = 0f;
-        float z = Random.Range(player.transform.position.z - 1000, player.transform.position.z + 1000);
+        float z = Random.Range(player.transform.position.z - 2000, player.transform.position.z + 2000);
         pos = new Vector3(x, y, z);
         transform.position = pos;
 
