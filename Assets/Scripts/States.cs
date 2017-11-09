@@ -5,7 +5,6 @@ using System.Collections;
 public class Roaming: State<EnemyBrain> {
 	public void enter(EnemyBrain agent)
 	{
-		//PICK RANDOM SPOT
 		agent.pickRandomRoamingTarget();
 	}
 
@@ -16,16 +15,11 @@ public class Roaming: State<EnemyBrain> {
 		agent.seekTarget ();
 		agent.checkRoamingLocationProximity ();
 		agent.checkPlayerSeekProximity ();
-
-		//MAKE SURE YOU DON'T FALL OFF
 	}
 }
 
 public class Seeking : State<EnemyBrain> {
-	public void enter(EnemyBrain agent)
-	{
-		agent.setPlayerAsTarget ();
-	}
+	public void enter(EnemyBrain agent){}
 
 	public void exit(EnemyBrain agent){}
 
@@ -33,7 +27,6 @@ public class Seeking : State<EnemyBrain> {
 	{
 		agent.setPlayerAsTarget ();
 		agent.seekTarget ();
-		agent.checkDecel ();
 		agent.checkPlayerAvoidProximity ();
 		agent.fire ();
 		agent.checkSeekOrRoamProximity ();

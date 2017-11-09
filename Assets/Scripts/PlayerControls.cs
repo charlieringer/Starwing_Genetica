@@ -74,7 +74,6 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		Debug.Log(collision.gameObject.name); 
 		if(collision.gameObject.name == "Bullet")
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;

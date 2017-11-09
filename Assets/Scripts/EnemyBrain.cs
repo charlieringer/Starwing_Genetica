@@ -32,9 +32,6 @@ public class EnemyBrain : MonoBehaviour {
 	private Vector3 currentAccel = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
-	
-	private float breakingForce = 0.1f;
-
 	List<GameObject> bullets = new List<GameObject>();
 
 	void Start () {
@@ -93,16 +90,6 @@ public class EnemyBrain : MonoBehaviour {
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
 	}
 
-	public void checkDecel()
-	{
-		// Vector3 dirFromAtoB = (transform.position - target).normalized;
-		// float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
-
-		// if (dotProd > 0.95) {
-		// 	currentAccel *= 1-breakingForce;
-		// }
-	}
-
 	public void fire()
 	{
 		if (Time.time > timeLastFired + fireSpeed) {
@@ -113,7 +100,7 @@ public class EnemyBrain : MonoBehaviour {
 			if(dotProd > 0.95) {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
-				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
+				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed ;//- GetComponent<Rigidbody>().velocity;
 				bullet.GetComponent<BulletLogic>().damage = bulletDamage;
 				bullets.Add (bullet);
 				Destroy (bullet, 2.0f);
@@ -181,16 +168,7 @@ public class EnemyBrain : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter(Collision collision)
-	{
-		Debug.Log(collision.gameObject.name);
-		if(collision.gameObject.name.Contains("Enemy"))
-		{
-			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
-			health -= damage;
-			Destroy(collision.gameObject);
-		}
-	}
+
 		
 
 }
