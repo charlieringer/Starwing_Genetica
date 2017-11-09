@@ -41,9 +41,15 @@ public class EnemyBrain : MonoBehaviour {
 		stateMachine.init(new Roaming ());
 	}
 		
-	void Update () {}
+	void Update () {
+		
+	}
 		
 	void FixedUpdate() {
+		if (health <= 0) {
+			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
+			return;
+		}
 		avoidOthers();
 		stateMachine.update ();
 	}
@@ -100,7 +106,7 @@ public class EnemyBrain : MonoBehaviour {
 
 		for(int i = 0; i < otherEnemies.Count; i++)
 		{
-			float rad = 18.0f;
+			float rad = 30.0f;
 			Vector3 otherEnemyLocation = otherEnemies[i].transform.position;
 
 			bool willCollide = Vector3.Distance(otherEnemyLocation, ahead) <= rad ? true : Vector3.Distance(otherEnemyLocation, ahead2) <= rad;

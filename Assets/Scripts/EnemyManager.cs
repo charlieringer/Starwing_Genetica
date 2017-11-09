@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour {
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
                 {
 					enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
-                    //Destroy(enemies[enemyIndex]);
+					//enemies[enemyIndex].transform.Rotate (20, 0, 20);
                     //enemies.RemoveAt(enemyIndex);
                     //print("destroied an enemy");
                 }
@@ -44,7 +44,7 @@ public class EnemyManager : MonoBehaviour {
 				}
             }
         } else {
-			SceneManager.LoadScene ("NextWave");
+			//SceneManager.LoadScene ("NextWave");
 		}
     }
 
@@ -61,9 +61,9 @@ public class EnemyManager : MonoBehaviour {
        
 	Vector3 GenerateRandomTransform(){
         Vector3 pos;
-        float x = Random.Range(player.transform.position.x-2000, player.transform.position.x + 2000);
+        float x = Random.Range(player.transform.position.x-4000, player.transform.position.x + 4000);
         float y = 0f;
-        float z = Random.Range(player.transform.position.z - 2000, player.transform.position.z + 2000);
+        float z = Random.Range(player.transform.position.z - 4000, player.transform.position.z + 4000);
         pos = new Vector3(x, y, z);
         transform.position = pos;
 

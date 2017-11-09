@@ -30,7 +30,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(health <= 0)
 		{
-			SceneManager.LoadScene ("NextWave");
+			//SceneManager.LoadScene ("NextWave");
 		}
 		
 		float h = Input.GetAxis("Horizontal");
@@ -40,10 +40,12 @@ public class PlayerControls : MonoBehaviour {
 		currentSpeed -= decel * Time.fixedDeltaTime;
 
 		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		currentTurn -= decel * Time.fixedDeltaTime;
+		if (currentTurn > 0) currentTurn -= decel*30 * Time.fixedDeltaTime;
+		else if (currentTurn < 0) currentTurn += decel*60 * Time.fixedDeltaTime;
 
 
-		if (currentTurn > maxTurn) currentTurn = maxTurn;
+		if (currentTurn > maxTurn ) currentTurn = maxTurn;
+		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
@@ -60,7 +62,6 @@ public class PlayerControls : MonoBehaviour {
 	private void thrust(float amount)
 	{
 		transform.position += transform.forward * topSpeed * Time.fixedDeltaTime * -amount * accel;
-
 	}
 
 	private void turn(float amount)
@@ -76,6 +77,13 @@ public class PlayerControls : MonoBehaviour {
 		bullet.GetComponent<BulletData>().damage = bulletDamage;
 		bullet.GetComponent<BulletData>().parentShip = "Player";
 		Destroy (bullet, 2.0f);
+	}
+
+	public void handleThrusterEffect()
+	{
+		float h = Input.GetAxis("Horizontal");
+		float v = Input.GetAxis("Vertical");
+
 	}
 
 
