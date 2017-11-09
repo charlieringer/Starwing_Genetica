@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BulletLogic : MonoBehaviour {
 
-	public float damage = 10f;
+	public float damage = 0f;
+	public string parentShip = "";
 
 	// Use this for initialization
 	void Start () {

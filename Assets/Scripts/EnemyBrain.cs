@@ -93,18 +93,17 @@ public class EnemyBrain : MonoBehaviour {
 	public void fire()
 	{
 		if (Time.time > timeLastFired + fireSpeed) {
-
 			Vector3 dirFromAtoB = (transform.position - target).normalized;
 			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
 			if(dotProd > 0.95) {
 				timeLastFired = Time.time;
-				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
-				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed ;//- GetComponent<Rigidbody>().velocity;
+				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);				
+				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
 				bullet.GetComponent<BulletLogic>().damage = bulletDamage;
+				bullet.GetComponent<BulletLogic>().parentShip = "Enemy";
 				bullets.Add (bullet);
 				Destroy (bullet, 2.0f);
-
 			}
 		}
 	}
@@ -160,15 +159,17 @@ public class EnemyBrain : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name.Contains("Bullet"))
+		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletLogic>().parentShip != "Enemy")
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
+
+		if(collision.gameObject.name.Contains("Enemy"))
+		{
+			health = 0;
+			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
+		}
 	}
-
-
-		
-
 }
