@@ -36,6 +36,7 @@ public class Seeking : State<EnemyBrain> {
 		agent.checkDecel ();
 		agent.checkPlayerAvoidProximity ();
 		agent.fire ();
+		agent.checkSeekOrRoamProximity ();
 	}
 }
 

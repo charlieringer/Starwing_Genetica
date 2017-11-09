@@ -45,7 +45,7 @@ public class EnemyBrain : MonoBehaviour {
 	}
 
 	public void pickRandomRoamingTarget(){
-		target = new Vector3 ((random.Next (80))-40, 0, (random.Next (80))-40);
+		target = new Vector3 ((int)player.transform.position.x+(random.Next (80))-40, 0, (int)player.transform.position.z + (random.Next (80))-40);
 	}
 
 	public void seekTarget(){
@@ -133,6 +133,16 @@ public class EnemyBrain : MonoBehaviour {
 		if (Vector3.Distance (transform.position, target) < playerSeekDistance) {
 			stateMachine.changeState (new Seeking ());
 			Debug.Log ("Seeking Player");
+		}
+
+	}
+
+	public void checkSeekOrRoamProximity()
+	{
+		if (player == null) return;	
+		if (Vector3.Distance (transform.position, target) > playerSeekDistance) {
+			stateMachine.changeState (new Roaming ());
+			Debug.Log ("Roaming");
 		}
 
 	}
