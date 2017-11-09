@@ -74,17 +74,14 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
+		Debug.Log(collision.gameObject.name); 
 		if(collision.gameObject.name == "Bullet")
 		{
 			float damage = collision.gameObject.GetComponent<BulletLogic>().damage;
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
-	}
 
-	void OnCollisionEnter(Collision collision)
-	{
-		Debug.Log(collision.gameObject.name);
 		if(collision.gameObject.name.Contains("Enemy"))
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
