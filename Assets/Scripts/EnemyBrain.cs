@@ -23,6 +23,7 @@ public class EnemyBrain : MonoBehaviour {
 	public float enemiesAvoidDistance;
 	public float arriveDampingOffset;
 	public float arriveDampingDistance;
+	public float damageDealt = 0f;
 
 	public float speed;
 	public float maxTurn;
@@ -150,6 +151,7 @@ public class EnemyBrain : MonoBehaviour {
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
 				bullet.GetComponent<BulletData>().damage = bulletDamage;
 				bullet.GetComponent<BulletData>().parentShip = "Enemy";
+				bullet.GetComponent<BulletData>().parent = this.gameObject;
 				bullets.Add (bullet);
 				Destroy (bullet, 2.0f);
 			}

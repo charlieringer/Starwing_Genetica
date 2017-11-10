@@ -135,6 +135,7 @@ public class PlayerControls : MonoBehaviour {
 		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
+			collision.gameObject.GetComponent<BulletData>().updateParentDamageDealt();
 			health -= damage;
 			Destroy(collision.gameObject);
 		}
@@ -143,6 +144,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			health -= damage;
+			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
 	}

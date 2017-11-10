@@ -6,6 +6,7 @@ public class BulletData : MonoBehaviour {
 
 	public float damage = 0f;
 	public string parentShip = "";
+	public GameObject parent;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,12 @@ public class BulletData : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+	}
+
+	public void updateParentDamageDealt()
+	{
+		parent.GetComponent<EnemyBrain>().damageDealt += damage;
+	
 	}
 
 }

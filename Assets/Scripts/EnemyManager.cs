@@ -64,6 +64,29 @@ public class EnemyManager : MonoBehaviour {
             GameObject newEnemy = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
 			newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
+
+            float healthGeno = Random.Range(0,10);
+            float speedGeno = Random.Range(0,10);
+            float weaponGeno = Random.Range(0,10);
+
+            float playerSeekGeno = Random.Range(0,10);
+            float playerFleeGeno = Random.Range(0,10);
+            float enemyAvoidGeno = Random.Range(0,10);
+
+
+            newEnemy.GetComponent<EnemyBrain>().health = healthGeno*30;    
+            newEnemy.GetComponent<EnemyBrain>().bulletSpeed = (10-weaponGeno)*75;   
+            newEnemy.GetComponent<EnemyBrain>().bulletDamage = weaponGeno; 
+            newEnemy.GetComponent<EnemyBrain>().speed = speedGeno*30; 
+
+            newEnemy.GetComponent<EnemyBrain>().playerSeekDistance =  playerSeekGeno* 40;
+            newEnemy.GetComponent<EnemyBrain>().playerFleeDistance =  playerFleeGeno* 40;
+            newEnemy.GetComponent<EnemyBrain>().playerFleeBuffer =  newEnemy.GetComponent<EnemyBrain>().playerFleeDistance + 60;
+            newEnemy.GetComponent<EnemyBrain>().enemiesAvoidDistance =  enemyAvoidGeno * 16;
+
+
+
+
             enemies.Add(newEnemy); //adding all enemies created to the list
 		}
 	}

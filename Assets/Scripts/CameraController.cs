@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour {
 	public GameObject target;      
 
 	//Vector3 offset = new Vector3(0, 20, 10);
-	Vector3 offset = new Vector3(0, 60, 0);
+	Vector3 offset = new Vector3(0, 600, 0);
 
 
 	void LateUpdate () 
@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour {
 
 		Vector3 targetVec = target.transform.position;
 		targetVec += offset;
-		transform.position = Vector3.SmoothDamp (transform.position, targetVec, ref velocity, 0);
+		transform.position = Vector3.SmoothDamp (transform.position, targetVec, ref velocity, 0.2f);
 	
 	
 	}
