@@ -8,10 +8,11 @@ public class GApopulation {
     public int populationSize;
     public System.Random r = new System.Random();
 
+ 
+
     // Use this for initialization
     void Start () {
-		
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -19,21 +20,30 @@ public class GApopulation {
 	}
 
     //constructor:creates the dict
-    public GApopulation(int size)
+    public GApopulation(List<GameObject> enemyClones)
     {
-        this.populationSize = size;
+        this.populationSize = enemyClones.Count;
         this.population = new Dictionary<int, GAenemy>();
-        createPopulation();
+        createPopulation(enemyClones);
     }
 
 
     //creates population
-    public void createPopulation()
+    public void createPopulation(List<GameObject> enemyClones)
     {
+        float[] gene = new float[7]; //there are currently 7 chromosones
+        //randomly 0-9 add values to gene array
+
+        //need to put the enemy values in the gene and then create the GAenemy.
+        //TOBEADDED and changed!!
+        for (int geneIndex=0;geneIndex< gene.Length; geneIndex++)
+        {
+            gene[geneIndex] = randomValues();
+        }
+
         for (int index = 0; index < this.populationSize; index++)
         {
-            GAenemy e = new GAenemy(randomValues(), randomValues(), randomValues(), randomValues(),
-                randomValues(), randomValues(), randomValues(), randomValues());
+            GAenemy e = new GAenemy(gene);
             this.population[index] = e;
 
         }
@@ -136,6 +146,12 @@ public class GApopulation {
             this.population[index].setPlayerSeekDistance(this.population[index].getPlayerSeekDistance() + Gaussian(0, 0.8));
             this.population[index].setBulletFleeDistance(this.population[index].getBulletFleeDistance() + Gaussian(0, 0.8));
 
+
+            //this is for TEST ONLY, will be adjusted in game with game variables
+            //the lifespam and playerdamage have to change as they are part of the fitness function
+            this.population[index].ChangeLifeSpamRand();
+            this.population[index].ChangePlayerDamageRand();
+
         }
     }
 
@@ -150,6 +166,7 @@ public class GApopulation {
         selection();
         crossOver();
         mutation();
+
     } 
 
     //sorting 
@@ -200,97 +217,25 @@ public class GApopulation {
 
     GAenemy newChild(GAenemy e1, GAenemy e2)
     {
-        //health
-        float newHealth;
-        if (r.Next(0, 2) == 0)
-        {
-            newHealth = e1.getHealth();
-        }
-        else
-        {
-            newHealth = e2.getHealth();
+        int geneLen = e1.GetGene().Length; //store the lenght of a gene
+        float[] newGene = new float[geneLen]; //create another array to store the new gene values
 
-        }
-        //speed
-        float newSpeed;
-        if (r.Next(0, 2) == 0)
+        //iterate and randomly decide which parent pass on its gene
+        for (int geneIndex=0; geneIndex<e1.GetGene().Length; geneIndex++)
         {
-            newSpeed = e1.getSpeed();
-        }
-        else
-        {
-             newSpeed = e2.getSpeed();
+            if (r.Next(0, 2) == 0)
+            {
+                newGene[geneIndex] = e1.GetGene()[geneIndex];
+            }
+            else
+            {
+                newGene[geneIndex] = e2.GetGene()[geneIndex];
 
-        }
-        //BulletDamage
-        float newBulletDamage;
-        if (r.Next(0, 2) == 0)
-        {
-             newBulletDamage = e1.getBulletDamage();
-        }
-        else
-        {
-             newBulletDamage = e2.getBulletDamage();
-
-        }
-        //BulletSpeed
-        float newBulletSpeed;
-        if (r.Next(0, 2) == 0)
-        {
-             newBulletSpeed = e1.getBulletSpeed();
-        }
-        else
-        {
-             newBulletSpeed = e2.getBulletSpeed();
-
+            }
         }
 
-        //getBulletFleeDistance
-        float newBulletFleeDistance;
-        if (r.Next(0, 2) == 0)
-        {
-             newBulletFleeDistance = e1.getBulletFleeDistance();
-        }
-        else
-        {
-             newBulletFleeDistance = e2.getBulletFleeDistance();
-
-        }
-        //getPlayerFleeBuffer
-        float newPlayerFleeBuffer;
-        if (r.Next(0, 2) == 0)
-        {
-             newPlayerFleeBuffer = e1.getPlayerFleeBuffer();
-        }
-        else
-        {
-            newPlayerFleeBuffer = e2.getPlayerFleeBuffer();
-        }
-        //getPlayerFleeDistance
-        float newPlayerFleeDistance;
-        if (r.Next(0, 2) == 0)
-        {
-             newPlayerFleeDistance = e1.getPlayerFleeDistance();
-        }
-        else
-        {
-             newPlayerFleeDistance = e2.getPlayerFleeDistance();
-        }
-        //newPlayerSeekDistance
-        float newPlayerSeekDistance;
-        if (r.Next(0, 2) == 0)
-        {
-             newPlayerSeekDistance = e1.getPlayerSeekDistance();
-        }
-        else
-        {
-             newPlayerSeekDistance = e2.getPlayerSeekDistance();
-        }
-
-        GAenemy newChild = new GAenemy(newHealth, newSpeed, newBulletSpeed, newBulletDamage, newPlayerSeekDistance,
-            newPlayerFleeDistance, newPlayerFleeBuffer, newBulletFleeDistance);
-
-    
+        //create and return the child
+        GAenemy newChild = new GAenemy(newGene);
         return newChild;
     }
 
