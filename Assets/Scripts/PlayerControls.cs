@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour {
     
@@ -21,6 +22,8 @@ public class PlayerControls : MonoBehaviour {
 
 	private float currentSpeed = 0;
 	private float currentTurn = 0;
+
+	public Text playerHealthText;
 	
 	void Awake(){}
     
@@ -61,6 +64,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 
         handleThrusterEffect();
+		updatePlayerHeathText();
 
     }
 
@@ -142,5 +146,10 @@ public class PlayerControls : MonoBehaviour {
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
 	}
+
+	 void updatePlayerHeathText()
+	 {
+		 playerHealthText.text = "Heaths: " + health;
+	 }
 
 }
