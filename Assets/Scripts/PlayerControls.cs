@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour {
-
-	public Text playersHealth;
     
     public float topSpeed;
 	public float decel;
@@ -18,6 +15,9 @@ public class PlayerControls : MonoBehaviour {
 	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
+
+    public GameObject LThruster;
+    public GameObject RThruster;
 
 	private float currentSpeed = 0;
 	private float currentTurn = 0;
@@ -33,7 +33,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(health <= 0)
 		{
-			SceneManager.LoadScene ("GameOver");
+			//SceneManager.LoadScene ("NextWave");
 		}
 		
 		float h = Input.GetAxis("Horizontal");
@@ -43,8 +43,8 @@ public class PlayerControls : MonoBehaviour {
 		currentSpeed -= decel * Time.fixedDeltaTime;
 
 		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		if (currentTurn > 0) currentTurn -= decel*15 * Time.fixedDeltaTime;
-		else if (currentTurn < 0) currentTurn += decel*15 * Time.fixedDeltaTime;
+		if (currentTurn > 0) currentTurn -= decel*30 * Time.fixedDeltaTime;
+		else if (currentTurn < 0) currentTurn += decel*60 * Time.fixedDeltaTime;
 
 
 		if (currentTurn > maxTurn ) currentTurn = maxTurn;
@@ -60,8 +60,9 @@ public class PlayerControls : MonoBehaviour {
 			fire ();
 		}
 
-		writeHealth();
-	}
+        handleThrusterEffect();
+
+    }
 
 
 	private void thrust(float amount)
@@ -84,12 +85,45 @@ public class PlayerControls : MonoBehaviour {
 		Destroy (bullet, 2.0f);
 	}
 
-	public void handleThrusterEffect()
-	{
-		float h = Input.GetAxis("Horizontal");
-		float v = Input.GetAxis("Vertical");
+    public void handleThrusterEffect()
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-	}
+        if (v == 0 && h == 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Stop();
+            RThruster.GetComponent<ParticleSystem>().Stop();
+        }
+        else if (v > 0 && h == 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Play();
+            RThruster.GetComponent<ParticleSystem>().Play();
+        }
+        else if (v > 0 && h < 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Stop();
+            RThruster.GetComponent<ParticleSystem>().Play();
+        }
+        else if (v > 0 && h > 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Play();
+            RThruster.GetComponent<ParticleSystem>().Stop();
+            print(h);
+        }
+        else if (v == 0 && h > 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Play();
+            RThruster.GetComponent<ParticleSystem>().Stop();
+            print(h);
+        }
+        else if (v == 0 && h < 0)
+        {
+            LThruster.GetComponent<ParticleSystem>().Stop();
+            RThruster.GetComponent<ParticleSystem>().Play();
+            print(h);
+        }
+    }
 
 
 	void OnTriggerEnter(Collider collision)
@@ -107,11 +141,6 @@ public class PlayerControls : MonoBehaviour {
 			health -= damage;
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
-	}
-
-	void writeHealth()
-	{
-		playersHealth.text = ("Health: " + health);
 	}
 
 }
