@@ -13,7 +13,12 @@ public class EnemyManager : MonoBehaviour {
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
     
     public Text shipsRemainingText;
+    public Text waveCompleteText;
     //check health. make the enemy die;
+
+    private float timeTillNextWave;
+    private bool atEndOfWave = false;
+    public GameObject waveCompleteWrapper;
 
     void Start ()
 	{
@@ -47,6 +52,7 @@ public class EnemyManager : MonoBehaviour {
             }
             writeShipsRemianing();
         } else {
+            updateEndOfWave();
 			//SceneManager.LoadScene ("NextWave");
 		}
     }
@@ -76,6 +82,31 @@ public class EnemyManager : MonoBehaviour {
     private void writeShipsRemianing()
     {
         shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
+    }
+
+    private void updateEndOfWave()
+    {
+        if (!atEndOfWave)
+        {
+            atEndOfWave = true;
+            timeTillNextWave = 3f;
+            waveCompleteWrapper.SetActive( true);
+        } 
+
+        if(timeTillNextWave < 0.0001)
+        {
+            Spawn(enemy);
+            atEndOfWave = false;
+            waveCompleteWrapper.SetActive(false);
+        }
+        displayWaveComplete();
+        timeTillNextWave -= Time.deltaTime;
+        Debug.Log(timeTillNextWave);
+    }
+
+    private void displayWaveComplete()
+    {
+        waveCompleteText.text = ("Next Wave in " + timeTillNextWave);
     }
 
 }

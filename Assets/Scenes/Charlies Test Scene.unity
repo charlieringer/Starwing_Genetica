@@ -112,6 +112,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &28513009 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1297152141519166, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1550303241}
 --- !u!1 &149362542
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +291,12 @@ Prefab:
 --- !u!114 &467838139 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114706873836069450, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1550303241}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &985341633 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114803463388021358, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
     type: 2}
   m_PrefabInternal: {fileID: 1550303241}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -491,9 +502,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1587995941}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
-  waveSize: 30
+  waveSize: 1
   enemies: []
   shipsRemainingText: {fileID: 467838139}
+  waveCompleteText: {fileID: 985341633}
+  waveCompleteWrapper: {fileID: 28513009}
 --- !u!4 &1871272867
 Transform:
   m_ObjectHideFlags: 0
