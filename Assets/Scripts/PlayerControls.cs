@@ -40,8 +40,8 @@ public class PlayerControls : MonoBehaviour {
 		currentSpeed -= decel * Time.fixedDeltaTime;
 
 		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		if (currentTurn > 0) currentTurn -= decel*30 * Time.fixedDeltaTime;
-		else if (currentTurn < 0) currentTurn += decel*60 * Time.fixedDeltaTime;
+		if (currentTurn > 0) currentTurn -= decel*15 * Time.fixedDeltaTime;
+		else if (currentTurn < 0) currentTurn += decel*15 * Time.fixedDeltaTime;
 
 
 		if (currentTurn > maxTurn ) currentTurn = maxTurn;
