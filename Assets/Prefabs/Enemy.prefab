@@ -247,7 +247,7 @@ MonoBehaviour:
   enemiesAvoidDistance: 60
   arriveDampingOffset: 80
   arriveDampingDistance: 400
-  speed: 200
+  speed: 400
   maxTurn: 60
   otherEnemies: []
 --- !u!136 &136013259046062812

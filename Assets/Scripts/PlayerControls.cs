@@ -30,7 +30,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(health <= 0)
 		{
-			//SceneManager.LoadScene ("NextWave");
+			SceneManager.LoadScene ("GameOver");
 		}
 		
 		float h = Input.GetAxis("Horizontal");
