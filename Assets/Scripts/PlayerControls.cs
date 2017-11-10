@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour {
+
+	public Text playersHealth;
     
     public float topSpeed;
 	public float decel;
@@ -56,6 +59,8 @@ public class PlayerControls : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			fire ();
 		}
+
+		writeHealth();
 	}
 
 
@@ -102,6 +107,11 @@ public class PlayerControls : MonoBehaviour {
 			health -= damage;
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
+	}
+
+	void writeHealth()
+	{
+		playersHealth.text = ("Health: " + health);
 	}
 
 }

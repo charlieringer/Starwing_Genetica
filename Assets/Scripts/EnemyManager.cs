@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class EnemyManager : MonoBehaviour {
@@ -11,6 +12,7 @@ public class EnemyManager : MonoBehaviour {
 	public int waveSize;					// how many enemies are spawning each wave
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
     
+    public Text shipsRemainingText;
     //check health. make the enemy die;
 
     void Start ()
@@ -43,6 +45,7 @@ public class EnemyManager : MonoBehaviour {
                     enemies.RemoveAt(enemyIndex);
 				}
             }
+            writeShipsRemianing();
         } else {
 			//SceneManager.LoadScene ("NextWave");
 		}
@@ -68,6 +71,11 @@ public class EnemyManager : MonoBehaviour {
         transform.position = pos;
 
         return pos;
+    }
+
+    private void writeShipsRemianing()
+    {
+        shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
     }
 
 }
