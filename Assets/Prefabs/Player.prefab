@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 198961882775965380}
   - component: {fileID: 199693131421276636}
   m_Layer: 0
-  m_Name: Thruster
+  m_Name: ThrusterRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 198570496809012760}
   - component: {fileID: 199527214977511588}
   m_Layer: 0
-  m_Name: Thruster (1)
+  m_Name: ThrusterLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,7 +139,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1378946538589800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 23.7, y: 2.9, z: 131.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4303762855723932}
@@ -407,6 +407,8 @@ MonoBehaviour:
   bulletSpeed: 400
   bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
     type: 2}
+  LThruster: {fileID: 1965373799360104}
+  RThruster: {fileID: 1253833833516512}
 --- !u!124 &124151612446107450
 Behaviour:
   m_ObjectHideFlags: 1
