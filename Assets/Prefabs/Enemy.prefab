@@ -244,10 +244,10 @@ MonoBehaviour:
   fireSpeed: 0.3
   bulletSpeed: 400
   bulletDamage: 10
-  enemiesAvoidDistance: 60
-  arriveDampingOffset: 80
+  enemiesAvoidDistance: 80
+  arriveDampingOffset: 120
   arriveDampingDistance: 400
-  speed: 400
+  speed: 150
   maxTurn: 60
   otherEnemies: []
 --- !u!136 &136013259046062812

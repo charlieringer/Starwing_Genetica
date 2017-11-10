@@ -122,6 +122,7 @@ public class EnemyBrain : MonoBehaviour {
 		for(int i = 0; i < otherEnemies.Count; i++)
 		{
 			float rad = 30.0f;
+			//Debug.Log(otherEnemies[i].GetComponent<Renderer>().bounds.size);
 			Vector3 otherEnemyLocation = otherEnemies[i].transform.position;
 
 			bool willCollide = Vector3.Distance(otherEnemyLocation, ahead) <= rad ? true : Vector3.Distance(otherEnemyLocation, ahead2) <= rad;
