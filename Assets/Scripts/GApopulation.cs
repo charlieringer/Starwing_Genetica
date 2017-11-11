@@ -134,7 +134,7 @@ public class GApopulation {
         IDictionary<int, GAenemy> offspringPopulation=new Dictionary<int, GAenemy>();
         int newPopulationSize = 0; //= this.population.Count * 2; //two times the original population. The parents are added to the population
 
-        while (this.population.Count < newPopulationSize)
+        while (this.population.Count*2 != newPopulationSize)
         {
             //randomly pick 2 individuals from pop and crossover them
             GAenemy e1 = this.population[r.Next(0, this.population.Count)];
@@ -147,10 +147,10 @@ public class GApopulation {
         }
 
         //add the offspring to the whole population
-        int initialPopulationSize = this.population.Count;
+        //int initialPopulationSize = this.population.Count;
         for (int i =0; i < offspringPopulation.Count; i++)
         {
-            this.population[initialPopulationSize + i] = offspringPopulation[i]; 
+            this.population[i] = offspringPopulation[i]; 
         }
     }
 

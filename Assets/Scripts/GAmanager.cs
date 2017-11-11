@@ -10,24 +10,34 @@ public class GAmanager : MonoBehaviour {
     public GameObject enemyManager;
     public List<GameObject> enemyClones;
 
-    // Use this for initialization
+    //stupid way of making the testGA run one sigle 
+    //time after the list of enemyclones has been created (that's why it can not be placed in Start() )
+    //creates a bool variable that is set to true in start when the game starts. it's set to false when the function is first call
+    //and in LateUpdate it's used in if statement to call/not call the testGA function
+    public bool callFunction;
+        
+        // Use this for initialization
     void Start () {
-        enemyClones = enemyManager.GetComponent<EnemyManager>().enemies;
-
-        testGA();
+        callFunction = true;
+        
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void LateUpdate () {
+        enemyClones = enemyManager.GetComponent<EnemyManager>().enemies;
+        if (callFunction) testGA();
+    }
+
 
     public void testGA()
     {
+        callFunction = false;
+        
         //Debug.Log("Start the testGA");
         //create population
         GApopulation testPopulation = new GApopulation(enemyClones); //this will also create a random population of enemies;
-        //Debug.Log(2);
+        Debug.Log("Count: "+testPopulation.getDictionary().Count);
+        Debug.Log("clonesCount: "+ enemyClones.Count);
 
         PrintFitness(testPopulation);
         //Debug.Log("3");
