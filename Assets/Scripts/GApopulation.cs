@@ -31,7 +31,7 @@ public class GApopulation {
     //creates population
     public void createPopulation(List<GameObject> enemyClones)
     {
-        float[] gene = new float[7]; //there are currently 7 chromosones
+        //float[] gene = new float[7]; //there are currently 7 chromosones
                                      //randomly 0-9 add values to gene array
 
         /*for each gameobj in the enemyClones list get the info needed to create the array.
@@ -45,9 +45,10 @@ public class GApopulation {
         int currentPopulationIndex = 0;
         foreach (GameObject enemyClone in enemyClones)
         {
-            gene[0]=enemyClone.GetComponent<EnemyBrain>().health;
+            float[] gene = new float[7];
+            gene[0] = enemyClone.GetComponent<EnemyBrain>().health; 
             gene[1] = enemyClone.GetComponent<EnemyBrain>().speed;
-            gene[2]=enemyClone.GetComponent<EnemyBrain>().bulletSpeed;
+            gene[2] = enemyClone.GetComponent<EnemyBrain>().bulletSpeed; 
             //enemyClone.GetComponent<EnemyBrain>().bulletDamage
 
             gene[3] = enemyClone.GetComponent<EnemyBrain>().playerSeekDistance;
@@ -146,6 +147,9 @@ public class GApopulation {
             newPopulationSize++;
         }
 
+        //clear all pop from the initial dict
+        this.population.Clear();
+
         //add the offspring to the whole population
         //int initialPopulationSize = this.population.Count;
         for (int i =0; i < offspringPopulation.Count; i++)
@@ -187,9 +191,9 @@ public class GApopulation {
     public void nextGeneration()
     {
         //after the population is created, do selection, crossover, mutation 
-        selection();
+        //selection();
         crossOver();
-        mutation();
+        //mutation();
 
     } 
 
