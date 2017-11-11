@@ -86,11 +86,13 @@ public class GApopulation {
 
         int newPopulationIndex = 0;
 
+        //while (selectedPopulation.Count < initialPopulationSize)//uncomment when only the selection is selected in nextGeneration
+
         while (selectedPopulation.Count < initialPopulationSize / 2)
         {
 
-            GAenemy e1 = this.population[r.Next(0, this.population.Count)];
-            GAenemy e2 = this.population[r.Next(0, this.population.Count)];
+            GAenemy e1 = new GAenemy(this.population[r.Next(0, this.population.Count)].GetGene());
+            GAenemy e2 = new GAenemy(this.population[r.Next(0, this.population.Count)].GetGene());
 
             if (r.Next(0, 100) > selectionPropbability)
             {   if (e1.getFitness() > e2.getFitness())
@@ -135,6 +137,7 @@ public class GApopulation {
         IDictionary<int, GAenemy> offspringPopulation=new Dictionary<int, GAenemy>();
         int newPopulationSize = 0; //= this.population.Count * 2; //two times the original population. The parents are added to the population
 
+        //while (this.population.Count  != newPopulationSize) //uncomment when only the mutation is selected in nextGeneration
         while (this.population.Count*2 != newPopulationSize)
         {
             //randomly pick 2 individuals from pop and crossover them
@@ -160,40 +163,58 @@ public class GApopulation {
 
     //mutation (returns a offspring)
     public void mutation()
-    {
+    {   //create a new population to mutate
+        IDictionary<int, GAenemy> mutatedPopulation = new Dictionary<int, GAenemy>();
+        float[] mutatedGene = new float[7];
+
+
         //for all the genes in the chormosome, add a gausian.
         for (int index =0; index < this.population.Count; index++)
         {
-            this.population[index].setHealth(this.population[index].getHealth() + Gaussian(0, 0.8));//gaussian is called with mean and sddev (sddev:0.7 to 1.5)
-            this.population[index].setSpeed(this.population[index].getSpeed() + Gaussian(0, 0.8));
-            this.population[index].setBulletSpeed(this.population[index].getBulletSpeed() + Gaussian(0, 0.8));
-            this.population[index].setBulletDamage(this.population[index].getBulletDamage() + Gaussian(0, 0.8));
+            mutatedPopulation[index] = new GAenemy(mutatedGene);
 
-            this.population[index].setPlayerFleeBuffer(this.population[index].getPlayerFleeBuffer() + Gaussian(0, 0.8));
-            this.population[index].setPlayerFleeDistance(this.population[index].getPlayerFleeDistance() + Gaussian(0, 0.8));
-            this.population[index].setPlayerSeekDistance(this.population[index].getPlayerSeekDistance() + Gaussian(0, 0.8));
-            this.population[index].setBulletFleeDistance(this.population[index].getBulletFleeDistance() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setHealth(this.population[index].getHealth() + Gaussian(0, 0.8));//gaussian is called with mean and sddev (sddev:0.7 to 1.5)
+            mutatedPopulation[index].setSpeed(this.population[index].getSpeed() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setBulletSpeed(this.population[index].getBulletSpeed() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setBulletDamage(this.population[index].getBulletDamage() + Gaussian(0, 0.8));
+
+            mutatedPopulation[index].setPlayerFleeBuffer(this.population[index].getPlayerFleeBuffer() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setPlayerFleeDistance(this.population[index].getPlayerFleeDistance() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setPlayerSeekDistance(this.population[index].getPlayerSeekDistance() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setBulletFleeDistance(this.population[index].getBulletFleeDistance() + Gaussian(0, 0.8));
 
 
             //this is for TEST ONLY, will be adjusted in game with game variables
             //the lifespam and playerdamage have to change as they are part of the fitness function
-            this.population[index].ChangeLifeSpamRand();
-            this.population[index].ChangePlayerDamageRand();
+            mutatedPopulation[index].ChangeLifeSpamRand();
+            mutatedPopulation[index].ChangePlayerDamageRand();
 
         }
+
+        //clear all pop from the initial dict
+        this.population.Clear();
+
+        //add the offspring to the whole population
+        //int initialPopulationSize = this.population.Count;
+        for (int i = 0; i < mutatedPopulation.Count; i++)
+        {
+            this.population[i] = mutatedPopulation[i];
+        }
+
     }
 
     public IDictionary <int, GAenemy> getDictionary()
     {
         return this.population;
     }
+
     //next generation
     public void nextGeneration()
     {
         //after the population is created, do selection, crossover, mutation 
-        //selection();
+        selection();
         crossOver();
-        //mutation();
+        mutation();
 
     } 
 

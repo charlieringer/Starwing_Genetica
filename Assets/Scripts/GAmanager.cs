@@ -45,25 +45,8 @@ public class GAmanager : MonoBehaviour {
         //Debug.Log("Start the testGA");
         //create population
         GApopulation testPopulation = new GApopulation(enemyClones); //this will also create a random population of enemies;
-        Debug.Log("Count: "+testPopulation.getDictionary().Count);
-        Debug.Log("clonesCount: "+ enemyClones.Count);
 
-        Debug.Log("enemy0s: "+ enemyClones[0].GetComponent<EnemyBrain>().speed);
-        Debug.Log("enemy0spop: " + testPopulation.getDictionary()[0].getSpeed());
-
-        Debug.Log("enemy1s: "+ enemyClones[1].GetComponent<EnemyBrain>().speed);
-        Debug.Log("enemy1spop: " + testPopulation.getDictionary()[1].getSpeed());
-
-        //Debug.Log("enemy0p: " + enemyClones[0].GetComponent<EnemyBrain>().playerFleeBuffer);
-        Debug.Log("enemy0ppop: " + testPopulation.getDictionary()[0].getPlayerFleeBuffer());
-
-        //Debug.Log("enemy1p: " + enemyClones[1].GetComponent<EnemyBrain>().playerFleeBuffer);
-        Debug.Log("enemy1ppop: " + testPopulation.getDictionary()[1].getPlayerFleeBuffer());
-
-
-
-
-        ////PrintFitness(testPopulation);
+        PrintFitness(testPopulation);
         //Debug.Log("3");
 
         int totalGenerations = 30;
@@ -71,29 +54,9 @@ public class GAmanager : MonoBehaviour {
         {
             testPopulation.nextGeneration();
         }
-        //Debug.Log("aenemy0s: " + enemyClones[0].GetComponent<EnemyBrain>().speed);
-        Debug.Log("aenemy0spop: " + testPopulation.getDictionary()[0].getSpeed());
 
-        //Debug.Log("aenemy1s: " + enemyClones[1].GetComponent<EnemyBrain>().speed);
-        Debug.Log("aenemy1spop: " + testPopulation.getDictionary()[1].getSpeed());
+        PrintFitness(testPopulation);
 
-        //Debug.Log("aenemy0p: " + enemyClones[0].GetComponent<EnemyBrain>().playerFleeBuffer);
-        Debug.Log("aenemy0ppop: " + testPopulation.getDictionary()[0].getPlayerFleeBuffer());
-
-        //Debug.Log("aenemy1p: " + enemyClones[1].GetComponent<EnemyBrain>().playerFleeBuffer);
-        Debug.Log("aenemy1ppop: " + testPopulation.getDictionary()[1].getPlayerFleeBuffer());
-
-        ///testPopulation.nextGeneration();
-        ////PrintFitness(testPopulation);
-
-
-        //testPopulation.nextGeneration();
-        //PrintFitness(testPopulation);
-
-
-
-        //next generation
-        //next generation
     }
 
     //for test only
@@ -118,8 +81,7 @@ public class GAmanager : MonoBehaviour {
         int index = 0;
         foreach (var item in col)
         {
-            Debug.Log(index+"-"+item); // Replace this with your version of printing
-            //File.WriteAllText(path, index + item.ToString());
+            Debug.Log(index+"-"+item);
             currentInfo = currentInfo + index +":"+ item.ToString()+ "; ";
             index++;
         }

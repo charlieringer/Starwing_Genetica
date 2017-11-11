@@ -44,7 +44,7 @@ public class GAenemy  {
 
     /*public GAenemy (float h, float s, float bulletS, float bulletD, 
         float playerSeekD, float playerFleeD, float playerFleeB, float bulletFleeD)*/
-    public GAenemy(float[] gene)
+    public GAenemy(float[] newGene)
     {
         /*
         this.health = h;
@@ -58,7 +58,13 @@ public class GAenemy  {
         this.bulletFleeDistance = bulletFleeD;
         this.bulletDamage = bulletD;
         */
-        this.gene = gene;
+
+        //this.gene = gene;
+        for(int i = 0; i < this.gene.Length; i++)
+        {
+            this.gene[i] = newGene[i];
+        }
+
         this.playerDamage = r.Next(0,10);
         this.lifeSpam = r.Next(0,10);
         this.bulletDamage = System.Math.Abs(gene[2]-10);
@@ -138,7 +144,7 @@ public class GAenemy  {
     {
         for (int geneIndex = 0; geneIndex < this.gene.Length; geneIndex++)
         {
-            this.gene[geneIndex] = gene[geneIndex];
+            this.gene[geneIndex] = newGene[geneIndex];
         }
     }
     public void setHealth(float health)
@@ -189,11 +195,11 @@ public class GAenemy  {
     //__________________
     public void ChangeLifeSpamRand()
     {
-         this.lifeSpam = r.Next(0,10);
+         this.lifeSpam = r.Next(0,100);
     }
     public void ChangePlayerDamageRand()
     {
-        this.playerDamage=r.Next(0,10);
+        this.playerDamage=r.Next(0,100);
     }
 }
 
