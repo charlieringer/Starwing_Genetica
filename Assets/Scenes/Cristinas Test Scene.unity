@@ -164,7 +164,6 @@ GameObject:
   m_Component:
   - component: {fileID: 415511516}
   - component: {fileID: 415511515}
-  - component: {fileID: 415511517}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -204,17 +203,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &415511517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 415511514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80cd0ba4557864b44b34f32b1013a9c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &607149475 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6,
@@ -477,3 +465,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cd0ba4557864b44b34f32b1013a9c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyManager: {fileID: 0}
+  enemyClones: []

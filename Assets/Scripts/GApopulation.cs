@@ -32,11 +32,37 @@ public class GApopulation {
     public void createPopulation(List<GameObject> enemyClones)
     {
         float[] gene = new float[7]; //there are currently 7 chromosones
-        //randomly 0-9 add values to gene array
+                                     //randomly 0-9 add values to gene array
 
-        //need to put the enemy values in the gene and then create the GAenemy.
-        //TOBEADDED and changed!!
-        for (int geneIndex=0;geneIndex< gene.Length; geneIndex++)
+        /*for each gameobj in the enemyClones list get the info needed to create the array.
+        this array needs to be passed then in the creation of the GAenemy obj that consequently creates the GApopulation by 
+        adding it to the Idictionary*/
+
+        /*values in the gene array:
+        0: health, 1:speed, 2:bulletSpeed (& bulletDamage) 
+        3:playerSeekDistance, 4:playerFleeDistance, 5:playerFleeBuffer, 6:bulletFleeDistance */
+
+        int currentPopulationIndex = 0;
+        foreach (GameObject enemyClone in enemyClones)
+        {
+            gene[0]=enemyClone.GetComponent<EnemyBrain>().health;
+            gene[1] = enemyClone.GetComponent<EnemyBrain>().speed;
+            gene[2]=enemyClone.GetComponent<EnemyBrain>().bulletSpeed;
+            //enemyClone.GetComponent<EnemyBrain>().bulletDamage
+
+            gene[3] = enemyClone.GetComponent<EnemyBrain>().playerSeekDistance;
+            gene[4] = enemyClone.GetComponent<EnemyBrain>().playerFleeDistance;
+            gene[5] = enemyClone.GetComponent<EnemyBrain>().playerFleeBuffer;
+            gene[6] = enemyClone.GetComponent<EnemyBrain>().bulletFleeDistance;
+
+            GAenemy e = new GAenemy(gene);
+            this.population[currentPopulationIndex] = e;
+
+            currentPopulationIndex++;
+        }
+
+        /*Previous stuff
+         * for (int geneIndex=0;geneIndex< gene.Length; geneIndex++)
         {
             gene[geneIndex] = randomValues();
         }
@@ -46,7 +72,7 @@ public class GApopulation {
             GAenemy e = new GAenemy(gene);
             this.population[index] = e;
 
-        }
+        }*/
     }
 
     //selection: tournament selection with prob of 0.7
@@ -93,15 +119,13 @@ public class GApopulation {
 
         //clear all pop from the initial dict
         this.population.Clear();
+
         //add all selected pop to the init dict
         for (int i = 0; i < selectedPopulation.Count; i++)
         {
             this.population[i] = selectedPopulation[i];
         }
-        
-        // this.population = selectedPopulation;//not sure if this works!!!!
-
-
+   
     }
 
     //crossover (returns a offspring)
@@ -262,5 +286,12 @@ public class GApopulation {
     }
     */
 
+    //returns the value mapped between 0-9 inclusive;
+    //How to calculate it? Is there an apper limit??
+    private float ValueMapping(float value)
+    {
+        
+        return 0;
+    }
     
 }
