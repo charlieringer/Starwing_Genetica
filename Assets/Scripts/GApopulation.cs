@@ -47,7 +47,7 @@ public class GApopulation {
         {
             float[] gene = new float[7];
             gene[0] = enemyClone.GetComponent<EnemyBrain>().health; 
-            gene[1] = enemyClone.GetComponent<EnemyBrain>().speed;
+            gene[1] = enemyClone.GetComponent<EnemyBrain>().maxSpeed;
             gene[2] = enemyClone.GetComponent<EnemyBrain>().bulletSpeed; 
             //enemyClone.GetComponent<EnemyBrain>().bulletDamage
 

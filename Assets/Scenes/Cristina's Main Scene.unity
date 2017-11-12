@@ -334,7 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 402657043}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
-  waveSize: 10
+  waveSize: 40
   enemies: []
   shipsRemainingText: {fileID: 555339747}
   waveCompleteText: {fileID: 555339745}

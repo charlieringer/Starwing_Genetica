@@ -15,7 +15,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float playerSeekDistance;
 	public float playerFleeDistance;
-	public float bulletFleeDistance;
+	public float bulletFleeDistance;//IS THIS USED ANYWHERE???
 	public float playerFleeBuffer;
 	public float fireSpeed;
 	public float bulletSpeed;

@@ -21,14 +21,21 @@ public class GAmanager : MonoBehaviour {
         
         // Use this for initialization
     void Start () {
-        callFunction = true;
+        
         writer = System.IO.File.AppendText(path);
        // writer = new StreamWriter(path, true);
     }
 	
 	// Update is called once per frame
-	void LateUpdate () {
-        enemyClones = enemyManager.GetComponent<EnemyManager>().enemies;
+	void Update () {
+
+        //check if all of the enemies are dead (the list is empty); if so, get the list of updated enemies with in game data from deadEnemies list
+        if (enemyManager.GetComponent<EnemyManager>().enemies.Count <= 0)
+        {
+            enemyClones = enemyManager.GetComponent<EnemyManager>().deadEnemies;
+            callFunction = true;
+        }
+        
         if (callFunction) testGA();
     }
 
@@ -49,12 +56,13 @@ public class GAmanager : MonoBehaviour {
         PrintFitness(testPopulation);
         //Debug.Log("3");
 
-        int totalGenerations = 30;
+        int totalGenerations = 1;
         for (int i= 0; i < totalGenerations;i++)
         {
             testPopulation.nextGeneration();
         }
-
+        //call the spawnGA function to feed the new data into the next generation of enemies.
+        enemyManager.GetComponent<EnemyManager>().SpawnGA(testPopulation.getDictionary());
         PrintFitness(testPopulation);
 
     }
