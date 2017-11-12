@@ -82,7 +82,7 @@ public class EnemyBrain : MonoBehaviour {
 		currentVelocity *= 1 - decel;
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
-		transform.rotation = Quaternion.LookRotation (-currentVelocity);
+		if(currentVelocity.magnitude != 0)transform.rotation = Quaternion.LookRotation (-currentVelocity);
 	}
 
 	float map(float s, float a1, float a2, float b1, float b2)
