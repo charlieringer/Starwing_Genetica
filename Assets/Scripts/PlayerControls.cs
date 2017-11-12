@@ -34,27 +34,25 @@ public class PlayerControls : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if(health <= 0)
-		{
-			SceneManager.LoadScene ("GameOver");
-		}
+		if(health <= 0) SceneManager.LoadScene ("GameOver");
+		
 		
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-		currentSpeed += v * Time.fixedDeltaTime;
+		currentSpeed += v * Time.fixedDeltaTime * accel;
 		currentSpeed -= decel * Time.fixedDeltaTime;
-
-		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		if (currentTurn > 0) currentTurn -= decel*15 * Time.fixedDeltaTime;
-		else if (currentTurn < 0) currentTurn += decel*15 * Time.fixedDeltaTime;
-
-
-		if (currentTurn > maxTurn ) currentTurn = maxTurn;
-		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
+		Debug.Log ("Speed: " + currentSpeed + " Turn: " + currentTurn);
+
+		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+		if (currentTurn > 0) currentTurn -= decel * Time.fixedDeltaTime;
+		else if (currentTurn < 0) currentTurn += decel * Time.fixedDeltaTime;
+
+		if (currentTurn > maxTurn ) currentTurn = maxTurn;
+		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
 
 		thrust(currentSpeed);
 		turn(currentTurn);
@@ -71,7 +69,7 @@ public class PlayerControls : MonoBehaviour {
 
 	private void thrust(float amount)
 	{
-		transform.position += transform.forward * topSpeed * Time.fixedDeltaTime * -amount * accel;
+		transform.position += transform.forward * Time.fixedDeltaTime * -amount;
 	}
 
 	private void turn(float amount)
@@ -113,19 +111,19 @@ public class PlayerControls : MonoBehaviour {
         {
             LThruster.GetComponent<ParticleSystem>().Play();
             RThruster.GetComponent<ParticleSystem>().Stop();
-            print(h);
+           // print(h);
         }
         else if (v == 0 && h > 0)
         {
             LThruster.GetComponent<ParticleSystem>().Play();
             RThruster.GetComponent<ParticleSystem>().Stop();
-            print(h);
+           // print(h);
         }
         else if (v == 0 && h < 0)
         {
             LThruster.GetComponent<ParticleSystem>().Stop();
             RThruster.GetComponent<ParticleSystem>().Play();
-            print(h);
+           // print(h);
         }
     }
 
@@ -151,7 +149,7 @@ public class PlayerControls : MonoBehaviour {
 
 	 void updatePlayerHeathText()
 	 {
-		 playerHealthText.text = "Heaths: " + health;
+		 playerHealthText.text = "Heath: " + health;
 	 }
 
 }

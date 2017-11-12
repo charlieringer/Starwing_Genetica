@@ -129,7 +129,7 @@ public class EnemyBrain : MonoBehaviour {
 			{
 				Vector3 avoidForce = ahead - otherEnemyLocation;
 				avoidForce.y = 0.0f;
-				totAvoidForce += avoidForce;// * Time.fixedDeltaTime;
+				totAvoidForce += avoidForce;
 			}
 		}
 		totAvoidForce = Vector3.ClampMagnitude (totAvoidForce, maxTurn);

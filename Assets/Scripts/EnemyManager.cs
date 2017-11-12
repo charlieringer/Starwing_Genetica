@@ -77,7 +77,7 @@ public class EnemyManager : MonoBehaviour {
             newEnemy.GetComponent<EnemyBrain>().health = healthGeno*30;    
             newEnemy.GetComponent<EnemyBrain>().bulletSpeed = (10-weaponGeno)*75;   
             newEnemy.GetComponent<EnemyBrain>().bulletDamage = weaponGeno; 
-            newEnemy.GetComponent<EnemyBrain>().speed = speedGeno*30; 
+			newEnemy.GetComponent<EnemyBrain>().maxSpeed = speedGeno*30; 
 
             newEnemy.GetComponent<EnemyBrain>().playerSeekDistance =  playerSeekGeno* 40;
             newEnemy.GetComponent<EnemyBrain>().playerFleeDistance =  playerFleeGeno* 40;
@@ -124,7 +124,6 @@ public class EnemyManager : MonoBehaviour {
         }
         displayWaveComplete();
         timeTillNextWave -= Time.deltaTime;
-        Debug.Log(timeTillNextWave);
     }
 
     private void displayWaveComplete()
