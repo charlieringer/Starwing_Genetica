@@ -24,8 +24,9 @@ public class EnemyBrain : MonoBehaviour {
 	public float arriveDampingOffset;
 	public float arriveDampingDistance;
 	public float damageDealt = 0f;
+	public float decel;
 
-	public float speed;
+	public float maxSpeed;
 	public float maxTurn;
 	protected static float NEARBY = 5f;
 	protected static System.Random random = new System.Random();
@@ -53,7 +54,6 @@ public class EnemyBrain : MonoBehaviour {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
 			return;
 		}
-		avoidOthers();
 		stateMachine.update ();
 	}
 
@@ -67,22 +67,19 @@ public class EnemyBrain : MonoBehaviour {
 		float arriveDistance = Vector3.Distance (target, transform.position);
 
 		if (arriveDistance < arriveDampingDistance) {
-			float mappedSpeed = map (arriveDistance+arriveDampingOffset, 0, arriveDampingDistance, 0, speed);
+			float mappedSpeed = map (arriveDistance+arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
 			desiredVelocity *= mappedSpeed;
 		}
-		else desiredVelocity *= speed;
-
-		desiredVelocity.Normalize ();
-		desiredVelocity *= speed;
+		else desiredVelocity *= maxSpeed;
 
 		Vector3 steering = desiredVelocity - currentVelocity;
 		steering = Vector3.ClampMagnitude (steering, maxTurn);
-		steering *= Time.fixedDeltaTime;
+		steering += avoidOthers ();
 		steering.y = 0f;
 
-		//currentAccel += steering;
 		currentVelocity += steering;
-		currentVelocity = Vector3.ClampMagnitude (currentVelocity, speed);
+		currentVelocity = Vector3.ClampMagnitude (currentVelocity, maxSpeed);
+		currentVelocity *= 1 - decel;
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
@@ -97,46 +94,46 @@ public class EnemyBrain : MonoBehaviour {
 		Vector3 desiredVelocity =  transform.position - target;
 
 		desiredVelocity.Normalize ();
-		desiredVelocity *= speed;
-
+		desiredVelocity *= maxSpeed;
 
 		Vector3 steering = desiredVelocity - currentVelocity;
+
 		steering = Vector3.ClampMagnitude (steering, maxTurn);
+		steering += avoidOthers ();
 		steering.y = 0f;
 
-		steering *= Time.fixedDeltaTime;
-
-		currentAccel += steering;
-		currentVelocity += currentAccel;
-		currentVelocity = Vector3.ClampMagnitude (currentVelocity, speed);
+		currentVelocity += steering;
+		currentVelocity = Vector3.ClampMagnitude (currentVelocity, maxSpeed);
+		currentVelocity *= 1 - decel;
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
-
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
 	}
 
-	public void avoidOthers()
+	public Vector3 avoidOthers()
 	{
 		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
 		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+		Vector3 totAvoidForce = new Vector3 ();
 
 		for(int i = 0; i < otherEnemies.Count; i++)
 		{
-			float rad = 30.0f;
-			//Debug.Log(otherEnemies[i].GetComponent<Renderer>().bounds.size);
+			Vector3 bounds = otherEnemies[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().bounds.size;
+			float rad = bounds.x > bounds.z ? bounds.x * 2 : bounds.z * 2;
 			Vector3 otherEnemyLocation = otherEnemies[i].transform.position;
 
 			bool willCollide = Vector3.Distance(otherEnemyLocation, ahead) <= rad ? true : Vector3.Distance(otherEnemyLocation, ahead2) <= rad;
+			if (Vector3.Distance (otherEnemyLocation, transform.position) <= rad) willCollide = true;
 
 			if(willCollide)
 			{
 				Vector3 avoidForce = ahead - otherEnemyLocation;
-				avoidForce = avoidForce.normalized * maxTurn*10;
 				avoidForce.y = 0.0f;
-				currentVelocity += avoidForce * Time.fixedDeltaTime;
+				totAvoidForce += avoidForce;// * Time.fixedDeltaTime;
 			}
-
 		}
+		totAvoidForce = Vector3.ClampMagnitude (totAvoidForce, maxTurn);
+		return totAvoidForce;
 	}
 
 	public void fire()
