@@ -19,6 +19,8 @@ public class PlayerControls : MonoBehaviour {
 
     public GameObject LThruster;
     public GameObject RThruster;
+	public GameObject leftBarrel;
+	public GameObject rightBarrel;
 
 	private float currentSpeed = 0;
 	private float currentTurn = 0;
@@ -45,7 +47,6 @@ public class PlayerControls : MonoBehaviour {
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
-		Debug.Log ("Speed: " + currentSpeed + " Turn: " + currentTurn);
 
 		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
 		if (currentTurn > 0) currentTurn -= decel * Time.fixedDeltaTime;
@@ -80,11 +81,22 @@ public class PlayerControls : MonoBehaviour {
 
 	public void fire()
 	{
-		GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
-		bullet.GetComponent<Rigidbody> ().velocity = (bullet.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
-		bullet.GetComponent<BulletData>().damage = bulletDamage;
-		bullet.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bullet, 2.0f);
+		Vector3 leftGun = leftBarrel.transform.position;
+		Vector3 rightGun = rightBarrel.transform.position;
+
+		GameObject bulletL = Instantiate (bulletPreFab, leftGun, transform.rotation);
+		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
+		bulletL.GetComponent<BulletData>().damage = bulletDamage;
+		bulletL.GetComponent<BulletData>().parentShip = "Player";
+		Destroy (bulletL, 2.0f);
+
+		GameObject bulletR = Instantiate (bulletPreFab, rightGun, transform.rotation);
+		bulletR.GetComponent<Rigidbody> ().velocity = (bulletR.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
+		bulletR.GetComponent<BulletData>().damage = bulletDamage;
+		bulletR.GetComponent<BulletData>().parentShip = "Player";
+
+
+
 	}
 
     public void handleThrusterEffect()
@@ -142,6 +154,8 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			health -= damage;
+			currentSpeed *= 0.8f;
+			currentTurn *= 0.8f;
 			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}

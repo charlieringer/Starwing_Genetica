@@ -247,8 +247,10 @@ MonoBehaviour:
   enemiesAvoidDistance: 80
   arriveDampingOffset: 120
   arriveDampingDistance: 400
-  speed: 150
-  maxTurn: 60
+  damageDealt: 0
+  decel: 0.1
+  maxSpeed: 100
+  maxTurn: 50
   otherEnemies: []
 --- !u!136 &136013259046062812
 CapsuleCollider:
@@ -257,7 +259,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1298231865522550}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 2
   m_Height: 14
@@ -270,7 +272,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1298231865522550}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
   m_Height: 9
@@ -283,7 +285,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1298231865522550}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1
   m_Height: 9
