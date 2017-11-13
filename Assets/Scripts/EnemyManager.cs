@@ -21,6 +21,7 @@ public class EnemyManager : MonoBehaviour {
     private float timeTillNextWave;
     private bool atEndOfWave = false;
     public GameObject waveCompleteWrapper;
+	public float playerScore;
 
     void Start ()
 	{
@@ -49,6 +50,7 @@ public class EnemyManager : MonoBehaviour {
                 }
 				if(enemies[enemyIndex].transform.position.y < -200)
 				{
+					
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
                     //destroy the game object and remove it from the list
