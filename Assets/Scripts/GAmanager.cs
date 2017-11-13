@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class GAmanager : MonoBehaviour {
 
-    int populationSize=40;
-    string path = "D:/Uni/IGGI/courses/Goldsmiths module 1/IGGI_Game/Assets/test.txt";
-    StreamWriter writer;
+    //int populationSize=40;
+    //string path = "D:/Uni/IGGI/courses/Goldsmiths module 1/IGGI_Game/Assets/test.txt";
+    //StreamWriter writer;
 
     //create a new game object to store the list of enemy clones
     public GameObject enemyManager;
@@ -22,7 +22,7 @@ public class GAmanager : MonoBehaviour {
         // Use this for initialization
     void Start () {
         
-        writer = System.IO.File.AppendText(path);
+        //writer = System.IO.File.AppendText(path);
        // writer = new StreamWriter(path, true);
     }
 	
@@ -41,7 +41,7 @@ public class GAmanager : MonoBehaviour {
 
     private void OnDestroy()
     {
-        writer.Close();
+        //writer.Close();
     }
 
 
@@ -95,7 +95,7 @@ public class GAmanager : MonoBehaviour {
         }
 
         
-        writer.WriteLine(currentInfo);
+        //writer.WriteLine(currentInfo);
         
     }
 }

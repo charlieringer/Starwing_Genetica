@@ -26,7 +26,7 @@ public class EnemyManager : MonoBehaviour {
         //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
-        Spawn(enemy);
+        SpawnInital(enemy);
 	}
 
     private void Update()
@@ -63,7 +63,7 @@ public class EnemyManager : MonoBehaviour {
 		}
     }
 
-    void Spawn (GameObject privateEnemy)
+    void SpawnInital (GameObject privateEnemy)
 	{
 		for (int i = 0; i < waveSize; i++) { 
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
@@ -71,28 +71,12 @@ public class EnemyManager : MonoBehaviour {
 			newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 
-            float healthGeno = Random.Range(0,10);
-            float speedGeno = Random.Range(0,10);
-            float weaponGeno = Random.Range(0,10);
+			float[] rawGenes = new float[7];
 
-            float playerSeekGeno = Random.Range(0,10);
-            float playerFleeGeno = Random.Range(0,10);
-            float enemyAvoidGeno = Random.Range(0,10);
+			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
 
-
-            newEnemy.GetComponent<EnemyBrain>().health = healthGeno*30;    
-            newEnemy.GetComponent<EnemyBrain>().bulletSpeed = (10-weaponGeno)*75;   
-            newEnemy.GetComponent<EnemyBrain>().bulletDamage = weaponGeno; 
-			newEnemy.GetComponent<EnemyBrain>().maxSpeed = speedGeno*30; 
-
-            newEnemy.GetComponent<EnemyBrain>().playerSeekDistance =  playerSeekGeno* 40;
-            newEnemy.GetComponent<EnemyBrain>().playerFleeDistance =  playerFleeGeno* 40;
-            newEnemy.GetComponent<EnemyBrain>().playerFleeBuffer =  newEnemy.GetComponent<EnemyBrain>().playerFleeDistance + 60;
-            newEnemy.GetComponent<EnemyBrain>().enemiesAvoidDistance =  enemyAvoidGeno * 16;
-
-
-
-
+			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
+				
             enemies.Add(newEnemy); //adding all enemies created to the list
 		}
 	}
@@ -104,30 +88,8 @@ public class EnemyManager : MonoBehaviour {
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
             GameObject newEnemy = Instantiate(enemy, GenerateRandomTransform(), enemy.GetComponent<Rigidbody>().rotation);
             newEnemy.GetComponent<EnemyBrain>().player = this.player;
-            newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-
-
-            /*float healthGeno = Random.Range(0, 10);
-            float speedGeno = Random.Range(0, 10);
-            float weaponGeno = Random.Range(0, 10);
-
-            float playerSeekGeno = Random.Range(0, 10);
-            float playerFleeGeno = Random.Range(0, 10);*/
-            float enemyAvoidGeno = Random.Range(0, 10);
-
-
-            newEnemy.GetComponent<EnemyBrain>().health = newGAPopulation[i].getHealth();//healthGeno * 30;
-            newEnemy.GetComponent<EnemyBrain>().bulletSpeed = newGAPopulation[i].getBulletSpeed(); //(10 - weaponGeno) * 75;
-            newEnemy.GetComponent<EnemyBrain>().bulletDamage = newGAPopulation[i].getBulletDamage();//= weaponGeno;
-            newEnemy.GetComponent<EnemyBrain>().maxSpeed = newGAPopulation[i].getSpeed();//= speedGeno * 30;
-
-            newEnemy.GetComponent<EnemyBrain>().playerSeekDistance = newGAPopulation[i].getPlayerSeekDistance();//playerSeekGeno * 40;
-            newEnemy.GetComponent<EnemyBrain>().playerFleeDistance = newGAPopulation[i].getPlayerFleeDistance();//playerFleeGeno * 40;
-            newEnemy.GetComponent<EnemyBrain>().playerFleeBuffer = newGAPopulation[i].getPlayerFleeBuffer();//newEnemy.GetComponent<EnemyBrain>().playerFleeDistance + 60;
-            newEnemy.GetComponent<EnemyBrain>().enemiesAvoidDistance = enemyAvoidGeno * 16;//SHOLD THIS BE ADDED TO THE GENE???
-
-
-
+			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
+			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation [i].GetGene());
 
             enemies.Add(newEnemy); //adding all enemies created to the list
         }

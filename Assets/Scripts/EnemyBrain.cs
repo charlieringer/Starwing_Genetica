@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class EnemyBrain : MonoBehaviour {
 
+	private float[] gene = new float[7];
+
 	public float health;
 
 	public StateMachine<EnemyBrain> stateMachine;
@@ -33,7 +35,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	private Vector3 target;
 	private Vector3 currentVelocity = new Vector3(0,0,0);
-	private Vector3 currentAccel = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
 	public List<GameObject> otherEnemies;
@@ -215,5 +216,20 @@ public class EnemyBrain : MonoBehaviour {
 			health = 0;
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
+	}
+
+	public void setGenoPheno(float[] _genes)
+	{
+		gene = _genes;
+
+		health = gene[0]*30;  
+		maxSpeed = gene[1]*30; 
+		bulletSpeed = gene[2]*75;   
+		bulletDamage = 10-gene[2]; 
+
+		playerSeekDistance =  gene[3]* 40;
+		playerFleeDistance =  gene[4]* 40;
+		playerFleeBuffer =  playerFleeDistance + 60;
+		enemiesAvoidDistance =  gene[5] * 16;
 	}
 }
