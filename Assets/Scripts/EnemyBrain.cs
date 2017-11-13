@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class EnemyBrain : MonoBehaviour {
 
-	private float[] gene = new float[7];
+	private float[] gene = new float[6];
 
 	public float health;
 
@@ -17,7 +17,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float playerSeekDistance;
 	public float playerFleeDistance;
-	public float bulletFleeDistance;//IS THIS USED ANYWHERE???
 	public float playerFleeBuffer;
 	public float fireSpeed;
 	public float bulletSpeed;

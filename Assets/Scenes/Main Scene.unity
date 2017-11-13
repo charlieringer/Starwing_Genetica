@@ -334,7 +334,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 784053620}
   enemyClones: []
-  callFunction: 0
 --- !u!4 &775451610
 Transform:
   m_ObjectHideFlags: 0
@@ -377,12 +376,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 402657043}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
-  waveSize: 30
+  GAManager: {fileID: 775451608}
+  waveSize: 6
   enemies: []
   deadEnemies: []
   shipsRemainingText: {fileID: 555339747}
   waveCompleteText: {fileID: 555339745}
+  playerScoreText: {fileID: 2144538510}
   waveCompleteWrapper: {fileID: 555339746}
+  playerScore: 0
 --- !u!4 &784053622
 Transform:
   m_ObjectHideFlags: 0
@@ -443,13 +445,24 @@ Prefab:
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
       propertyPath: health
-      value: 200
+      value: 200000
       objectReference: {fileID: 0}
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
       propertyPath: playerHealthText
       value: 
       objectReference: {fileID: 555339748}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: bulletDamage
+      value: 100000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &2144538510 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114973125583440448, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+    type: 2}
+  m_PrefabInternal: {fileID: 555339744}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
