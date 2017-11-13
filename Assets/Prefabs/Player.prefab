@@ -469,6 +469,7 @@ MonoBehaviour:
   RThruster: {fileID: 1253833833516512}
   leftBarrel: {fileID: 1472403324012326}
   rightBarrel: {fileID: 1218390125434408}
+  currentSpeed: 0
   playerHealthText: {fileID: 0}
 --- !u!124 &124151612446107450
 Behaviour:
