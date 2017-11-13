@@ -2,13 +2,18 @@
 using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class EnemyBrain : MonoBehaviour {
 
 	private float[] gene = new float[7];
-    public float[] booster = new float[3];
 
-	public float health;
+    List<float> booster = new List<float>();
+    public float BoosterAmmount;
+    public int BoosterType;
+
+    public float health;
+    
 
 	public StateMachine<EnemyBrain> stateMachine;
 	
@@ -235,16 +240,17 @@ public class EnemyBrain : MonoBehaviour {
 
     public void setBooster(float[] _genes)
     {
+        // [0] health - [1] speed - [2] damage
         gene = _genes;
-        for (int i = 0; i < gene.Length; i++)
+        for (int i = 0; i < 2; i++)
         {
-            
+            booster.Add(gene[i]);
         }
-
-
+        BoosterType = booster.IndexOf(booster.Max());
+        BoosterAmmount = booster.Max();
     }
 
-	public float[] GetGene(){
+    public float[] GetGene(){
 		return gene;
 	}
 }
