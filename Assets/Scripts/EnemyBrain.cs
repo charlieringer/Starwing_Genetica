@@ -3,10 +3,10 @@ using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-
 public class EnemyBrain : MonoBehaviour {
 
 	private float[] gene = new float[7];
+    public float[] booster = new float[3];
 
 	public float health;
 
@@ -232,6 +232,17 @@ public class EnemyBrain : MonoBehaviour {
 		playerFleeBuffer =  playerFleeDistance + 60;
 		enemiesAvoidDistance =  gene[5] * 16;
 	}
+
+    public void setBooster(float[] _genes)
+    {
+        gene = _genes;
+        for (int i = 0; i < gene.Length; i++)
+        {
+            
+        }
+
+
+    }
 
 	public float[] GetGene(){
 		return gene;
