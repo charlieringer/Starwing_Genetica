@@ -12,6 +12,8 @@ public class PlayerControls : MonoBehaviour {
 	public float turnSpeed;
     public float maxTurn;
 	public float health;
+	public float maxHealth;
+	private float shields = 0f;
 
 	public float bulletDamage;
 	public float bulletSpeed;
@@ -150,14 +152,14 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData>().updateParentDamageDealt();
-			health -= damage;
+			takeDamage (damage);
 			Destroy(collision.gameObject);
 		}
 
 		if(collision.gameObject.name.Contains("Enemy(Clone)"))
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
-			health -= damage;
+			takeDamage (damage);
 			currentSpeed *= 0.8f;
 			currentTurn *= 0.8f;
 			
@@ -169,5 +171,17 @@ public class PlayerControls : MonoBehaviour {
 	 {
 		 playerHealthText.text = "Heath: " + health;
 	 }
+
+	void takeDamage(float damage)
+	{
+		if (shields >= damage) {
+			shields -= damage;
+		} else if (shields > 0) {
+			health -= (damage - shields);
+			shields = 0;
+		} else {
+			health -= damage;
+		}
+	}
 
 }
