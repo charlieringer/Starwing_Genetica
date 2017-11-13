@@ -19,7 +19,7 @@ public class PlayerControls : MonoBehaviour {
 
     public GameObject LThruster;
     public GameObject RThruster;
-	public GameObject leftBarrel;
+    public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
 	private float currentSpeed = 0;
@@ -104,38 +104,40 @@ public class PlayerControls : MonoBehaviour {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
+        ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
+        ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
+        var LeftEmission = LeftParticle.emission;
+        var RightEmission = RightParticle.emission;
+
         if (v == 0 && h == 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Stop();
-            RThruster.GetComponent<ParticleSystem>().Stop();
+            LeftEmission.rateOverTime = 100.0f;
+            RightEmission.rateOverTime = 100.0f;
         }
         else if (v > 0 && h == 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Play();
-            RThruster.GetComponent<ParticleSystem>().Play();
+            LeftEmission.rateOverTime = 400.0f;
+            RightEmission.rateOverTime = 400.0f;
         }
         else if (v > 0 && h < 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Stop();
-            RThruster.GetComponent<ParticleSystem>().Play();
+            LeftEmission.rateOverTime = 100.0f;
+            RightEmission.rateOverTime = 400.0f;
         }
         else if (v > 0 && h > 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Play();
-            RThruster.GetComponent<ParticleSystem>().Stop();
-           // print(h);
+            LeftEmission.rateOverTime = 400.0f;
+            RightEmission.rateOverTime = 100.0f;
         }
         else if (v == 0 && h > 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Play();
-            RThruster.GetComponent<ParticleSystem>().Stop();
-           // print(h);
+            LeftEmission.rateOverTime = 400.0f;
+            RightEmission.rateOverTime = 100.0f;
         }
         else if (v == 0 && h < 0)
         {
-            LThruster.GetComponent<ParticleSystem>().Stop();
-            RThruster.GetComponent<ParticleSystem>().Play();
-           // print(h);
+            LeftEmission.rateOverTime = 100.0f;
+            RightEmission.rateOverTime = 400.0f;
         }
     }
 
