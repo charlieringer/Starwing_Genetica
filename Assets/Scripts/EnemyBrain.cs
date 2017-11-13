@@ -58,6 +58,7 @@ public class EnemyBrain : MonoBehaviour {
     void FixedUpdate() {
         if (health <= 0) {
             transform.Rotate(new Vector3(random.Next(360), random.Next(360), random.Next(360)) * Time.deltaTime);
+            print("destroyed ship");
             BoosterDrop(gene);
             return;
         }
