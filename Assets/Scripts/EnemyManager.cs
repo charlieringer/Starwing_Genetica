@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour {
     //public PlayerHealth playerHealth;       // Reference to the player's heatlh.
     public GameObject player;
     public GameObject enemy;                // The enemy prefab to be spawned.
+	public GameObject GAManager;
 	//public float spawnTime = 3f;          // How long between each spawn.
 	public int waveSize;					// how many enemies are spawning each wave
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
@@ -123,6 +124,8 @@ public class EnemyManager : MonoBehaviour {
         if(timeTillNextWave < 0.0001)
         {
             //Spawn(enemy);//this needs to be removed. the function will be probably called from inside GAmanager script to feed in the new enemy values
+			IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(enemies);
+			SpawnGA(newPop);
             atEndOfWave = false;
             waveCompleteWrapper.SetActive(false);
         }

@@ -232,4 +232,8 @@ public class EnemyBrain : MonoBehaviour {
 		playerFleeBuffer =  playerFleeDistance + 60;
 		enemiesAvoidDistance =  gene[5] * 16;
 	}
+
+	public float[] GetGene(){
+		return gene;
+	}
 }

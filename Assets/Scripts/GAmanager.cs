@@ -59,13 +59,24 @@ public class GAmanager : MonoBehaviour {
         int totalGenerations = 1;
         for (int i= 0; i < totalGenerations;i++)
         {
-            testPopulation.nextGeneration();
+            testPopulation.generateNextGeneration();
         }
         //call the spawnGA function to feed the new data into the next generation of enemies.
         enemyManager.GetComponent<EnemyManager>().SpawnGA(testPopulation.getDictionary());
         PrintFitness(testPopulation);
 
     }
+
+	public IDictionary<int, GAenemy>  getNextWavePopulation(List<GameObject> oldEnemies)
+	{
+		Debug.Log("Start the GA");
+		//create population
+		GApopulation population = new GApopulation(oldEnemies); //this will also create a random population of enemies;
+
+		population.generateNextGeneration();
+		IDictionary<int, GAenemy> nextGen = population.getDictionary ();
+		return nextGen;
+	}
 
     //for test only
     public void PrintFitness(GApopulation p)

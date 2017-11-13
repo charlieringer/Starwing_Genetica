@@ -209,7 +209,7 @@ public class GApopulation {
     }
 
     //next generation
-    public void nextGeneration()
+    public void generateNextGeneration()
     {
         //after the population is created, do selection, crossover, mutation 
         selection();
