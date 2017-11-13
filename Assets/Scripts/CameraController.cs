@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour {
 		Vector3 velocity = Vector3.zero;
 		//Vector3 targetVec = target.transform.position;
 		//targetVec += offset;
-		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.1f);
+		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.125f);
 		//transform.position = target.transform.position - (rotation * - offset);
 		transform.LookAt (target.transform);
 		transform.rotation *= Quaternion.Euler (-25, 0, 0);
@@ -31,7 +31,7 @@ public class CameraController : MonoBehaviour {
 		Vector3 velocity = Vector3.zero;
 		//Vector3 targetVec = target.transform.position;
 		//targetVec += offset;
-		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.1f);
+		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.125f);
 		//transform.position = target.transform.position - (rotation * - offset);
 		transform.LookAt (target.transform);
 		transform.rotation *= Quaternion.Euler (-25, 0, 0);
