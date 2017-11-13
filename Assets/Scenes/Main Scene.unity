@@ -377,7 +377,7 @@ MonoBehaviour:
   player: {fileID: 402657043}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
   GAManager: {fileID: 775451608}
-  waveSize: 6
+  waveSize: 20
   enemies: []
   deadEnemies: []
   shipsRemainingText: {fileID: 555339747}
@@ -445,7 +445,7 @@ Prefab:
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
       propertyPath: health
-      value: 200000
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
@@ -455,8 +455,28 @@ Prefab:
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
       propertyPath: bulletDamage
-      value: 100000
+      value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7b9257006b503d043b6ddaf2409af455, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd273c653d24d4a40b0e05978f0d0ec5, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6939960343b3e5b42a212727e552984a, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c42e59a48cfb57b408fadcea59e9af96, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
