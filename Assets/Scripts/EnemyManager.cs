@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour {
 
     public Text shipsRemainingText;
     public Text waveCompleteText;
+	public Text playerScoreText;
     //check health. make the enemy die;
 
     private float timeTillNextWave;
@@ -50,7 +51,10 @@ public class EnemyManager : MonoBehaviour {
                 }
 				if(enemies[enemyIndex].transform.position.y < -200)
 				{
-					
+					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
+					foreach (float gene in genes) {
+						playerScore += gene;
+					}
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
                     //destroy the game object and remove it from the list
@@ -59,6 +63,7 @@ public class EnemyManager : MonoBehaviour {
 				}
             }
             writeShipsRemianing();
+			writePlayerScore ();
         } else {
 
             updateEndOfWave();
@@ -113,6 +118,11 @@ public class EnemyManager : MonoBehaviour {
     {
         shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
     }
+
+	private void writePlayerScore()
+	{
+		playerScoreText.text = "Score: " + playerScore;
+	}
 
     private void updateEndOfWave()
     {

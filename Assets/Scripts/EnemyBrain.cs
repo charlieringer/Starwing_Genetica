@@ -76,13 +76,13 @@ public class EnemyBrain : MonoBehaviour {
 		Vector3 steering = desiredVelocity - currentVelocity;
 		steering = Vector3.ClampMagnitude (steering, maxTurn);
 		steering += avoidOthers ();
-		steering.y = 0f;
 
 		currentVelocity += steering;
 		currentVelocity = Vector3.ClampMagnitude (currentVelocity, maxSpeed);
 		currentVelocity *= 1 - decel;
-
+		currentVelocity.y = 0f;
 		transform.position += currentVelocity * Time.fixedDeltaTime;
+		//transform.position.y = 0f;
 		if(currentVelocity.magnitude != 0)transform.rotation = Quaternion.LookRotation (-currentVelocity);
 	}
 
@@ -101,11 +101,11 @@ public class EnemyBrain : MonoBehaviour {
 
 		steering = Vector3.ClampMagnitude (steering, maxTurn);
 		steering += avoidOthers ();
-		steering.y = 0f;
 
 		currentVelocity += steering;
 		currentVelocity = Vector3.ClampMagnitude (currentVelocity, maxSpeed);
 		currentVelocity *= 1 - decel;
+		currentVelocity.y = 0f;
 
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		transform.rotation = Quaternion.LookRotation (-currentVelocity);
@@ -213,8 +213,8 @@ public class EnemyBrain : MonoBehaviour {
 
 		if(collision.gameObject.name == "Enemy(Clone)")
 		{
-			health = 0;
-			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
+			//health = 0;
+			//collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
 	}
 

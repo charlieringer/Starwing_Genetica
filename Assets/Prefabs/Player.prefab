@@ -457,10 +457,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topSpeed: 200
   decel: 5
-  accel: 50
-  turnSpeed: 100
-  maxTurn: 50
-  health: 2000000
+  accel: 100
+  turnSpeed: 200
+  maxTurn: 100
+  health: 20000
   bulletDamage: 10
   bulletSpeed: 600
   bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
