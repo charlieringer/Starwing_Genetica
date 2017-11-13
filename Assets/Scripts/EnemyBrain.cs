@@ -58,6 +58,7 @@ public class EnemyBrain : MonoBehaviour {
 	void FixedUpdate() {
 		if (health <= 0) {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
+            setBooster(gene);
 			return;
 		}
 		stateMachine.update ();
@@ -248,6 +249,7 @@ public class EnemyBrain : MonoBehaviour {
         }
         BoosterType = booster.IndexOf(booster.Max());
         BoosterAmmount = booster.Max();
+        print("BoosterType" + BoosterType + "BoosterAmmount" + BoosterAmmount);
     }
 
     public float[] GetGene(){
