@@ -1,0 +1,32 @@
+Anon
+
+* Visual feedback on hitting
+* Very hard to see enemy bullets
+* More visual feedback from driving
+* Possibly add a switch view in option
+
+Dani guapo
+
+* Shooting is not visible
+* Prefer the back view
+* More explicit camera effect when speeding up
+
+Pete looking fresh
+
+* Feedback on hit
+* There should be sound
+* Pod racing controll
+* Grid beneath you / compass / speedup
+
+Ivan the terrible
+
+* Too swingy, too much momentum
+* Bullets dimension, they are too small
+* Add barrel roll
+* Less background movement
+* Bug with bullets, they are not cleared up
+* Control should be more reactive, expecially when turning
+* Don't apply deceleration when turning
+* Enemies should spawn in one direction
+* Provide a minimap like feature
+
