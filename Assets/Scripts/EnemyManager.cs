@@ -116,12 +116,12 @@ public class EnemyManager : MonoBehaviour {
 
     private void writeShipsRemianing()
     {
-        shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
+        shipsRemainingText.text = enemies.Count + "/" + waveSize;
     }
 
 	private void writePlayerScore()
 	{
-		playerScoreText.text = "Score: " + playerScore;
+		playerScoreText.text = "" +playerScore;
 	}
 
     private void updateEndOfWave()

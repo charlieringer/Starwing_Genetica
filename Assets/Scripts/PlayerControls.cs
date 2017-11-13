@@ -13,7 +13,7 @@ public class PlayerControls : MonoBehaviour {
     public float maxTurn;
 	public float health;
 	public float maxHealth;
-	private float shields = 0f;
+	private float shields = 100f;
 
 	public float bulletDamage;
 	public float bulletSpeed;
@@ -24,16 +24,20 @@ public class PlayerControls : MonoBehaviour {
     public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
+
 	public float currentSpeed = 0;
 	private float currentTurn = 0;
 
-	public Text playerHealthText;
+	public Image playerHealthBar;
+	public Image playerShieldBar;
 	
 	void Awake(){}
     
 
 	// Use this for initialization
-	void Start () {}
+	void Start () {
+		maxHealth = health;
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -169,7 +173,8 @@ public class PlayerControls : MonoBehaviour {
 
 	 void updatePlayerHeathText()
 	 {
-		 playerHealthText.text = "Heath: " + health;
+		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 130f , 20);
+		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.3f , 20);
 	 }
 
 	void takeDamage(float damage)
