@@ -118,6 +118,9 @@ public class EnemyManager : MonoBehaviour {
 
             //deadEnemies.Add(newEnemy);
         }
+		for (int i = deadEnemies.Count - 1; i >= 0; i--) {
+			Destroy (deadEnemies [i]);
+		}
         deadEnemies = new List<GameObject>();
     }
 
