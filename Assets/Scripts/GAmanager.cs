@@ -6,8 +6,8 @@ using UnityEngine;
 public class GAmanager : MonoBehaviour {
 
     //int populationSize=40;
-    private bool isTesting = true;
-    string path = "Assets/test.txt";
+    private bool isTesting = false;
+    
     StreamWriter writer;
 
     //create a new game object to store the list of enemy clones
@@ -19,6 +19,8 @@ public class GAmanager : MonoBehaviour {
     void Start () {
        if (isTesting)
         {
+            string path = "Assets/test.txt";
+
             writer = System.IO.File.AppendText(path);
             writer = new StreamWriter(path, true);
         } 
@@ -65,24 +67,6 @@ public class GAmanager : MonoBehaviour {
         //return the dictionary containing the next generation for the next wave
 		return nextGen;
 	}
-
-    //for test only
-    /*
-    public void PrintFitness(GApopulation p)
-    {
-        //Debug.Log("PrintCalled1");
-        for (int index = 0; index < p.getDictionary().Count; index++)
-        {
-            Debug.Log(index + " gene: " );
-            PrintCollectionToFile(p.getDictionary()[index].GetGene());
-
-            //print(System.String.Join("; ", p.getDictionary()[index].GetGene()));
-            //Debug.Log(index + " fitness: " + p.getDictionary()[index].getFitness()+"dic size:"+ p.getDictionary().Count);
-            //Debug.Log("");
-        }
-    }
-    */
-
     
     public void PrintCollectionToFile<T>(string note, IEnumerable<T> col)
     {
