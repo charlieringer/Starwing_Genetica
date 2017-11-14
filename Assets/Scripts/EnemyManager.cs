@@ -82,7 +82,7 @@ public class EnemyManager : MonoBehaviour {
 
 			float[] rawGenes = new float[6];
 
-			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
+			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,9)+1;
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
 				

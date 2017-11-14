@@ -36,8 +36,8 @@ public class GAenemy  {
 
         for(int i = 0; i < this.gene.Length; i++){ this.gene[i] = newGene[i]; }
 
-        this.playerDamage = r.Next(0,10);
-        this.lifeSpam = r.Next(0,10);
+        this.playerDamage = r.Next(0,9)+1;
+        this.lifeSpam = r.Next(0,9)+1;
         this.bulletDamage = System.Math.Abs(gene[2]-10);
 
     }
