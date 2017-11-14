@@ -127,9 +127,9 @@ public class EnemyManager : MonoBehaviour {
 
     Vector3 GenerateRandomTransform(){
         Vector3 pos;
-        float x = Random.Range(player.transform.position.x-4000, player.transform.position.x + 4000);
+        float x = Random.Range(player.transform.position.x-2000, player.transform.position.x + 2000);
         float y = 0f;
-        float z = Random.Range(player.transform.position.z - 4000, player.transform.position.z + 4000);
+        float z = Random.Range(player.transform.position.z - 2000, player.transform.position.z + 2000);
         pos = new Vector3(x, y, z);
         transform.position = pos;
 
