@@ -247,7 +247,7 @@ MonoBehaviour:
   enemiesAvoidDistance: 80
   arriveDampingOffset: 120
   arriveDampingDistance: 400
-  playerPathPredictionAmount: 0.5
+  playerPathPredictionAmount: 0.1
   damageDealt: 0
   decel: 0.1
   maxSpeed: 100

@@ -173,8 +173,8 @@ public class PlayerControls : MonoBehaviour {
 
 	 void updatePlayerHeathText()
 	 {
-		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 130f , 20);
-		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.3f , 20);
+		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
+		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
 	 }
 
 	void takeDamage(float damage)
