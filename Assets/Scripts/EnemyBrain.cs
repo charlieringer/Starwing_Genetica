@@ -41,6 +41,9 @@ public class EnemyBrain : MonoBehaviour {
 
 	List<GameObject> bullets = new List<GameObject>();
 
+	public float timeAliveTimer;
+	private bool timerStarted;
+
 	void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
@@ -69,6 +72,8 @@ public class EnemyBrain : MonoBehaviour {
 			return;
 		}
 		stateMachine.update ();
+		if (timerStarted)
+			timeAliveTimer += Time.fixedDeltaTime;
 	}
 
 	public void pickRandomRoamingTarget(){
@@ -278,8 +283,13 @@ public class EnemyBrain : MonoBehaviour {
 		return gene;
 	}
 
-	    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
         return ((initialVal*targetHigh)/initialHigh);
     }
+
+	public void startSeekTimer ()
+	{
+		timerStarted = true;
+	}
 }
