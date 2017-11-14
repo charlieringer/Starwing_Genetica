@@ -22,7 +22,7 @@ public class PlayerControls : MonoBehaviour {
     public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
-	private float currentSpeed = 0;
+	public float currentSpeed = 0;
 	private float currentTurn = 0;
 
 	public Text playerHealthText;

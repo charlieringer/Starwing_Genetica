@@ -15,7 +15,7 @@ public class EnemyBrain : MonoBehaviour
 
     public GameObject player = null;
     public GameObject bulletPreFab;
-    //public GameObject enemy;
+    
 
     public float playerSeekDistance;
     public float playerFleeDistance;
@@ -26,6 +26,7 @@ public class EnemyBrain : MonoBehaviour
     public float enemiesAvoidDistance;
     public float arriveDampingOffset;
     public float arriveDampingDistance;
+    public float playerPathPredictionAmount;
     public float damageDealt = 0f;
     public float decel;
 
@@ -74,9 +75,37 @@ public class EnemyBrain : MonoBehaviour
         target = new Vector3((int)player.transform.position.x + (random.Next(80)) - 40, 0, (int)player.transform.position.z + (random.Next(80)) - 40);
     }
 
+    public void roamToTarget()
+    {
+
+        Vector3 desiredVelocity = target - transform.position;
+
+        float arriveDistance = Vector3.Distance(target, transform.position);
+
+        if (arriveDistance < arriveDampingDistance)
+        {
+            float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
+            desiredVelocity *= mappedSpeed;
+        }
+        else desiredVelocity *= maxSpeed;
+
+        Vector3 steering = desiredVelocity - currentVelocity;
+        steering = Vector3.ClampMagnitude(steering, maxTurn);
+        steering += avoidOthers();
+
+        currentVelocity += steering;
+        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
+        currentVelocity *= 1 - decel;
+        currentVelocity.y = 0f;
+        transform.position += currentVelocity * Time.fixedDeltaTime;
+        //transform.position.y = 0f;
+        if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
+    }
+
     public void seekTarget()
     {
-        Vector3 desiredVelocity = target - transform.position;
+
+        Vector3 desiredVelocity = (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime) - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
 
@@ -156,10 +185,10 @@ public class EnemyBrain : MonoBehaviour
     {
         if (Time.time > timeLastFired + fireSpeed)
         {
-            Vector3 dirFromAtoB = (transform.position - target).normalized;
+            Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd > 0.95)
+            if (dotProd > 0.97)
             {
                 timeLastFired = Time.time;
                 GameObject bullet = Instantiate(bulletPreFab, transform.position, transform.rotation);
@@ -258,19 +287,10 @@ public class EnemyBrain : MonoBehaviour
         return gene;
     }
 
-    //private static float ColourValueRemap(float initialVal, float initialHigh, float initialLow,float targetHigh, float targetLow)
-    //{
-    //    return  (targetHigh + (initialVal - initialLow) * (targetHigh - targetLow) / (initialHigh - initialLow));
-    //}
+
 
     private static float ColourValueRemap(float initialVal, float initialHigh,  float targetHigh)
     {
         return (int)((initialVal*targetHigh)/initialHigh);
-
-        //return (targetHigh + (initialVal - initialLow) * (targetHigh - targetLow) / (initialHigh - initialLow));
     }
 }
-
-
-  
-    

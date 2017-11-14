@@ -460,7 +460,7 @@ MonoBehaviour:
   accel: 100
   turnSpeed: 200
   maxTurn: 100
-  health: 20000
+  health: 200
   bulletDamage: 10
   bulletSpeed: 600
   bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
@@ -469,6 +469,7 @@ MonoBehaviour:
   RThruster: {fileID: 1253833833516512}
   leftBarrel: {fileID: 1472403324012326}
   rightBarrel: {fileID: 1218390125434408}
+  currentSpeed: 0
   playerHealthText: {fileID: 0}
 --- !u!124 &124151612446107450
 Behaviour:
