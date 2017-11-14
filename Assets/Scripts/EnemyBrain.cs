@@ -72,7 +72,7 @@ public class EnemyBrain : MonoBehaviour {
 			return;
 		}
 		stateMachine.update ();
-		if (timerStarted)
+		if (timerStarted && health > 0)
 			timeAliveTimer += Time.fixedDeltaTime;
 	}
 
