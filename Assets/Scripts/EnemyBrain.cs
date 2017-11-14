@@ -90,7 +90,8 @@ public class EnemyBrain : MonoBehaviour {
 
 	public void seekTarget(){
 
-		Vector3 desiredVelocity = (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime) - transform.position;
+		Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls> ().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
+		Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
 
 		float arriveDistance = Vector3.Distance (target, transform.position);
 
@@ -170,7 +171,7 @@ public class EnemyBrain : MonoBehaviour {
 			Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
 			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-			if(dotProd > 0.97) {
+			if(dotProd > 0.95) {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);				
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
