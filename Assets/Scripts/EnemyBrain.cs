@@ -60,11 +60,15 @@ public class EnemyBrain : MonoBehaviour
     void FixedUpdate()
     {
         //changed colour based on gene (speed and bullet speed) information
-        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ColourValueRemap(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
-        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ColourValueRemap(gene[2], 9, 225)/225, 0, 225/225);
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
 
         //change size based on the health value from the gene
+        float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-2 value. this will be used to update the scale values.
+        transform.localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
+        //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
+        //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
         if (health <= 0)
         {
@@ -293,8 +297,8 @@ public class EnemyBrain : MonoBehaviour
 
 
 
-    private static float ColourValueRemap(float initialVal, float initialHigh,  float targetHigh)
+    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
-        return (int)((initialVal*targetHigh)/initialHigh);
+        return ((initialVal*targetHigh)/initialHigh);
     }
 }
