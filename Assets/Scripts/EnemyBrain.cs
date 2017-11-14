@@ -98,6 +98,7 @@ public class EnemyBrain : MonoBehaviour {
 
     public void roamToTarget()
     {
+
         Vector3 desiredVelocity = target - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
@@ -112,7 +113,6 @@ public class EnemyBrain : MonoBehaviour {
         Vector3 steering = desiredVelocity - currentVelocity;
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
-        steering.y = 0f;
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -126,7 +126,8 @@ public class EnemyBrain : MonoBehaviour {
     public void seekTarget()
     {
 
-        Vector3 desiredVelocity = (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime) - transform.position;
+        Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
+        Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
 
@@ -222,14 +223,6 @@ public class EnemyBrain : MonoBehaviour {
         }
     }
 
-    public void checkRoamingLocationProximity()
-    {
-        if (Vector3.Distance(transform.position, target) < NEARBY)
-        {
-            pickRandomRoamingTarget();
-        }
-    }
-
     public void checkPlayerSeekProximity()
     {
         if (player == null) return;
@@ -237,7 +230,17 @@ public class EnemyBrain : MonoBehaviour {
         {
             stateMachine.changeState(new Seeking());
         }
+    }
 
+
+
+
+    public void checkRoamingLocationProximity()
+    {
+        if (Vector3.Distance(transform.position, target) < NEARBY)
+        {
+            pickRandomRoamingTarget();
+        }
     }
 
     public void checkSeekOrRoamProximity()
@@ -365,7 +368,13 @@ public class EnemyBrain : MonoBehaviour {
 		return gene;
 	}
 
-	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+    public void updateDamageDealt(float _damage)
+ 	{
+	damageDealt += _damage;
+    }
+
+
+private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
         return ((initialVal*targetHigh)/initialHigh);
     }
@@ -374,4 +383,5 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		timerStarted = true;
 	}
+
 }
