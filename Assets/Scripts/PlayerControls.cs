@@ -94,6 +94,8 @@ public class PlayerControls : MonoBehaviour {
 		bulletR.GetComponent<Rigidbody> ().velocity = (bulletR.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
+        Destroy (bulletR, 2.0f);
+
 
 
 
