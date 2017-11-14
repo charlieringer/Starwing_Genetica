@@ -59,8 +59,12 @@ public class EnemyBrain : MonoBehaviour
 
     void FixedUpdate()
     {
+        //changed colour based on gene (speed and bullet speed) information
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ColourValueRemap(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ColourValueRemap(gene[2], 9, 225)/225, 0, 225/225);
+
+        //change size based on the health value from the gene
+
 
         if (health <= 0)
         {
