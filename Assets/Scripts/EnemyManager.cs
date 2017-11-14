@@ -147,7 +147,7 @@ public class EnemyManager : MonoBehaviour {
 
     private void displayWaveComplete()
     {
-        waveCompleteText.text = ("Next Wave in " + timeTillNextWave);
+		waveCompleteText.text = timeTillNextWave.ToString("N0");
     }
 
 }
