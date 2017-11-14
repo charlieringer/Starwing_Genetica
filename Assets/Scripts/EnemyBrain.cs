@@ -325,20 +325,22 @@ public class EnemyBrain : MonoBehaviour {
         BoosterAmmount = booster.Max();
 
         // chek if booosters are droped
-        if (pBooster <= 0.9)
+        if (pBooster <= 0.2)
         {
 			if (BoosterType == 0) {
 				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
 				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			}
 			else if (BoosterType == 1) {
 				GameObject boosterDrop = Instantiate (SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
 				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			} else {
 				GameObject boosterDrop = Instantiate (WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
 				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			}
@@ -346,9 +348,12 @@ public class EnemyBrain : MonoBehaviour {
         }
         else
         {
-            if (pShield <= 0.9)
+            if (pShield <= 0.2)
             {
-                Instantiate(ShieldPowerup, transform);
+				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
             }  
         }
         

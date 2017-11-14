@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Booster : MonoBehaviour {
 
+	public float boostAmount;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,4 +15,5 @@ public class Booster : MonoBehaviour {
 	void Update () {
 		
 	}
+		
 }
