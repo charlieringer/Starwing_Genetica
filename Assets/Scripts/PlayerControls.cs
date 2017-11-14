@@ -177,7 +177,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(collision.gameObject.name.Contains("ShieldPowerup"))
 		{
-			shields += collision.gameObject.GetComponent<Booster> ().boostAmount;
+			shields += (collision.gameObject.GetComponent<Booster> ().boostAmount)*2;
 			if (shields > 100)
 				shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
@@ -193,7 +193,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(collision.gameObject.name.Contains("WeaponPowerup"))
 		{
-			bulletDamage += collision.gameObject.GetComponent<Booster> ().boostAmount;
+			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
 			Destroy(collision.gameObject);
 		}
