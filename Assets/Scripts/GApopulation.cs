@@ -32,7 +32,7 @@ public class GApopulation {
     public void createPopulation(List<GameObject> enemyClones)
     {
         //float[] gene = new float[7]; //there are currently 7 chromosones
-                                     //randomly 0-9 add values to gene array
+        //randomly 0-9 add values to gene array
 
         /*for each gameobj in the enemyClones list get the info needed to create the array.
         this array needs to be passed then in the creation of the GAenemy obj that consequently creates the GApopulation by 
@@ -40,21 +40,19 @@ public class GApopulation {
 
         /*values in the gene array:
         0: health, 1:speed, 2:bulletSpeed (& bulletDamage) 
-        3:playerSeekDistance, 4:playerFleeDistance, 5:playerFleeBuffer, 6:bulletFleeDistance */
+        3:playerSeekDistance, 4:playerFleeDistance, 5:enemiesAvoidDistance //not anymore: 5:playerFleeBuffer, 6:bulletFleeDistance */
 
         int currentPopulationIndex = 0;
         foreach (GameObject enemyClone in enemyClones)
         {
-            float[] gene = new float[7];
-            gene[0] = enemyClone.GetComponent<EnemyBrain>().health; 
-            gene[1] = enemyClone.GetComponent<EnemyBrain>().maxSpeed;
-            gene[2] = enemyClone.GetComponent<EnemyBrain>().bulletSpeed; 
-            //enemyClone.GetComponent<EnemyBrain>().bulletDamage
+            float[] gene = new float[6];
+            gene[0] = enemyClone.GetComponent<EnemyBrain>().GetGene()[0]; 
+            gene[1] = enemyClone.GetComponent<EnemyBrain>().GetGene()[1];
+            gene[2] = enemyClone.GetComponent<EnemyBrain>().GetGene()[2]; 
 
-            gene[3] = enemyClone.GetComponent<EnemyBrain>().playerSeekDistance;
-            gene[4] = enemyClone.GetComponent<EnemyBrain>().playerFleeDistance;
-            gene[5] = enemyClone.GetComponent<EnemyBrain>().playerFleeBuffer;
-            gene[6] = enemyClone.GetComponent<EnemyBrain>().bulletFleeDistance;
+            gene[3] = enemyClone.GetComponent<EnemyBrain>().GetGene()[3];
+            gene[4] = enemyClone.GetComponent<EnemyBrain>().GetGene()[4];
+            gene[5] = enemyClone.GetComponent<EnemyBrain>().GetGene()[5];
 
             GAenemy e = new GAenemy(gene);
             this.population[currentPopulationIndex] = e;
@@ -131,7 +129,7 @@ public class GApopulation {
    
     }
 
-    //crossover (returns a offspring)
+    //crossover (returns an offspring)
     public void crossOver()
     {
         IDictionary<int, GAenemy> offspringPopulation=new Dictionary<int, GAenemy>();
@@ -165,7 +163,7 @@ public class GApopulation {
     public void mutation()
     {   //create a new population to mutate
         IDictionary<int, GAenemy> mutatedPopulation = new Dictionary<int, GAenemy>();
-        float[] mutatedGene = new float[7];
+        float[] mutatedGene = new float[6];
 
 
         //for all the genes in the chormosome, add a gausian.
@@ -176,18 +174,18 @@ public class GApopulation {
             mutatedPopulation[index].setHealth(this.population[index].getHealth() + Gaussian(0, 0.8));//gaussian is called with mean and sddev (sddev:0.7 to 1.5)
             mutatedPopulation[index].setSpeed(this.population[index].getSpeed() + Gaussian(0, 0.8));
             mutatedPopulation[index].setBulletSpeed(this.population[index].getBulletSpeed() + Gaussian(0, 0.8));
-            mutatedPopulation[index].setBulletDamage(this.population[index].getBulletDamage() + Gaussian(0, 0.8));
 
-            mutatedPopulation[index].setPlayerFleeBuffer(this.population[index].getPlayerFleeBuffer() + Gaussian(0, 0.8));
+            
             mutatedPopulation[index].setPlayerFleeDistance(this.population[index].getPlayerFleeDistance() + Gaussian(0, 0.8));
             mutatedPopulation[index].setPlayerSeekDistance(this.population[index].getPlayerSeekDistance() + Gaussian(0, 0.8));
-            mutatedPopulation[index].setBulletFleeDistance(this.population[index].getBulletFleeDistance() + Gaussian(0, 0.8));
+            mutatedPopulation[index].setEnemiesAvoidDistance(this.population[index].getEnemiesAvoidDistance() + Gaussian(0, 0.8));
+
 
 
             //this is for TEST ONLY, will be adjusted in game with game variables
             //the lifespam and playerdamage have to change as they are part of the fitness function
-            mutatedPopulation[index].ChangeLifeSpamRand();
-            mutatedPopulation[index].ChangePlayerDamageRand();
+            //mutatedPopulation[index].ChangeLifeSpamRand();
+            //mutatedPopulation[index].ChangePlayerDamageRand();
 
         }
 
@@ -203,10 +201,8 @@ public class GApopulation {
 
     }
 
-    public IDictionary <int, GAenemy> getDictionary()
-    {
-        return this.population;
-    }
+    public IDictionary<int, GAenemy> getDictionary() { return this.population; }
+    
 
     //next generation
     public void generateNextGeneration()
@@ -217,45 +213,6 @@ public class GApopulation {
         mutation();
 
     } 
-
-    //sorting 
-    public static void fitnessQuickSort(IDictionary<int, GAenemy> currentPopulation, int lowerIndex, int higherIndex)
-    {
-
-        //storing the lower and upper boundaries 
-        int i = lowerIndex;
-        int j = higherIndex;
-
-        float p = currentPopulation[lowerIndex + (higherIndex - lowerIndex) / 2].getFitness();
-
-        while (i <= j)
-        {
-
-            while (currentPopulation[i].getFitness() < p)
-            {
-                i++;
-            }
-            while (currentPopulation[j].getFitness() > p)
-            {
-                j--;
-            }
-            if (i <= j)
-            {
-                //swap in the dict.
-                GAenemy temp = currentPopulation[i];
-                currentPopulation[i] = currentPopulation[j];
-                //currentPopulation.put(i, map.get(j));
-                currentPopulation[j] = temp;
-                i++;
-                j--;
-            }
-        }
-        // call quickSort recursively
-        if (lowerIndex < j)
-            fitnessQuickSort(currentPopulation, lowerIndex, j);
-        if (i < higherIndex)
-            fitnessQuickSort(currentPopulation, i, higherIndex);
-    }
 
     //OTHER
     //temp function for rand values
@@ -300,23 +257,5 @@ public class GApopulation {
         return (float) (y1 * stddev + mean);
     }
 
-    /*
-     public void PrintFitness()
-    {
-        for (int index = 0; index < this.population.Count; index++)
-        {
-            print(index+" fitness: "+this.population[index].getFitness());
-            print("");
-}
-    }
-    */
-
-    //returns the value mapped between 0-9 inclusive;
-    //How to calculate it? Is there an apper limit??
-    private float ValueMapping(float value)
-    {
-        
-        return 0;
-    }
     
 }

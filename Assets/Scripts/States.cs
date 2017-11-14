@@ -12,7 +12,7 @@ public class Roaming: State<EnemyBrain> {
 
 	public void execute(EnemyBrain agent)
 	{
-		agent.seekTarget ();
+		agent.roamToTarget ();
 		agent.checkRoamingLocationProximity ();
 		agent.checkPlayerSeekProximity ();
 	}

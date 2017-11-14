@@ -22,7 +22,7 @@ public class PlayerControls : MonoBehaviour {
     public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
-	private float currentSpeed = 0;
+	public float currentSpeed = 0;
 	private float currentTurn = 0;
 
 	public Text playerHealthText;
@@ -49,8 +49,8 @@ public class PlayerControls : MonoBehaviour {
 		if(currentSpeed < 0) currentSpeed = 0;
 
 		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		if (currentTurn > 0) currentTurn -= decel * Time.fixedDeltaTime;
-		else if (currentTurn < 0) currentTurn += decel * Time.fixedDeltaTime;
+		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
+		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
 
 		if (currentTurn > maxTurn ) currentTurn = maxTurn;
 		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
@@ -94,6 +94,8 @@ public class PlayerControls : MonoBehaviour {
 		bulletR.GetComponent<Rigidbody> ().velocity = (bulletR.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
+        Destroy (bulletR, 2.0f);
+
 
 
 
