@@ -239,12 +239,12 @@ Prefab:
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 710.5
+      value: 574
       objectReference: {fileID: 0}
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 289.5
+      value: 255
       objectReference: {fileID: 0}
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
@@ -474,7 +474,7 @@ MonoBehaviour:
   waveSize: 10
   enemies: []
   deadEnemies: []
-  initalWavebudget: 0
+  initalWavebudget: 30
   shipsRemainingText: {fileID: 555339747}
   waveCompleteText: {fileID: 1787540872}
   playerScoreText: {fileID: 587446826}

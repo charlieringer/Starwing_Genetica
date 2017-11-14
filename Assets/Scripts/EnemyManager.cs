@@ -139,7 +139,7 @@ public class EnemyManager : MonoBehaviour {
 
 	private void writePlayerScore()
 	{
-		playerScoreText.text = "" +playerScore;
+		playerScoreText.text = playerScore.ToString("N0");
 	}
 
     private void updateEndOfWave()
