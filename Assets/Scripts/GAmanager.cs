@@ -13,30 +13,15 @@ public class GAmanager : MonoBehaviour {
     public GameObject enemyManager;
     public List<GameObject> enemyClones;
 
-    //stupid way of making the testGA run one sigle 
-    //time after the list of enemyclones has been created (that's why it can not be placed in Start() )
-    //creates a bool variable that is set to true in start when the game starts. it's set to false when the function is first call
-    //and in LateUpdate it's used in if statement to call/not call the testGA function
-    public bool callFunction;
-        
+  
         // Use this for initialization
     void Start () {
         
-        //writer = System.IO.File.AppendText(path);
+       //writer = System.IO.File.AppendText(path);
        // writer = new StreamWriter(path, true);
     }
 	
-	// Update is called once per frame
 	void Update () {
-
-        //check if all of the enemies are dead (the list is empty); if so, get the list of updated enemies with in game data from deadEnemies list
-        if (enemyManager.GetComponent<EnemyManager>().enemies.Count <= 0)
-        {
-            enemyClones = enemyManager.GetComponent<EnemyManager>().deadEnemies;
-            callFunction = true;
-        }
-        
-        if (callFunction) testGA();
     }
 
     private void OnDestroy()
@@ -44,41 +29,25 @@ public class GAmanager : MonoBehaviour {
         //writer.Close();
     }
 
-
-    public void testGA()
-    {
-        callFunction = false;
-        
-        //Debug.Log("Start the testGA");
-        //create population
-        GApopulation testPopulation = new GApopulation(enemyClones); //this will also create a random population of enemies;
-
-        PrintFitness(testPopulation);
-        //Debug.Log("3");
-
-        int totalGenerations = 1;
-        for (int i= 0; i < totalGenerations;i++)
-        {
-            testPopulation.generateNextGeneration();
-        }
-        //call the spawnGA function to feed the new data into the next generation of enemies.
-        enemyManager.GetComponent<EnemyManager>().SpawnGA(testPopulation.getDictionary());
-        PrintFitness(testPopulation);
-
-    }
-
 	public IDictionary<int, GAenemy>  getNextWavePopulation(List<GameObject> oldEnemies)
 	{
-		Debug.Log("Start the GA");
-		//create population
-		GApopulation population = new GApopulation(oldEnemies); //this will also create a random population of enemies;
 
+		//create population with a list of game objects
+		GApopulation population = new GApopulation(oldEnemies);
+
+        //generate the next generation for the next wave
 		population.generateNextGeneration();
-		IDictionary<int, GAenemy> nextGen = population.getDictionary ();
+
+
+        //add the next generation to a dictionary 
+        IDictionary<int, GAenemy> nextGen = population.getDictionary ();
+
+        //return the dictionary containing the next generation for the next wave
 		return nextGen;
 	}
 
     //for test only
+    /*
     public void PrintFitness(GApopulation p)
     {
         //Debug.Log("PrintCalled1");
@@ -92,7 +61,9 @@ public class GAmanager : MonoBehaviour {
             //Debug.Log("");
         }
     }
+    */
 
+    /*
     public void PrintCollectionToFile<T>(IEnumerable<T> col)
     {
         string currentInfo="next: ";
@@ -109,4 +80,5 @@ public class GAmanager : MonoBehaviour {
         //writer.WriteLine(currentInfo);
         
     }
+    */
 }

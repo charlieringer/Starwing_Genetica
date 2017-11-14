@@ -193,7 +193,7 @@ Prefab:
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 268.5
+      value: 255
       objectReference: {fileID: 0}
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
@@ -275,9 +275,40 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1368952760835206, guid: 0fff5ea1f85d744d2b9aeed99a98613f, type: 2}
-      propertyPath: m_Name
-      value: InGameUI
+    - target: {fileID: 114973125583440448, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224027183629509856, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 220
+      objectReference: {fileID: 0}
+    - target: {fileID: 224027183629509856, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 220
+      objectReference: {fileID: 0}
+    - target: {fileID: 224150652075878014, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 224150652075878014, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929125999297032, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 224929125999297032, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 240
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0fff5ea1f85d744d2b9aeed99a98613f, type: 2}
@@ -305,6 +336,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 555339744}
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &587446826 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114973125583440448, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+    type: 2}
+  m_PrefabInternal: {fileID: 555339744}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &775451608
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +371,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 784053620}
   enemyClones: []
-  callFunction: 0
 --- !u!4 &775451610
 Transform:
   m_ObjectHideFlags: 0
@@ -377,12 +413,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 402657043}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
-  waveSize: 30
+  GAManager: {fileID: 775451608}
+  waveSize: 20
   enemies: []
   deadEnemies: []
   shipsRemainingText: {fileID: 555339747}
   waveCompleteText: {fileID: 555339745}
+  playerScoreText: {fileID: 587446826}
   waveCompleteWrapper: {fileID: 555339746}
+  playerScore: 0
 --- !u!4 &784053622
 Transform:
   m_ObjectHideFlags: 0
@@ -437,19 +476,38 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
         type: 2}
-      propertyPath: playersHealth
-      value: 
-      objectReference: {fileID: 555339748}
-    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-        type: 2}
-      propertyPath: health
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-        type: 2}
       propertyPath: playerHealthText
       value: 
       objectReference: {fileID: 555339748}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: bulletDamage
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7b9257006b503d043b6ddaf2409af455, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd273c653d24d4a40b0e05978f0d0ec5, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6939960343b3e5b42a212727e552984a, type: 2}
+    - target: {fileID: 23471314394706858, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c42e59a48cfb57b408fadcea59e9af96, type: 2}
+    - target: {fileID: 1193084337761118, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0

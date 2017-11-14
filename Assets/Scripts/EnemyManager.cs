@@ -16,11 +16,13 @@ public class EnemyManager : MonoBehaviour {
 
     public Text shipsRemainingText;
     public Text waveCompleteText;
+	public Text playerScoreText;
     //check health. make the enemy die;
 
     private float timeTillNextWave;
     private bool atEndOfWave = false;
     public GameObject waveCompleteWrapper;
+	public float playerScore;
 
     void Start ()
 	{
@@ -49,14 +51,20 @@ public class EnemyManager : MonoBehaviour {
                 }
 				if(enemies[enemyIndex].transform.position.y < -200)
 				{
+					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
+					foreach (float gene in genes) {
+						playerScore += gene;
+					}
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
+
                     //destroy the game object and remove it from the list
-                    Destroy(enemies[enemyIndex]);
+                    //Destroy(enemies[enemyIndex]);
                     enemies.RemoveAt(enemyIndex);
 				}
             }
             writeShipsRemianing();
+			writePlayerScore ();
         } else {
 
             updateEndOfWave();
@@ -72,28 +80,42 @@ public class EnemyManager : MonoBehaviour {
 			newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 
-			float[] rawGenes = new float[7];
+			float[] rawGenes = new float[6];
 
 			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
 				
             enemies.Add(newEnemy); //adding all enemies created to the list
-		}
-	}
+
+            //GameObject initialEnemyInfo = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
+            //initialEnemyInfo.GetComponent<EnemyBrain>().player = this.player;
+            //initialEnemyInfo.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
+            //initialEnemyInfo.GetComponent<EnemyBrain>().setGenoPheno(rawGenes);
+
+            //deadEnemies.Add(initialEnemyInfo);
+            
+        }
+    }
 
     public void SpawnGA(IDictionary<int, GAenemy> newGAPopulation)
     {//privateEnemy gameObj (see the other Spawn function) is replaced straight with the public enemy gameobject;
+        //enemies = new List<GameObject>();
+
         for (int i = 0; i < waveSize; i++)
         {
+
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
             GameObject newEnemy = Instantiate(enemy, GenerateRandomTransform(), enemy.GetComponent<Rigidbody>().rotation);
             newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation [i].GetGene());
+			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation[i].GetGene());
 
             enemies.Add(newEnemy); //adding all enemies created to the list
+
+            //deadEnemies.Add(newEnemy);
         }
+        deadEnemies = new List<GameObject>();
     }
 
     Vector3 GenerateRandomTransform(){
@@ -112,6 +134,11 @@ public class EnemyManager : MonoBehaviour {
         shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
     }
 
+	private void writePlayerScore()
+	{
+		playerScoreText.text = "Score: " + playerScore;
+	}
+
     private void updateEndOfWave()
     {
         if (!atEndOfWave)
@@ -123,11 +150,13 @@ public class EnemyManager : MonoBehaviour {
 
         if(timeTillNextWave < 0.0001)
         {
-            //Spawn(enemy);//this needs to be removed. the function will be probably called from inside GAmanager script to feed in the new enemy values
-			IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(enemies);
-			SpawnGA(newPop);
+            IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(deadEnemies);
+           
+            SpawnGA(newPop);
             atEndOfWave = false;
             waveCompleteWrapper.SetActive(false);
+
+
         }
         displayWaveComplete();
         timeTillNextWave -= Time.deltaTime;

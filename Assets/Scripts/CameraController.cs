@@ -5,18 +5,36 @@ public class CameraController : MonoBehaviour {
 
 	public GameObject target;      
 
-	//Vector3 offset = new Vector3(0, 20, 10);
-	Vector3 offset = new Vector3(0, 600, 0);
+	Vector3 offset = new Vector3(0, 75,  130);
 
-
-	void LateUpdate () 
+	void Start () 
 	{
-		Vector3 velocity = Vector3.zero;
+		float desiredAngle = target.transform.eulerAngles.y;
+		Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
 
-		Vector3 targetVec = target.transform.position;
-		targetVec += offset;
-		transform.position = Vector3.SmoothDamp (transform.position, targetVec, ref velocity, 0.2f);
-	
+		Vector3 velocity = Vector3.zero;
+		//Vector3 targetVec = target.transform.position;
+		//targetVec += offset;
+		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.125f);
+		//transform.position = target.transform.position - (rotation * - offset);
+		transform.LookAt (target.transform);
+		transform.rotation *= Quaternion.Euler (-25, 0, 0);
+
+	}
+
+
+	void FixedUpdate () 
+	{
+		float desiredAngle = target.transform.eulerAngles.y;
+		Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
+
+		Vector3 velocity = Vector3.zero;
+		//Vector3 targetVec = target.transform.position;
+		//targetVec += offset;
+		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.125f);
+		//transform.position = target.transform.position - (rotation * - offset);
+		transform.LookAt (target.transform);
+		transform.rotation *= Quaternion.Euler (-25, 0, 0);
 	
 	}
 

@@ -14,7 +14,6 @@ public class EnemyBrain : MonoBehaviour {
 
     public float health;
 
-
     public StateMachine<EnemyBrain> stateMachine;
 
     public GameObject player = null;
@@ -22,7 +21,6 @@ public class EnemyBrain : MonoBehaviour {
 
     public float playerSeekDistance;
     public float playerFleeDistance;
-    public float bulletFleeDistance;//IS THIS USED ANYWHERE???
     public float playerFleeBuffer;
     public float fireSpeed;
     public float bulletSpeed;
@@ -30,6 +28,7 @@ public class EnemyBrain : MonoBehaviour {
     public float enemiesAvoidDistance;
     public float arriveDampingOffset;
     public float arriveDampingDistance;
+    public float playerPathPredictionAmount;
     public float damageDealt = 0f;
     public float decel;
 
@@ -46,17 +45,32 @@ public class EnemyBrain : MonoBehaviour {
 
     List<GameObject> bullets = new List<GameObject>();
 
-    void Awake() {
+    void Awake()
+    {
         stateMachine = new StateMachine<EnemyBrain>(this);
         stateMachine.init(new Roaming());
+}
+
+
+    void Update()
+    {
     }
 
-    void Update() {
+    void FixedUpdate()
+    {
+        //changed colour based on gene (speed and bullet speed) information
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
 
-    }
+        //change size based on the health value from the gene
+        float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-2 value. this will be used to update the scale values.
+        transform.localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
-    void FixedUpdate() {
-        if (health <= 0) {
+        //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
+        //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
+
+        if (health <= 0)
+        {
             transform.Rotate(new Vector3(random.Next(360), random.Next(360), random.Next(360)) * Time.deltaTime);
             print("destroyed ship");
             BoosterDrop(gene);
@@ -65,16 +79,19 @@ public class EnemyBrain : MonoBehaviour {
         stateMachine.update();
     }
 
-    public void pickRandomRoamingTarget() {
+    public void pickRandomRoamingTarget()
+    {
         target = new Vector3((int)player.transform.position.x + (random.Next(80)) - 40, 0, (int)player.transform.position.z + (random.Next(80)) - 40);
     }
 
-    public void seekTarget() {
+    public void roamToTarget()
+    {
         Vector3 desiredVelocity = target - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
 
-        if (arriveDistance < arriveDampingDistance) {
+        if (arriveDistance < arriveDampingDistance)
+        {
             float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
             desiredVelocity *= mappedSpeed;
         }
@@ -88,8 +105,36 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-
+        currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
+        //transform.position.y = 0f;
+        if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
+    }
+
+    public void seekTarget()
+    {
+
+        Vector3 desiredVelocity = (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime) - transform.position;
+
+        float arriveDistance = Vector3.Distance(target, transform.position);
+
+        if (arriveDistance < arriveDampingDistance)
+        {
+            float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
+            desiredVelocity *= mappedSpeed;
+        }
+        else desiredVelocity *= maxSpeed;
+
+        Vector3 steering = desiredVelocity - currentVelocity;
+        steering = Vector3.ClampMagnitude(steering, maxTurn);
+        steering += avoidOthers();
+
+        currentVelocity += steering;
+        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
+        currentVelocity *= 1 - decel;
+        currentVelocity.y = 0f;
+        transform.position += currentVelocity * Time.fixedDeltaTime;
+        //transform.position.y = 0f;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
 
@@ -98,7 +143,8 @@ public class EnemyBrain : MonoBehaviour {
         return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
     }
 
-    public void fleeTarget() {
+    public void fleeTarget()
+    {
         Vector3 desiredVelocity = transform.position - target;
 
         desiredVelocity.Normalize();
@@ -108,12 +154,11 @@ public class EnemyBrain : MonoBehaviour {
 
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
-        steering.y = 0f;
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-
+        currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
         transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
@@ -146,11 +191,13 @@ public class EnemyBrain : MonoBehaviour {
 
     public void fire()
     {
-        if (Time.time > timeLastFired + fireSpeed) {
-            Vector3 dirFromAtoB = (transform.position - target).normalized;
+        if (Time.time > timeLastFired + fireSpeed)
+        {
+            Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd > 0.95) {
+            if (dotProd > 0.97)
+            {
                 timeLastFired = Time.time;
                 GameObject bullet = Instantiate(bulletPreFab, transform.position, transform.rotation);
                 bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
@@ -174,7 +221,8 @@ public class EnemyBrain : MonoBehaviour {
     public void checkPlayerSeekProximity()
     {
         if (player == null) return;
-        if (Vector3.Distance(transform.position, target) < playerSeekDistance) {
+        if (Vector3.Distance(transform.position, target) < playerSeekDistance)
+        {
             stateMachine.changeState(new Seeking());
         }
 
@@ -183,7 +231,8 @@ public class EnemyBrain : MonoBehaviour {
     public void checkSeekOrRoamProximity()
     {
         if (player == null) return;
-        if (Vector3.Distance(transform.position, target) > playerSeekDistance) {
+        if (Vector3.Distance(transform.position, target) > playerSeekDistance)
+        {
             stateMachine.changeState(new Roaming());
         }
 
@@ -192,7 +241,8 @@ public class EnemyBrain : MonoBehaviour {
     public void checkPlayerAvoidProximity()
     {
         if (player == null) return;
-        if (Vector3.Distance(transform.position, target) < playerFleeDistance) {
+        if (Vector3.Distance(transform.position, target) < playerFleeDistance)
+        {
             stateMachine.changeState(new FleeingPlayer());
         }
     }
@@ -220,8 +270,8 @@ public class EnemyBrain : MonoBehaviour {
 
         if (collision.gameObject.name == "Enemy(Clone)")
         {
-            health = 0;
-            collision.gameObject.GetComponent<EnemyBrain>().health = 0;
+            //health = 0;
+            //collision.gameObject.GetComponent<EnemyBrain>().health = 0;
         }
     }
 
@@ -272,4 +322,10 @@ public class EnemyBrain : MonoBehaviour {
     {
 		return gene;
 	}
+
+
+    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+    {
+        return ((initialVal*targetHigh)/initialHigh);
+    }
 }
