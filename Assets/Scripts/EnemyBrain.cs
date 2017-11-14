@@ -181,7 +181,7 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls> ().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
 		if (Time.time > timeLastFired + fireSpeed) {
-			Vector3 dirFromAtoB = (transform.position - (target + targetPrediction).normalized;
+			Vector3 dirFromAtoB = (transform.position - (target + targetPrediction)).normalized;
 			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
 			if(dotProd > 0.97) {
@@ -282,3 +282,4 @@ public class EnemyBrain : MonoBehaviour {
     {
         return ((initialVal*targetHigh)/initialHigh);
     }
+}
