@@ -181,7 +181,6 @@ public class EnemyBrain : MonoBehaviour {
 		totAvoidForce = Vector3.ClampMagnitude (totAvoidForce, maxTurn);
 		return totAvoidForce;
 	}
-
 	public void fire()
 	{
 		Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls> ().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;

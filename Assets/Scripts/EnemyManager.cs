@@ -15,7 +15,7 @@ public class EnemyManager : MonoBehaviour {
 	public int waveSize;					// how many enemies are spawning each wave
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
     public List<GameObject> deadEnemies=new List<GameObject>();        //dinamic list of dead enemies used to create the GA population and next generation
-
+	public int initalWavebudget;
     public Text shipsRemainingText;
     public Text waveCompleteText;
 	public Text playerScoreText;
@@ -85,19 +85,15 @@ public class EnemyManager : MonoBehaviour {
 
 			float[] rawGenes = new float[6];
 
-			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,9)+1;
+			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = 1;
+			for (int j = 0; j < initalWavebudget; j++) {
+				int randomIndx = Random.Range (0, rawGenes.Length);
+				rawGenes [randomIndx]++;
+			}
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
 			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
-
-            //GameObject initialEnemyInfo = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
-            //initialEnemyInfo.GetComponent<EnemyBrain>().player = this.player;
-            //initialEnemyInfo.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-            //initialEnemyInfo.GetComponent<EnemyBrain>().setGenoPheno(rawGenes);
-
-            //deadEnemies.Add(initialEnemyInfo);
-            
         }
     }
 
