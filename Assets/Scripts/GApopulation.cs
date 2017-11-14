@@ -54,7 +54,7 @@ public class GApopulation {
             gene[4] = enemyClone.GetComponent<EnemyBrain>().GetGene()[4];
             gene[5] = enemyClone.GetComponent<EnemyBrain>().GetGene()[5];
 
-            GAenemy e = new GAenemy(gene);
+            GAenemy e = new GAenemy(gene,0, enemyClone.GetComponent<EnemyBrain>().damageDealt);
             this.population[currentPopulationIndex] = e;
 
             currentPopulationIndex++;
@@ -88,9 +88,16 @@ public class GApopulation {
 
         while (selectedPopulation.Count < initialPopulationSize / 2)
         {
+            int enemyOneIndex = r.Next(0, this.population.Count);
+            int enemyTwoIndex = r.Next(0, this.population.Count);
 
-            GAenemy e1 = new GAenemy(this.population[r.Next(0, this.population.Count)].GetGene());
-            GAenemy e2 = new GAenemy(this.population[r.Next(0, this.population.Count)].GetGene());
+            GAenemy e1 = new GAenemy(this.population[enemyOneIndex].GetGene(),
+                this.population[enemyOneIndex].getLifeSpam(),
+                this.population[enemyOneIndex].getPlayerDamage());
+
+            GAenemy e2 = new GAenemy(this.population[enemyTwoIndex].GetGene(),
+                this.population[enemyTwoIndex].getLifeSpam(),
+                this.population[enemyTwoIndex].getPlayerDamage());
 
             if (r.Next(0, 100) > selectionPropbability)
             {   if (e1.getFitness() > e2.getFitness())
@@ -169,7 +176,7 @@ public class GApopulation {
         //for all the genes in the chormosome, add a gausian.
         for (int index =0; index < this.population.Count; index++)
         {
-            mutatedPopulation[index] = new GAenemy(mutatedGene);
+            mutatedPopulation[index] = new GAenemy(mutatedGene,0,0);//the lifespam and damage dealt is set  to 0 as there won't be any fitness comparison and these values are going to be updated in-game
 
             mutatedPopulation[index].setHealth(this.population[index].getHealth() + Gaussian(0, 0.8));//gaussian is called with mean and sddev (sddev:0.7 to 1.5)
             mutatedPopulation[index].setSpeed(this.population[index].getSpeed() + Gaussian(0, 0.8));
@@ -241,7 +248,7 @@ public class GApopulation {
         }
 
         //create and return the child
-        GAenemy newChild = new GAenemy(newGene);
+        GAenemy newChild = new GAenemy(newGene, 0, 0);
         return newChild;
     }
 

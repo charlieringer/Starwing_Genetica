@@ -31,13 +31,13 @@ public class GAenemy  {
 		
 	}
 
-    public GAenemy(float[] newGene)
+    public GAenemy(float[] newGene, float _lifeSpam, float _damage)
     {
 
         for(int i = 0; i < this.gene.Length; i++){ this.gene[i] = newGene[i]; }
 
-        this.playerDamage = r.Next(0,9)+1;
-        this.lifeSpam = r.Next(0,9)+1;
+        //this.playerDamage = r.Next(0,9)+1;
+        //this.lifeSpam = r.Next(0,9)+1;
         this.bulletDamage = System.Math.Abs(gene[2]-10);
 
     }

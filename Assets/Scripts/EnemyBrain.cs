@@ -295,9 +295,13 @@ public class EnemyBrain : MonoBehaviour
         return gene;
     }
 
+    public void updateDamageDealt(float _damage)
+ 	{
+	damageDealt += _damage;
+    }
 
 
-    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
         return ((initialVal*targetHigh)/initialHigh);
     }

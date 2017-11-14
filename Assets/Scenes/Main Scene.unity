@@ -414,7 +414,7 @@ MonoBehaviour:
   player: {fileID: 402657043}
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
   GAManager: {fileID: 775451608}
-  waveSize: 20
+  waveSize: 6
   enemies: []
   deadEnemies: []
   shipsRemainingText: {fileID: 555339747}
@@ -507,6 +507,11 @@ Prefab:
     - target: {fileID: 1193084337761118, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: health
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
