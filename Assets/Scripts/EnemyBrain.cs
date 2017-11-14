@@ -15,8 +15,12 @@ public class EnemyBrain : MonoBehaviour {
 	public GameObject player = null;
 	public GameObject bulletPreFab;
 	public GameObject pauseManager = null;
+    public GameObject ShieldPowerup;
+    public GameObject SpeedPowerup;
+    public GameObject WeaponPowerup;
 
-	public float playerSeekDistance;
+
+    public float playerSeekDistance;
 	public float playerFleeDistance;
 	public float playerFleeBuffer;
 	public float fireSpeed;
@@ -45,7 +49,10 @@ public class EnemyBrain : MonoBehaviour {
 	public float timeAliveTimer;
 	private bool timerStarted;
 
-	void Awake () {
+    private bool hasTriggeredDrop = false;
+
+
+    void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
 	}
@@ -83,25 +90,6 @@ public class EnemyBrain : MonoBehaviour {
 		if (timerStarted && health > 0)
 			timeAliveTimer += Time.fixedDeltaTime;
 	}
-
-	public void pickRandomRoamingTarget(){
-		target = new Vector3 ((int)player.transform.position.x+(random.Next (80))-40, 0, (int)player.transform.position.z + (random.Next (80))-40);
-	}
-
-    public void roamToTarget()
-    {
-
-        Vector3 desiredVelocity = target - transform.position;
-
-        float arriveDistance = Vector3.Distance(target, transform.position);
-
-        if (arriveDistance < arriveDampingDistance)
-        {
-            float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
-            desiredVelocity *= mappedSpeed;
-        }
-        else desiredVelocity *= maxSpeed;
-    }
 
     public void pickRandomRoamingTarget()
     {
@@ -318,12 +306,13 @@ public class EnemyBrain : MonoBehaviour {
     {
         // get the genes
         gene = _genes;
-        // get the death position
-        Vector3 SpawnPoint = transform.position;
         // p for geneBooster
         var pBooster = random.NextDouble();
         // p for shieldBooster
         var pShield = random.NextDouble();
+        List<float> booster = new List< float > ();
+        int BoosterType;
+        float BoosterAmmount;
 
         // consider only the first 3 genes 
         for (int i = 0; i < 2; i++)
@@ -336,21 +325,18 @@ public class EnemyBrain : MonoBehaviour {
         BoosterAmmount = booster.Max();
 
         // chek if booosters are droped
-        if (pBooster <= 0.2)
+        if (pBooster <= 0.9)
         {
-            print("YES " +BoosterAmmount+" units of type  "+BoosterType);
+            if (BoosterType == 0) Instantiate(ShieldPowerup, transform);
+            if (BoosterType == 1) Instantiate(SpeedPowerup, transform);
+            else Instantiate(WeaponPowerup, transform);
         }
         else
         {
-            if (pShield <= 0.2)
+            if (pShield <= 0.9)
             {
-                print("BOOSTER SHIELD");
-            }
-            else
-            {
-                print("NO BOOSTER");
-            }
-            
+                Instantiate(ShieldPowerup, transform);
+            }  
         }
         
         }
