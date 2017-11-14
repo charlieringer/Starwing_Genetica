@@ -300,8 +300,14 @@ public class EnemyBrain : MonoBehaviour {
     {
         // get the genes
         gene = _genes;
+        // get the death position
         Vector3 SpawnPoint = transform.position;
+        // p for geneBooster
+        var pBooster = random.NextDouble();
+        // p for shieldBooster
+        var pShield = random.NextDouble();
 
+        // consider only the first 3 genes 
         for (int i = 0; i < 2; i++)
         {
             booster.Add(gene[i]);
@@ -311,17 +317,13 @@ public class EnemyBrain : MonoBehaviour {
         BoosterType = booster.IndexOf(booster.Max());
         BoosterAmmount = booster.Max();
 
-        // drop a booster with p = 0.2
-        var pBooster = random.NextDouble();
-
-
+        // chek if booosters are droped
         if (pBooster <= 0.2)
         {
             print("YES " +BoosterAmmount+" units of type  "+BoosterType);
         }
         else
         {
-            var pShield = random.NextDouble();
             if (pShield <= 0.2)
             {
                 print("BOOSTER SHIELD");
