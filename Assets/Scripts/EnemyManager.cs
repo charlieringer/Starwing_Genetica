@@ -152,8 +152,15 @@ public class EnemyManager : MonoBehaviour {
 
         if(timeTillNextWave < 0.0001)
         {
+            ScaleFitnessVariables();
             IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(deadEnemies);
            
+            //testing 
+            //foreach(GameObject en in deadEnemies)
+            //{
+            //    print (en.GetComponent<EnemyBrain>().timeAliveTimer+ "and dam: "+ en.GetComponent<EnemyBrain>().damageDealt);
+            //}
+
             SpawnGA(newPop);
             atEndOfWave = false;
             waveCompleteWrapper.SetActive(false);
@@ -169,6 +176,31 @@ public class EnemyManager : MonoBehaviour {
 		waveCompleteText.text = timeTillNextWave.ToString("N0");
     }
 
+    private void ScaleFitnessVariables()
+    {
+        //getting the max value
+        float timeMax = 0;
+        float damageMax = 0;
+        foreach (GameObject enemy in deadEnemies)
+        {
+            if (enemy.GetComponent<EnemyBrain>().timeAliveTimer > timeMax) timeMax = enemy.GetComponent<EnemyBrain>().timeAliveTimer;
+            if (enemy.GetComponent<EnemyBrain>().damageDealt > damageMax) damageMax = enemy.GetComponent<EnemyBrain>().damageDealt;
+
+        }
+
+        //mapping from 0 to 1
+        foreach (GameObject enemy in deadEnemies)
+        {
+            enemy.GetComponent<EnemyBrain>().timeAliveTimer = ValueRemapping(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
+            enemy.GetComponent<EnemyBrain>().damageDealt = ValueRemapping(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
+
+        }
+    }
+
+    private static float ValueRemapping(float initialVal, float initialHigh, float targetHigh)
+    {
+        return ((initialVal * targetHigh) / initialHigh);
+    }
 }
 
 

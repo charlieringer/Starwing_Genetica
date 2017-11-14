@@ -302,7 +302,7 @@ public class EnemyBrain : MonoBehaviour {
     }
 
 
-private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
         return ((initialVal*targetHigh)/initialHigh);
     }

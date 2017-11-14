@@ -464,7 +464,7 @@ MonoBehaviour:
   waveSize: 10
   enemies: []
   deadEnemies: []
-  initalWavebudget: 0
+  initalWavebudget: 30
   shipsRemainingText: {fileID: 555339747}
   waveCompleteText: {fileID: 1787540872}
   playerScoreText: {fileID: 587446826}
