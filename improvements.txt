@@ -1,3 +1,5 @@
+########################## FIRST PLAYTESTING DAY #########################################
+
 Anon
 
 * Visual feedback on hitting
@@ -30,3 +32,66 @@ Ivan the terrible
 * Enemies should spawn in one direction
 * Provide a minimap like feature
 
+################################# SECOND PLAYTESTING DAY #################################
+
+Anon 2
+
+* steering hard
+* 2d version
+* disoriented
+* navigation awkward
+* no point reference
+* adding a map
+* top down
+* navigating very confusing
+* user interface awkward
+* 3d is overkilling
+* putting velocity in steering
+
+Anon 3
+
+* don't notice the changing
+* allow plyer to see further
+* background not optimal starts too shiny
+* red one never appeared
+* angle momentum doesn't feel good
+* test ortographic prediction
+
+
+Anon 4
+
+* long time for the turning
+* don't see projectile
+* ship feels too far and too low
+* camera in front of the ship
+* minimap
+* sound
+
+Anon 5
+
+* graphic too advance / lag
+* fix bug shields and collisions
+* barely see the shootings
+* scale thrusters size ship
+* minimap
+* 3D overkilling
+* indicator when enemys die
+* projection of shooting direction
+* can't see behind
+* can't dodge
+
+Anon 6
+
+* controls need work
+* turning is a pain
+* To many shields??
+* chance to dro a random booster
+* limted ammo that re-charges over time
+* background epiliptogenetic
+* stars as particle effect huge and slow
+* minimap
+* create minimap using second camera
+* particle effects for stars
+* attached the particle system to the player and spawn them in front of the player
+* starfield as a menu
+ 
