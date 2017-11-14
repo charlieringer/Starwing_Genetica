@@ -2,6 +2,7 @@
 using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Linq;
 
 public class EnemyBrain : MonoBehaviour {
 
@@ -14,8 +15,12 @@ public class EnemyBrain : MonoBehaviour {
 	public GameObject player = null;
 	public GameObject bulletPreFab;
 	public GameObject pauseManager = null;
+    public GameObject ShieldPowerup;
+    public GameObject SpeedPowerup;
+    public GameObject WeaponPowerup;
 
-	public float playerSeekDistance;
+
+    public float playerSeekDistance;
 	public float playerFleeDistance;
 	public float playerFleeBuffer;
 	public float fireSpeed;
@@ -44,7 +49,10 @@ public class EnemyBrain : MonoBehaviour {
 	public float timeAliveTimer;
 	private bool timerStarted;
 
-	void Awake () {
+    private bool hasTriggeredDrop = false;
+
+
+    void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
 	}
@@ -65,17 +73,23 @@ public class EnemyBrain : MonoBehaviour {
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
         //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
-        if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
-            return;
-        if (health <= 0)
+		if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
+		if (health <= 0) 
         {
-            transform.Rotate(new Vector3(random.Next(360), random.Next(360), random.Next(360)) * Time.deltaTime);
-            return;
-        }
-        stateMachine.update();
-        if (timerStarted && health > 0)
-            timeAliveTimer += Time.fixedDeltaTime;
-    }
+			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
+            if (!hasTriggeredDrop)
+            {
+                print("destroyed ship at position  " + transform.position);
+                hasTriggeredDrop = true;
+                BoosterDrop(gene);
+            }
+			return;
+		}
+		stateMachine.update ();
+		if (timerStarted && health > 0)
+			timeAliveTimer += Time.fixedDeltaTime;
+	}
 
     public void pickRandomRoamingTarget()
     {
@@ -158,7 +172,6 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
         currentVelocity.y = 0f;
-
         transform.position += currentVelocity * Time.fixedDeltaTime;
         transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
@@ -191,10 +204,9 @@ public class EnemyBrain : MonoBehaviour {
 
     public void fire()
     {
-        Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
         if (Time.time > timeLastFired + fireSpeed)
         {
-            Vector3 dirFromAtoB = (transform.position - (target + targetPrediction)).normalized;
+            Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
             if (dotProd > 0.97)
@@ -211,14 +223,6 @@ public class EnemyBrain : MonoBehaviour {
         }
     }
 
-    public void checkRoamingLocationProximity()
-    {
-        if (Vector3.Distance(transform.position, target) < NEARBY)
-        {
-            pickRandomRoamingTarget();
-        }
-    }
-
     public void checkPlayerSeekProximity()
     {
         if (player == null) return;
@@ -226,7 +230,17 @@ public class EnemyBrain : MonoBehaviour {
         {
             stateMachine.changeState(new Seeking());
         }
+    }
 
+
+
+
+    public void checkRoamingLocationProximity()
+    {
+        if (Vector3.Distance(transform.position, target) < NEARBY)
+        {
+            pickRandomRoamingTarget();
+        }
     }
 
     public void checkSeekOrRoamProximity()
@@ -280,7 +294,7 @@ public class EnemyBrain : MonoBehaviour {
     {
         gene = _genes;
 
-        health = gene[0] * 30;
+        health = (gene[0] * 30) + 40 ;
         maxSpeed = gene[1] * 30;
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
@@ -291,10 +305,68 @@ public class EnemyBrain : MonoBehaviour {
         enemiesAvoidDistance = gene[5] * 16;
     }
 
+    public void BoosterDrop(float[] _genes)
+    {
+        // get the genes
+        gene = _genes;
+        // p for geneBooster
+        var pBooster = random.NextDouble();
+        // p for shieldBooster
+        var pShield = random.NextDouble();
+        List<float> booster = new List< float > ();
+        int BoosterType;
+        float BoosterAmmount;
+
+        // consider only the first 3 genes 
+        for (int i = 0; i < 2; i++)
+        {
+            booster.Add(gene[i]);
+        }
+        // select the gene with the highest value
+        // [0] health - [1] speed - [2] damage
+        BoosterType = booster.IndexOf(booster.Max());
+        BoosterAmmount = booster.Max();
+
+        // chek if booosters are droped
+        if (pBooster <= 0.2)
+        {
+			if (BoosterType == 0) {
+				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			}
+			else if (BoosterType == 1) {
+				GameObject boosterDrop = Instantiate (SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			} else {
+				GameObject boosterDrop = Instantiate (WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			}
+
+        }
+        else
+        {
+            if (pShield <= 0.2)
+            {
+				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+            }  
+        }
+        
+        }
+
+
     public float[] GetGene()
     {
-        return gene;
-    }
+		return gene;
+	}
 
     public void updateDamageDealt(float _damage)
  	{

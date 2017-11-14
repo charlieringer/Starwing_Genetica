@@ -112,6 +112,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &15488408 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114255883168397972, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
+    type: 2}
+  m_PrefabInternal: {fileID: 65626528}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &28513009 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1297152141519166, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
@@ -127,7 +133,7 @@ Prefab:
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 480
+      value: 710.5
       objectReference: {fileID: 0}
     - target: {fileID: 224643905225086104, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
@@ -217,32 +223,32 @@ Prefab:
     - target: {fileID: 224427051342662392, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: -524
+      value: -660.5
       objectReference: {fileID: 0}
     - target: {fileID: 224427051342662392, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 202.5
+      value: 239.5
       objectReference: {fileID: 0}
     - target: {fileID: 224534756934398380, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: -524
+      value: -660.5
       objectReference: {fileID: 0}
     - target: {fileID: 224534756934398380, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -272.5
+      value: -309.5
       objectReference: {fileID: 0}
     - target: {fileID: 224613965885380076, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 414
+      value: 550.5
       objectReference: {fileID: 0}
     - target: {fileID: 224613965885380076, guid: 0fff5ea1f85d744d2b9aeed99a98613f,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 192.5
+      value: 229.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0fff5ea1f85d744d2b9aeed99a98613f, type: 2}
@@ -543,6 +549,11 @@ Prefab:
       propertyPath: playerShieldBar
       value: 
       objectReference: {fileID: 892861805}
+    - target: {fileID: 114496609633221982, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: messageText
+      value: 
+      objectReference: {fileID: 15488408}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
@@ -701,6 +712,7 @@ MonoBehaviour:
   waveSize: 20
   enemies: []
   deadEnemies: []
+  initalWavebudget: 0
   shipsRemainingText: {fileID: 467838139}
   waveCompleteText: {fileID: 1371313150}
   playerScoreText: {fileID: 1761481261}

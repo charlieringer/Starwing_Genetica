@@ -174,6 +174,29 @@ public class PlayerControls : MonoBehaviour {
 			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
+
+		if(collision.gameObject.name.Contains("ShieldPowerup"))
+		{
+			shields += (collision.gameObject.GetComponent<Booster> ().boostAmount)*2;
+			if (shields > 100)
+				shields = 100;
+			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
+			Destroy(collision.gameObject);
+		}
+
+		if(collision.gameObject.name.Contains("SpeedPowerup"))
+		{
+			topSpeed += collision.gameObject.GetComponent<Booster> ().boostAmount;
+			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
+			Destroy(collision.gameObject);
+		}
+
+		if(collision.gameObject.name.Contains("WeaponPowerup"))
+		{
+			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
+			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
+			Destroy(collision.gameObject);
+		}
 	}
 
 	 void updatePlayerHeathText()
@@ -186,6 +209,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		if (shields >= damage) {
 			shields -= damage;
+
 		} else if (shields > 0) {
 			health -= (damage - shields);
 			shields = 0;
