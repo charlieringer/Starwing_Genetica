@@ -13,7 +13,7 @@ public class EnemyBrain : MonoBehaviour {
 	
 	public GameObject player = null;
 	public GameObject bulletPreFab;
-	public GameObject pauseManager;
+	public GameObject pauseManager = null;
 
 	public float playerSeekDistance;
 	public float playerFleeDistance;
@@ -62,7 +62,7 @@ public class EnemyBrain : MonoBehaviour {
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
         //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
-		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+		if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 		if (health <= 0) {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
