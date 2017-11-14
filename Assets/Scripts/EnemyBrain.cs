@@ -40,6 +40,8 @@ public class EnemyBrain : MonoBehaviour {
     private Vector3 target;
     private Vector3 currentVelocity = new Vector3(0, 0, 0);
     private float timeLastFired = 0;
+    public bool isAwake = false;
+    private bool hasTriggeredDrop = false;
 
     public List<GameObject> otherEnemies;
 
@@ -72,8 +74,12 @@ public class EnemyBrain : MonoBehaviour {
         if (health <= 0)
         {
             transform.Rotate(new Vector3(random.Next(360), random.Next(360), random.Next(360)) * Time.deltaTime);
-            print("destroyed ship");
-            BoosterDrop(gene);
+            if (!hasTriggeredDrop)
+            {
+                print("destroyed ship at position  " + transform.position);
+                hasTriggeredDrop = true;
+                BoosterDrop(gene);
+            }
             return;
         }
         stateMachine.update();
@@ -279,7 +285,7 @@ public class EnemyBrain : MonoBehaviour {
     {
         gene = _genes;
 
-        health = gene[0] * 30;
+        health = (gene[0] * 30) + 40 ;
         maxSpeed = gene[1] * 30;
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
@@ -294,6 +300,8 @@ public class EnemyBrain : MonoBehaviour {
     {
         // get the genes
         gene = _genes;
+        Vector3 SpawnPoint = transform.position;
+
         for (int i = 0; i < 2; i++)
         {
             booster.Add(gene[i]);
@@ -303,16 +311,26 @@ public class EnemyBrain : MonoBehaviour {
         BoosterType = booster.IndexOf(booster.Max());
         BoosterAmmount = booster.Max();
 
-        // drop a booster with p = 0.5
-        var p = random.NextDouble();
+        // drop a booster with p = 0.2
+        var pBooster = random.NextDouble();
 
-        if (p <= 0.05)
+
+        if (pBooster <= 0.2)
         {
-            print("YEEEEEES  " +BoosterAmmount+" units of type  "+BoosterType);
+            print("YES " +BoosterAmmount+" units of type  "+BoosterType);
         }
         else
         {
-            print("NOOOOO BOOOOOOSTER");
+            var pShield = random.NextDouble();
+            if (pShield <= 0.2)
+            {
+                print("BOOSTER SHIELD");
+            }
+            else
+            {
+                print("NO BOOSTER");
+            }
+            
         }
         
         }

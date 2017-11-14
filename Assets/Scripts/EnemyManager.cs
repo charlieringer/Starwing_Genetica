@@ -85,7 +85,7 @@ public class EnemyManager : MonoBehaviour {
 			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
-				
+            newEnemy.GetComponent<EnemyBrain>().isAwake = true;
             enemies.Add(newEnemy); //adding all enemies created to the list
 
             //GameObject initialEnemyInfo = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
