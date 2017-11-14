@@ -58,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c513fb4cd27ff4b4884968298ad18750, type: 2}
+  - {fileID: 2100000, guid: 9a58219fd124b4af0888eec7f2ab1fc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   parentShip: Enemy
+  parent: {fileID: 0}
 --- !u!136 &136058367169236836
 CapsuleCollider:
   m_ObjectHideFlags: 1

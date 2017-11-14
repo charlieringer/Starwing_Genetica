@@ -238,13 +238,13 @@ MonoBehaviour:
   playerSeekDistance: 400
   playerFleeDistance: 80
   playerFleeBuffer: 140
-  fireSpeed: 0.3
+  fireSpeed: 0.1
   bulletSpeed: 400
   bulletDamage: 10
   enemiesAvoidDistance: 80
   arriveDampingOffset: 120
   arriveDampingDistance: 400
-  playerPathPredictionAmount: 0.5
+  playerPathPredictionAmount: 10
   damageDealt: 0
   decel: 0.1
   maxSpeed: 100

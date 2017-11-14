@@ -9,6 +9,8 @@ public class EnemyManager : MonoBehaviour {
     public GameObject player;
     public GameObject enemy;                // The enemy prefab to be spawned.
 	public GameObject GAManager;
+
+	public GameObject pauseManager;
 	//public float spawnTime = 3f;          // How long between each spawn.
 	public int waveSize;					// how many enemies are spawning each wave
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
@@ -34,7 +36,8 @@ public class EnemyManager : MonoBehaviour {
 
     private void Update()
     {
-        
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
         //print("enemies.Count:" + enemies.Count);
         //check the enemy health and if it's lower than 0, distroy the player
        if (enemies.Count > 0)
@@ -82,10 +85,11 @@ public class EnemyManager : MonoBehaviour {
 
 			float[] rawGenes = new float[6];
 
-			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
+			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,9)+1;
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
-            newEnemy.GetComponent<EnemyBrain>().isAwake = true;
+
+			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
 
             //GameObject initialEnemyInfo = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
@@ -109,12 +113,15 @@ public class EnemyManager : MonoBehaviour {
             GameObject newEnemy = Instantiate(enemy, GenerateRandomTransform(), enemy.GetComponent<Rigidbody>().rotation);
             newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation[i].GetGene());
-
+			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation [i].GetGene());
+			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
 
             //deadEnemies.Add(newEnemy);
         }
+		for (int i = deadEnemies.Count - 1; i >= 0; i--) {
+			Destroy (deadEnemies [i]);
+		}
         deadEnemies = new List<GameObject>();
     }
 
@@ -131,12 +138,12 @@ public class EnemyManager : MonoBehaviour {
 
     private void writeShipsRemianing()
     {
-        shipsRemainingText.text = "Ships Remaining: " + enemies.Count + "/" + waveSize;
+        shipsRemainingText.text = enemies.Count + "/" + waveSize;
     }
 
 	private void writePlayerScore()
 	{
-		playerScoreText.text = "Score: " + playerScore;
+		playerScoreText.text = "" +playerScore;
 	}
 
     private void updateEndOfWave()
@@ -164,7 +171,7 @@ public class EnemyManager : MonoBehaviour {
 
     private void displayWaveComplete()
     {
-        waveCompleteText.text = ("Next Wave in " + timeTillNextWave);
+		waveCompleteText.text = timeTillNextWave.ToString("N0");
     }
 
 }
