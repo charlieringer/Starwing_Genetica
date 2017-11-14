@@ -12,29 +12,40 @@ public class PlayerControls : MonoBehaviour {
 	public float turnSpeed;
     public float maxTurn;
 	public float health;
+	public float maxHealth;
+	private float shields = 0f;
 
 	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
+
+	public GameObject pauseManager;
 
     public GameObject LThruster;
     public GameObject RThruster;
     public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
+
 	public float currentSpeed = 0;
 	private float currentTurn = 0;
 
-	public Text playerHealthText;
+	public Image playerHealthBar;
+	public Image playerShieldBar;
 	
 	void Awake(){}
     
 
 	// Use this for initialization
-	void Start () {}
+	void Start () {
+		maxHealth = health;
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 
 		if(health <= 0) SceneManager.LoadScene ("GameOver");
 		
@@ -150,14 +161,14 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData>().updateParentDamageDealt();
-			health -= damage;
+			takeDamage (damage);
 			Destroy(collision.gameObject);
 		}
 
 		if(collision.gameObject.name.Contains("Enemy(Clone)"))
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
-			health -= damage;
+			takeDamage (damage);
 			currentSpeed *= 0.8f;
 			currentTurn *= 0.8f;
 			
@@ -167,7 +178,20 @@ public class PlayerControls : MonoBehaviour {
 
 	 void updatePlayerHeathText()
 	 {
-		 playerHealthText.text = "Heath: " + health;
+		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
+		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
 	 }
+
+	void takeDamage(float damage)
+	{
+		if (shields >= damage) {
+			shields -= damage;
+		} else if (shields > 0) {
+			health -= (damage - shields);
+			shields = 0;
+		} else {
+			health -= damage;
+		}
+	}
 
 }

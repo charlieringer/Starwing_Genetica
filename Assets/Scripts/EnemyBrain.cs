@@ -3,63 +3,58 @@ using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+public class EnemyBrain : MonoBehaviour {
 
-public class EnemyBrain : MonoBehaviour
-{
+	private float[] gene = new float[7];
 
-    private float[] gene = new float[6];
+	public float health;
 
-    public float health;
+	public StateMachine<EnemyBrain> stateMachine;
+	
+	public GameObject player = null;
+	public GameObject bulletPreFab;
+	public GameObject pauseManager = null;
 
-    public StateMachine<EnemyBrain> stateMachine;
+	public float playerSeekDistance;
+	public float playerFleeDistance;
+	public float playerFleeBuffer;
+	public float fireSpeed;
+	public float bulletSpeed;
+	public float bulletDamage;
+	public float enemiesAvoidDistance;
+	public float arriveDampingOffset;
+	public float arriveDampingDistance;
+	public float playerPathPredictionAmount;
+	public float damageDealt = 0f;
+	public float decel;
 
-    public GameObject player = null;
-    public GameObject bulletPreFab;
-    
+	public float maxSpeed;
+	public float maxTurn;
+	protected static float NEARBY = 5f;
+	protected static System.Random random = new System.Random();
 
-    public float playerSeekDistance;
-    public float playerFleeDistance;
-    public float playerFleeBuffer;
-    public float fireSpeed;
-    public float bulletSpeed;
-    public float bulletDamage;
-    public float enemiesAvoidDistance;
-    public float arriveDampingOffset;
-    public float arriveDampingDistance;
-    public float playerPathPredictionAmount;
-    public float damageDealt = 0f;
-    public float decel;
+	private Vector3 target;
+	private Vector3 currentVelocity = new Vector3(0,0,0);
+	private float timeLastFired = 0;
 
-    public float maxSpeed;
-    public float maxTurn;
-    protected static float NEARBY = 5f;
-    protected static System.Random random = new System.Random();
+	public List<GameObject> otherEnemies;
 
-    private Vector3 target;
-    private Vector3 currentVelocity = new Vector3(0, 0, 0);
-    private float timeLastFired = 0;
+	List<GameObject> bullets = new List<GameObject>();
 
-    public List<GameObject> otherEnemies;
+	public float timeAliveTimer;
+	private bool timerStarted;
 
-    List<GameObject> bullets = new List<GameObject>();
-
-
-
-
-    void Awake()
-    {
-        stateMachine = new StateMachine<EnemyBrain>(this);
-        stateMachine.init(new Roaming());
-}
-
-
-    void Update()
-    {
-    }
-
-    void FixedUpdate()
-    {
-        //changed colour based on gene (speed and bullet speed) information
+	void Awake () {
+		stateMachine = new StateMachine<EnemyBrain> (this);
+		stateMachine.init(new Roaming ());
+	}
+		
+	void Update () {
+		
+	}
+		
+	void FixedUpdate() {
+		//changed colour based on gene (speed and bullet speed) information
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
 
@@ -70,12 +65,16 @@ public class EnemyBrain : MonoBehaviour
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
         //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
+        if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
+            return;
         if (health <= 0)
         {
             transform.Rotate(new Vector3(random.Next(360), random.Next(360), random.Next(360)) * Time.deltaTime);
             return;
         }
         stateMachine.update();
+        if (timerStarted && health > 0)
+            timeAliveTimer += Time.fixedDeltaTime;
     }
 
     public void pickRandomRoamingTarget()
@@ -113,7 +112,8 @@ public class EnemyBrain : MonoBehaviour
     public void seekTarget()
     {
 
-        Vector3 desiredVelocity = (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime) - transform.position;
+        Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
+        Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
 
@@ -191,9 +191,10 @@ public class EnemyBrain : MonoBehaviour
 
     public void fire()
     {
+        Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
         if (Time.time > timeLastFired + fireSpeed)
         {
-            Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
+            Vector3 dirFromAtoB = (transform.position - (target + targetPrediction)).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
             if (dotProd > 0.97)
@@ -305,4 +306,10 @@ private static float ValueRemapping(float initialVal, float initialHigh,  float 
     {
         return ((initialVal*targetHigh)/initialHigh);
     }
+
+	public void startSeekTimer ()
+	{
+		timerStarted = true;
+	}
+
 }

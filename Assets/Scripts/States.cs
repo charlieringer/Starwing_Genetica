@@ -6,6 +6,7 @@ public class Roaming: State<EnemyBrain> {
 	public void enter(EnemyBrain agent)
 	{
 		agent.pickRandomRoamingTarget();
+
 	}
 
 	public void exit(EnemyBrain agent){}
@@ -22,6 +23,7 @@ public class Seeking : State<EnemyBrain> {
 	public void enter(EnemyBrain agent)
 	{
 		agent.setPlayerAsTarget ();
+		agent.startSeekTimer ();
 	}
 
 	public void exit(EnemyBrain agent){}
