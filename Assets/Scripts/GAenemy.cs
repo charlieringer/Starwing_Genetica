@@ -7,23 +7,12 @@ public class GAenemy  {
     float fitness;
 
     //out of 10.
-    float[] gene = new float[7];
+    float[] gene = new float[6];
     /// <summary>
     /// 0: health, 1:speed, 2:bulletSpeed (& bulletDamage) 
-    /// 3:playerSeekDistance, 4:playerFleeDistance, 5:playerFleeBuffer, 6:bulletFleeDistance
+    /// 3:playerSeekDistance, 4:playerFleeDistance, 5:EnemiesAvoidDistance
     /// POSSIBLE player projection
     /// </summary>
- /*  
-    float health;
-    float speed;
-    float bulletSpeed;
-    float bulletDamage;
-
-    float playerSeekDistance; 
-    float playerFleeDistance;
-    float playerFleeBuffer;
-    float bulletFleeDistance;
-    */
 
     //used to calculate fitness
     float playerDamage;
@@ -42,31 +31,13 @@ public class GAenemy  {
 		
 	}
 
-    /*public GAenemy (float h, float s, float bulletS, float bulletD, 
-        float playerSeekD, float playerFleeD, float playerFleeB, float bulletFleeD)*/
     public GAenemy(float[] newGene)
     {
-        /*
-        this.health = h;
-        this.speed = s;
-        this.bulletSpeed = bulletS;
-        //the bullet damage will be replaced with |bulletSpeed-10|
-        this.bulletDamage = bulletD;
-        this.playerSeekDistance = playerSeekD;
-        this.playerFleeDistance = playerFleeD;
-        this.playerFleeBuffer = playerFleeB;
-        this.bulletFleeDistance = bulletFleeD;
-        this.bulletDamage = bulletD;
-        */
 
-        //this.gene = gene;
-        for(int i = 0; i < this.gene.Length; i++)
-        {
-            this.gene[i] = newGene[i];
-        }
+        for(int i = 0; i < this.gene.Length; i++){ this.gene[i] = newGene[i]; }
 
-        this.playerDamage = r.Next(0,10);
-        this.lifeSpam = r.Next(0,10);
+        this.playerDamage = r.Next(0,9)+1;
+        this.lifeSpam = r.Next(0,9)+1;
         this.bulletDamage = System.Math.Abs(gene[2]-10);
 
     }
@@ -110,8 +81,8 @@ public class GAenemy  {
     }
 
 
-    //_______3:playerSeekDistance, 4:playerFleeDistance, 5:playerFleeBuffer, 6:bulletFleeDistance
-    
+    //_______3:playerSeekDistance, 4:playerFleeDistance, 5:enemiesAvoidDistance
+
     public float getPlayerSeekDistance()
     {
         return this.gene[3];
@@ -120,14 +91,11 @@ public class GAenemy  {
     {
         return this.gene[4];
     }
-    public float getPlayerFleeBuffer()
+    public float getEnemiesAvoidDistance()
     {
         return this.gene[5];
     }
-    public float getBulletFleeDistance()
-    {
-        return this.gene[6];
-    }
+ 
 
     //__________________
     public float getLifeSpam()
@@ -182,15 +150,12 @@ public class GAenemy  {
         this.gene[4] = playerFleeDistance;
     }
 
-    public void setPlayerFleeBuffer(float playerFleeBuffer)
+    public void setEnemiesAvoidDistance(float enemiesAvoidDistance)
     {
-        this.gene[5] = playerFleeBuffer;
+        this.gene[5] = enemiesAvoidDistance;
     }
   
-    public void setBulletFleeDistance(float bulletFleeDistance)
-    {
-        this.gene[6] = bulletFleeDistance;
-    }
+
 
     //__________________
     public void ChangeLifeSpamRand()

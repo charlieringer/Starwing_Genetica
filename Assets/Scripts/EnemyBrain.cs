@@ -3,7 +3,6 @@ using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-
 public class EnemyBrain : MonoBehaviour {
 
 	private float[] gene = new float[7];
@@ -18,7 +17,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float playerSeekDistance;
 	public float playerFleeDistance;
-	public float bulletFleeDistance;//IS THIS USED ANYWHERE???
 	public float playerFleeBuffer;
 	public float fireSpeed;
 	public float bulletSpeed;
@@ -39,8 +37,6 @@ public class EnemyBrain : MonoBehaviour {
 	private Vector3 currentVelocity = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
-
-
 	public List<GameObject> otherEnemies;
 
 	List<GameObject> bullets = new List<GameObject>();
@@ -55,6 +51,17 @@ public class EnemyBrain : MonoBehaviour {
 	}
 		
 	void FixedUpdate() {
+		//changed colour based on gene (speed and bullet speed) information
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
+        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
+
+        //change size based on the health value from the gene
+        float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-2 value. this will be used to update the scale values.
+        transform.localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
+
+        //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
+        //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
+
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 		if (health <= 0) {
@@ -172,11 +179,12 @@ public class EnemyBrain : MonoBehaviour {
 
 	public void fire()
 	{
+		Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls> ().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
 		if (Time.time > timeLastFired + fireSpeed) {
-			Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
+			Vector3 dirFromAtoB = (transform.position - (target + targetPrediction).normalized;
 			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-			if(dotProd > 0.95) {
+			if(dotProd > 0.97) {
 				timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);				
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
@@ -269,4 +277,8 @@ public class EnemyBrain : MonoBehaviour {
 	public float[] GetGene(){
 		return gene;
 	}
-}
+
+	    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+    {
+        return ((initialVal*targetHigh)/initialHigh);
+    }
