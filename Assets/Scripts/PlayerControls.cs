@@ -174,6 +174,21 @@ public class PlayerControls : MonoBehaviour {
 			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
+
+		if(collision.gameObject.name.Contains("ShieldPowerup"))
+		{
+			Destroy(collision.gameObject);
+		}
+
+		if(collision.gameObject.name.Contains("SpeedPowerup"))
+		{
+			Destroy(collision.gameObject);
+		}
+
+		if(collision.gameObject.name.Contains("WeaponPowerup"))
+		{
+			Destroy(collision.gameObject);
+		}
 	}
 
 	 void updatePlayerHeathText()

@@ -327,9 +327,22 @@ public class EnemyBrain : MonoBehaviour {
         // chek if booosters are droped
         if (pBooster <= 0.9)
         {
-            if (BoosterType == 0) Instantiate(ShieldPowerup, transform);
-            if (BoosterType == 1) Instantiate(SpeedPowerup, transform);
-            else Instantiate(WeaponPowerup, transform);
+			if (BoosterType == 0) {
+				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			}
+			else if (BoosterType == 1) {
+				GameObject boosterDrop = Instantiate (SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			} else {
+				GameObject boosterDrop = Instantiate (WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
+				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				boosterDrop.transform.parent = null;
+			}
+
         }
         else
         {
