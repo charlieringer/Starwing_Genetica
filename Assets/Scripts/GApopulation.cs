@@ -54,7 +54,7 @@ public class GApopulation {
             gene[4] = enemyClone.GetComponent<EnemyBrain>().GetGene()[4];
             gene[5] = enemyClone.GetComponent<EnemyBrain>().GetGene()[5];
 
-            GAenemy e = new GAenemy(gene,0, enemyClone.GetComponent<EnemyBrain>().damageDealt);
+            GAenemy e = new GAenemy(gene,enemyClone.GetComponent<EnemyBrain>().timeAliveTimer, enemyClone.GetComponent<EnemyBrain>().damageDealt);
             this.population[currentPopulationIndex] = e;
 
             currentPopulationIndex++;

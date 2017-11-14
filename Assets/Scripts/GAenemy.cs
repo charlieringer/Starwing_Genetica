@@ -156,16 +156,6 @@ public class GAenemy  {
     }
   
 
-
-    //__________________
-    public void ChangeLifeSpamRand()
-    {
-         this.lifeSpam = r.Next(0,100);
-    }
-    public void ChangePlayerDamageRand()
-    {
-        this.playerDamage=r.Next(0,100);
-    }
 }
 
 

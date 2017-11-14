@@ -19,7 +19,7 @@ public class GAmanager : MonoBehaviour {
     void Start () {
        if (isTesting)
         {
-            string path = "Assets/test.txt";
+            string path = "test.txt";
 
             writer = System.IO.File.AppendText(path);
             writer = new StreamWriter(path, true);
