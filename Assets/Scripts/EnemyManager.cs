@@ -9,6 +9,8 @@ public class EnemyManager : MonoBehaviour {
     public GameObject player;
     public GameObject enemy;                // The enemy prefab to be spawned.
 	public GameObject GAManager;
+
+	public GameObject pauseManager;
 	//public float spawnTime = 3f;          // How long between each spawn.
 	public int waveSize;					// how many enemies are spawning each wave
     public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
@@ -34,7 +36,8 @@ public class EnemyManager : MonoBehaviour {
 
     private void Update()
     {
-        
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
         //print("enemies.Count:" + enemies.Count);
         //check the enemy health and if it's lower than 0, distroy the player
        if (enemies.Count > 0)
@@ -84,7 +87,7 @@ public class EnemyManager : MonoBehaviour {
 			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = Random.Range(0,10);
 
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
-				
+			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
 		}
 	}
@@ -98,7 +101,7 @@ public class EnemyManager : MonoBehaviour {
             newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation [i].GetGene());
-
+			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
         }
     }

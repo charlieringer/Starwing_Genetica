@@ -13,11 +13,13 @@ public class PlayerControls : MonoBehaviour {
     public float maxTurn;
 	public float health;
 	public float maxHealth;
-	private float shields = 100f;
+	private float shields = 0f;
 
 	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
+
+	public GameObject pauseManager;
 
     public GameObject LThruster;
     public GameObject RThruster;
@@ -41,6 +43,9 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 
 		if(health <= 0) SceneManager.LoadScene ("GameOver");
 		

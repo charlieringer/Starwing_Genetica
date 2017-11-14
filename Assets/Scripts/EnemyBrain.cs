@@ -14,6 +14,7 @@ public class EnemyBrain : MonoBehaviour {
 	
 	public GameObject player = null;
 	public GameObject bulletPreFab;
+	public GameObject pauseManager;
 
 	public float playerSeekDistance;
 	public float playerFleeDistance;
@@ -38,6 +39,8 @@ public class EnemyBrain : MonoBehaviour {
 	private Vector3 currentVelocity = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
+
+
 	public List<GameObject> otherEnemies;
 
 	List<GameObject> bullets = new List<GameObject>();
@@ -52,6 +55,8 @@ public class EnemyBrain : MonoBehaviour {
 	}
 		
 	void FixedUpdate() {
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 		if (health <= 0) {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
 			return;
