@@ -292,4 +292,8 @@ public class EnemyBrain : MonoBehaviour {
 	{
 		timerStarted = true;
 	}
+	public void updateDamageDealt(float _damage)
+	{
+		damageDealt += _damage;
+	}
 }

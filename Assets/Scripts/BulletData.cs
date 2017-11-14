@@ -20,7 +20,7 @@ public class BulletData : MonoBehaviour {
 
 	public void updateParentDamageDealt()
 	{
-		parent.GetComponent<EnemyBrain>().damageDealt += damage;
+		parent.GetComponent<EnemyBrain> ().updateDamageDealt(damage);
 	
 	}
 
