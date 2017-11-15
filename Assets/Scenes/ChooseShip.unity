@@ -3571,7 +3571,6 @@ GameObject:
   - component: {fileID: 371183903}
   - component: {fileID: 371183902}
   - component: {fileID: 371183901}
-  - component: {fileID: 371183905}
   m_Layer: 0
   m_Name: DummyPlayer1 Camera
   m_TagString: Untagged
@@ -3601,8 +3600,8 @@ Camera:
   m_GameObject: {fileID: 371183900}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -3641,14 +3640,6 @@ Transform:
   m_Father: {fileID: 1290849535}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!45 &371183905
-Skybox:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 371183900}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: c0dab155e43d56540934277edfc76899, type: 2}
 --- !u!1 &452011342
 GameObject:
   m_ObjectHideFlags: 0
@@ -3801,7 +3792,6 @@ GameObject:
   - component: {fileID: 685425059}
   - component: {fileID: 685425058}
   - component: {fileID: 685425057}
-  - component: {fileID: 685425061}
   m_Layer: 0
   m_Name: DummyPlayer2 Camera
   m_TagString: Untagged
@@ -3831,8 +3821,8 @@ Camera:
   m_GameObject: {fileID: 685425056}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -3871,14 +3861,6 @@ Transform:
   m_Father: {fileID: 1394499112}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!45 &685425061
-Skybox:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 685425056}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: c0dab155e43d56540934277edfc76899, type: 2}
 --- !u!1 &687619834
 GameObject:
   m_ObjectHideFlags: 0
@@ -4074,7 +4056,6 @@ GameObject:
   - component: {fileID: 775480207}
   - component: {fileID: 775480206}
   - component: {fileID: 775480205}
-  - component: {fileID: 775480209}
   m_Layer: 0
   m_Name: 'DummyPlayer3 Camera '
   m_TagString: Untagged
@@ -4104,8 +4085,8 @@ Camera:
   m_GameObject: {fileID: 775480204}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -4144,14 +4125,6 @@ Transform:
   m_Father: {fileID: 2007537919}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
---- !u!45 &775480209
-Skybox:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 775480204}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: c0dab155e43d56540934277edfc76899, type: 2}
 --- !u!1 &850554005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4250,7 +4223,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 851990460}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -222.5, z: 0}
+  m_LocalPosition: {x: 0, y: -224.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168675088}
@@ -7994,7 +7967,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1168675084}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 574, y: 252.5, z: 0}
+  m_LocalPosition: {x: 570.5, y: 254.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1721704293}
@@ -15398,7 +15371,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1721704292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 192.5, z: 0}
+  m_LocalPosition: {x: 0, y: 194.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168675088}
