@@ -70,6 +70,7 @@ public class EnemyBrain : MonoBehaviour {
         float scalingValueIncrement = ValueRemapping(gene[0], 9, 1); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         transform.localScale = new Vector3(0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement);
 
+
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
         //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
