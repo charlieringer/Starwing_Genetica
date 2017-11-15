@@ -36,62 +36,59 @@ Ivan the terrible
 
 Anon 2
 
-* steering hard
-* 2d version
-* disoriented
-* navigation awkward
-* no point reference
-* adding a map
-* top down
-* navigating very confusing
-* user interface awkward
-* 3d is overkilling
-* putting velocity in steering
+* Steering is hard
+* 2d version would be better
+* Feel disoriented
+* Navigation is awkward
+* There is no point of reference
+* A minimap should be added
+* Top down view would be better
+* Navigation is very confusing
+* The user interface awkward
+* 3d is a bit of an overkill
+* Putting velocity in steering would be a good idea
 
 Anon 3
 
-* don't notice the changing
-* allow plyer to see further
-* background not optimal starts too shiny
-* red one never appeared
-* angle momentum doesn't feel good
-* test ortographic prediction
+* Doesn't notice the changing in the enemy ships
+* Would be nice to allow plyer see further
+* The background is not optimal, starts are too shiny
+* The red drop never appeared
+* The angle momentum doesn't feel good
+* Try to test ortographic prediction
 
 
 Anon 4
 
-* long time for the turning
-* don't see projectile
-* ship feels too far and too low
-* camera in front of the ship
-* minimap
-* sound
+* It takes alot of time for turning
+* Doesn't see the projectiles
+* The player ship looks too far and too slow
+* Try to have the camera in front of the ship
+* Try to implement a minimap
+* It has to be sound
 
 Anon 5
 
-* graphic too advance / lag
-* fix bug shields and collisions
-* barely see the shootings
-* scale thrusters size ship
-* minimap
-* 3D overkilling
-* indicator when enemys die
-* projection of shooting direction
-* can't see behind
-* can't dodge
+* The graphic too advance there is lag in the gameplay
+* Try to fix the bug with shields and collisions
+* Can barely see the shooting
+* Scale thrusters size with the ship dimension
+* Implement a minimap
+* 3D is a bit of an overkill
+* Feednack for enemys death
+* Create a projection of the shooting direction
+* Can't see behind
+* Can't dodge
 
 Anon 6
 
-* controls need work
-* turning is a pain
-* To many shields??
-* chance to dro a random booster
-* limted ammo that re-charges over time
-* background epiliptogenetic
-* stars as particle effect huge and slow
-* minimap
-* create minimap using second camera
-* particle effects for stars
-* attached the particle system to the player and spawn them in front of the player
-* starfield as a menu
+* Controls need more work
+* Turning is a pain
+* To many shields drops
+* Implement the chance to dro a random booster
+* Implement limted ammo that re-charges over time
+* The background epiliptogenic
+* Implement stars as particle effect, attach the particle system to the player and spawn them in front of him/her
+* Implement a minimap (using a second camera)
+* Use the starfield as menu backrground
  
