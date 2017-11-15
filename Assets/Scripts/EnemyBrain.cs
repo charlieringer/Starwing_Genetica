@@ -279,6 +279,7 @@ public class EnemyBrain : MonoBehaviour {
         if (collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Enemy")
         {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
+			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
             Destroy(collision.gameObject);
         }
