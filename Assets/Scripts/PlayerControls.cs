@@ -79,13 +79,23 @@ public class PlayerControls : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-		currentSpeed += v * Time.fixedDeltaTime * accel;
-		currentSpeed -= decel * Time.fixedDeltaTime;
+
+		if (v < 0.001 && v > -0.001) {
+			currentSpeed = currentSpeed / decel;
+		} else {
+			currentSpeed += v * Time.fixedDeltaTime * accel;
+		}
+
+		if (h < 0.001 && h > -0.001) {
+			currentTurn = currentTurn / decel;
+		} else {
+			currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+		}
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
 
-		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+
 		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
 		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
 
