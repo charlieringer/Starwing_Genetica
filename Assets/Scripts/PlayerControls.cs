@@ -42,6 +42,9 @@ public class PlayerControls : MonoBehaviour {
 	bool reloading = false;
 	float reloadProgress;
 	float reloadTime = 1.5f;
+
+	float fireRateTimer = 0f;
+	float fireRate = 0.1f;
 	
 	void Awake(){}
     
@@ -116,6 +119,7 @@ public class PlayerControls : MonoBehaviour {
 			firing = false;
 		}
 		if (firing) fire ();
+	
 
         handleThrusterEffect();
 		updatePlayerHeathText();
@@ -143,6 +147,13 @@ public class PlayerControls : MonoBehaviour {
 			reloadingText.text = "RELOADING";
 			return;
 		}
+
+		if (fireRateTimer < fireRate) {
+			fireRateTimer += Time.fixedDeltaTime;
+			return;
+		}
+		fireRateTimer = 0;
+
 		bullets -= 2;
 		Vector3 leftGun = leftBarrel.transform.position;
 		Vector3 rightGun = rightBarrel.transform.position;
