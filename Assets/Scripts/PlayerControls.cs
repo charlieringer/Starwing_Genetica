@@ -33,7 +33,15 @@ public class PlayerControls : MonoBehaviour {
 	public Image playerHealthBar;
 	public Image playerShieldBar;
 
+	public Text bulletText;
+	public Text reloadingText;
+
+	int bullets = 200;
+
 	bool firing = false;
+	bool reloading = false;
+	float reloadProgress;
+	float reloadTime = 1.5f;
 	
 	void Awake(){}
     
@@ -56,7 +64,16 @@ public class PlayerControls : MonoBehaviour {
 			return;
 		}
 
-
+		if (reloading) {
+			if (reloadProgress > reloadTime) {
+				bullets = 200;
+				reloadProgress = 0f;
+				reloadingText.text = "";
+				reloading = false;
+			} else {
+				reloadProgress += Time.fixedDeltaTime;
+			}
+		}
 		
 		
 		float h = Input.GetAxis("Horizontal");
@@ -105,6 +122,13 @@ public class PlayerControls : MonoBehaviour {
 
 	public void fire()
 	{
+		
+		if (bullets <= 0) {
+			reloading = true;
+			reloadingText.text = "RELOADING";
+			return;
+		}
+		bullets -= 2;
 		Vector3 leftGun = leftBarrel.transform.position;
 		Vector3 rightGun = rightBarrel.transform.position;
 
@@ -119,9 +143,6 @@ public class PlayerControls : MonoBehaviour {
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
         Destroy (bulletR, 2.0f);
-
-
-
 
 	}
 
@@ -216,6 +237,7 @@ public class PlayerControls : MonoBehaviour {
 	 {
 		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
 		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
+		bulletText.text = bullets + "/200";
 	 }
 
 	void takeDamage(float damage)
