@@ -285,7 +285,7 @@ public class EnemyBrain : MonoBehaviour {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
-            source.PlayOneShot(LaserHit, .1f);
+            source.PlayOneShot(LaserHit, .5f);
             Destroy(collision.gameObject);
         }
 

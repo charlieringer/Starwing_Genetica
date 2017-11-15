@@ -41,6 +41,8 @@ public class PlayerControls : MonoBehaviour {
     public AudioClip LaserBoosterSound;
     public AudioClip ShieldBoosterSound;
     public AudioClip ThrustersBoosterSound;
+    public AudioClip LaserHit;
+    public AudioClip ShieldHit;
     public AudioSource source;
  
 	int bullets = 200;
@@ -270,14 +272,18 @@ public class PlayerControls : MonoBehaviour {
 
 	void takeDamage(float damage)
 	{
-		if (shields >= damage) {
-			shields -= damage;
+        source.PlayOneShot(LaserHit, .5f);
+        if (shields >= damage) {
+            source.PlayOneShot(ShieldHit, .5f);
+            shields -= damage;
 
 		} else if (shields > 0) {
-			health -= (damage - shields);
-			shields = 0;
+            source.PlayOneShot(ShieldHit, .5f);
+            health -= (damage - shields);
+            shields = 0;
 		} else {
-			health -= damage;
+            source.PlayOneShot(ShieldHit, .5f);
+            health -= damage;
 		}
 	}
 

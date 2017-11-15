@@ -30,13 +30,13 @@ public class ChooseScriptController : MonoBehaviour {
 			selectionHighlights[currentSelection].SetActive(false);
 			currentSelection--;
 			selectionHighlights[currentSelection].SetActive(true);
-            source.PlayOneShot(ButtonSound, 1.0f);
+            source.PlayOneShot(ButtonSound, 0.5f);
         }
 		if (Input.GetKeyDown (KeyCode.RightArrow) && currentSelection != 2) {
 			selectionHighlights[currentSelection].SetActive(false);
 			currentSelection++;
 			selectionHighlights[currentSelection].SetActive(true);
-            source.PlayOneShot(ButtonSound, 1.0f);
+            source.PlayOneShot(ButtonSound, 0.5f);
         }
 
 		if(Input.GetKeyDown(KeyCode.Return))

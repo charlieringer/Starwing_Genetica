@@ -517,8 +517,8 @@ MonoBehaviour:
   accel: 100
   turnSpeed: 200
   maxTurn: 75
-  health: 10000
-  maxHealth: 200
+  health: 1000
+  maxHealth: 1000
   bulletDamage: 10
   bulletSpeed: 600
   bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
@@ -535,6 +535,12 @@ MonoBehaviour:
   reloadingText: {fileID: 0}
   ShootingSound: {fileID: 8300000, guid: 150300f26fd3ad64c8841135b83252ce, type: 3}
   ThrustersSound: {fileID: 8300000, guid: f4c5316a6cea04949814e7f0c81e88cf, type: 3}
+  LaserBoosterSound: {fileID: 8300000, guid: 850d3594c7f9a574e8ae825dc03d2bf6, type: 3}
+  ShieldBoosterSound: {fileID: 8300000, guid: d958d685417350d4e96910d14d961a47, type: 3}
+  ThrustersBoosterSound: {fileID: 8300000, guid: 022b9d08b9735d84193514d0a04037e1,
+    type: 3}
+  LaserHit: {fileID: 8300000, guid: f4a8fd536b368c444bbc478137a81b82, type: 3}
+  ShieldHit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
   source: {fileID: 0}
 --- !u!114 &114496609633221982
 MonoBehaviour:
