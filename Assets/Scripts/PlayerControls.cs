@@ -56,6 +56,7 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		updatePlayerHeathText();
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
@@ -122,8 +123,12 @@ public class PlayerControls : MonoBehaviour {
 	
 
         handleThrusterEffect();
-		updatePlayerHeathText();
 
+
+		//changed colour based on gene (speed and bullet speed) information
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 225)/225, 0, 0, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(0, ValueRemapping(topSpeed, 500, 225)/225, 0, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0, ValueRemapping(health, maxHealth, 225)/225, 0);
     }
 
 
@@ -238,8 +243,7 @@ public class PlayerControls : MonoBehaviour {
 		if(collision.gameObject.name.Contains("ShieldPowerup"))
 		{
 			shields += (collision.gameObject.GetComponent<Booster> ().boostAmount)*2;
-			if (shields > 100)
-				shields = 100;
+			if (shields >= 100) shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
 			Destroy(collision.gameObject);
 		}
@@ -273,10 +277,17 @@ public class PlayerControls : MonoBehaviour {
 
 		} else if (shields > 0) {
 			health -= (damage - shields);
-			shields = 0;
+			shields = 0f;
 		} else {
 			health -= damage;
 		}
+		if (shields >= 100)
+			shields = 100;
+	}
+
+	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+	{
+		return ((initialVal*targetHigh)/initialHigh);
 	}
 
 }

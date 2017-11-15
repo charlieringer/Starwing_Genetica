@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44659364, g: 0.4964301, b: 0.5748256, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -4223,7 +4223,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 851990460}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -224.5, z: 0}
+  m_LocalPosition: {x: 0, y: -237.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168675088}
@@ -7967,7 +7967,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1168675084}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 570.5, y: 254.5, z: 0}
+  m_LocalPosition: {x: 645.5, y: 267.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1721704293}
@@ -8004,6 +8004,7 @@ GameObject:
   - component: {fileID: 1290849539}
   - component: {fileID: 1290849538}
   - component: {fileID: 1290849537}
+  - component: {fileID: 1290849536}
   m_Layer: 0
   m_Name: DummyPlayer1
   m_TagString: Untagged
@@ -8029,6 +8030,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
+--- !u!114 &1290849536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1290849534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f35b4e66410ad441a434c820397264d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 700
+  speed: 200
+  damage: 50
 --- !u!65 &1290849537
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11645,6 +11660,7 @@ GameObject:
   - component: {fileID: 1394499107}
   - component: {fileID: 1394499106}
   - component: {fileID: 1394499105}
+  - component: {fileID: 1394499104}
   m_Layer: 0
   m_Name: DummyPlayer2
   m_TagString: Untagged
@@ -11652,6 +11668,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1394499104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1394499103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f35b4e66410ad441a434c820397264d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 400
+  speed: 400
+  damage: 25
 --- !u!65 &1394499105
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15371,7 +15401,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1721704292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 194.5, z: 0}
+  m_LocalPosition: {x: 0, y: 207.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1168675088}
@@ -22413,6 +22443,7 @@ GameObject:
   - component: {fileID: 2007537914}
   - component: {fileID: 2007537913}
   - component: {fileID: 2007537912}
+  - component: {fileID: 2007537911}
   m_Layer: 0
   m_Name: DummyPlayer3
   m_TagString: Untagged
@@ -22420,6 +22451,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2007537911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2007537910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f35b4e66410ad441a434c820397264d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 550
+  speed: 300
+  damage: 75
 --- !u!65 &2007537912
 BoxCollider:
   m_ObjectHideFlags: 0
