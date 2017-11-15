@@ -182,13 +182,13 @@ Transform:
   m_GameObject: {fileID: 1378946538589800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4381864949112946}
   - {fileID: 4138707187685936}
+  - {fileID: 4348260105608802}
   - {fileID: 4303762855723932}
   - {fileID: 4368977369285420}
-  - {fileID: 4348260105608802}
   - {fileID: 4076885140882826}
   - {fileID: 4823946422730512}
   m_Father: {fileID: 0}
@@ -219,7 +219,7 @@ Transform:
   m_Children:
   - {fileID: 4880590203462480}
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4348260105608802
 Transform:
@@ -232,7 +232,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4368977369285420
 Transform:
@@ -245,7 +245,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4381864949112946
 Transform:
@@ -431,14 +431,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 200
+  topSpeed: 300
   decel: 10
-  accel: 100
-  turnSpeed: 200
-  maxTurn: 75
-  health: 10000
-  maxHealth: 200
-  bulletDamage: 10
+  accel: 150
+  turnSpeed: 300
+  maxTurn: 100
+  health: 700
+  maxHealth: 700
+  bulletDamage: 50
   bulletSpeed: 600
   bulletPreFab: {fileID: 1409719596160028, guid: 5d526c0783d53544d81031bb1afe5615,
     type: 2}
@@ -450,6 +450,8 @@ MonoBehaviour:
   currentSpeed: 0
   playerHealthBar: {fileID: 0}
   playerShieldBar: {fileID: 0}
+  bulletText: {fileID: 0}
+  reloadingText: {fileID: 0}
 --- !u!114 &114496609633221982
 MonoBehaviour:
   m_ObjectHideFlags: 1
