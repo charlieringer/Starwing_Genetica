@@ -341,7 +341,7 @@ MonoBehaviour:
   maxTurn: 50
   otherEnemies: []
   timeAliveTimer: 0
-  LaserHit: {fileID: 8300000, guid: f4a8fd536b368c444bbc478137a81b82, type: 3}
+  Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
   source: {fileID: 0}
 --- !u!136 &136013259046062812
 CapsuleCollider:
