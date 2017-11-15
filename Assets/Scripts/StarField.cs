@@ -28,8 +28,8 @@ public class StarField : MonoBehaviour {
 
 		for (int i = 0; i < maxStars; i++) {
 			points[i].position = Random.insideUnitSphere * starDistance + thisTrans.position;
-			points[i].color = new Color (starColour.r, starColour.g, starColour.b, starColour.a);
-			points [i].size = starSize;
+			points[i].startColor = new Color (starColour.r, starColour.g, starColour.b, starColour.a);
+			points [i].startSize = starSize;
 		}
 	}
 	
@@ -46,8 +46,8 @@ public class StarField : MonoBehaviour {
 
 			if (postionVel.sqrMagnitude <= starClipDistanceSqr) {
 				float percentage = postionVel.sqrMagnitude / starClipDistanceSqr;
-				points [i].color = new Color (1, 1, 1, percentage);
-				points [i].size = starSize * percentage;
+				points [i].startColor = new Color (1, 1, 1, percentage);
+				points [i].startSize = starSize * percentage;
 			}
 		}
 		GetComponent<ParticleSystem> ().SetParticles (points, points.Length);
