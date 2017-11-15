@@ -20,9 +20,14 @@ public class BulletData : MonoBehaviour {
 
 	public void updateParentDamageDealt()
 	{
+		if(parent!= null)
         parent.GetComponent<EnemyBrain>().updateDamageDealt(damage);
+	}
 
-	
+	public void explode()
+	{
+		var exp = GetComponent<ParticleSystem>();
+		exp.Play();
 	}
 
 }

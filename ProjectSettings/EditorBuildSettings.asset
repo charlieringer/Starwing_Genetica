@@ -13,4 +13,7 @@ EditorBuildSettings:
     guid: a53277452c307c0438f46437a4d911a5
   - enabled: 1
     path: Assets/Scenes/Main Scene.unity
-    guid: 234160e52d8a834419a3be632519d079
+    guid: 8fadfd4b724c24ad49aa72c5bd35b1d6
+  - enabled: 1
+    path: Assets/Scenes/ChooseShip.unity
+    guid: f33201d9ba0924661bb45f410499663c

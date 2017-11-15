@@ -280,6 +280,7 @@ public class EnemyBrain : MonoBehaviour {
         if (collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Enemy")
         {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
+			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
             Destroy(collision.gameObject);
         }
@@ -319,7 +320,7 @@ public class EnemyBrain : MonoBehaviour {
         float BoosterAmmount;
 
         // consider only the first 3 genes 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             booster.Add(gene[i]);
         }
