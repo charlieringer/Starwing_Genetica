@@ -14,7 +14,7 @@ public class FrontEndController : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Return))
 			{
-			SceneManager.LoadScene ("Main Scene");
+			SceneManager.LoadScene ("ChooseShip");
 			}
 	}
 }
