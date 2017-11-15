@@ -32,6 +32,8 @@ public class PlayerControls : MonoBehaviour {
 
 	public Image playerHealthBar;
 	public Image playerShieldBar;
+
+	bool firing = false;
 	
 	void Awake(){}
     
@@ -47,7 +49,14 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 
-		if(health <= 0) SceneManager.LoadScene ("GameOver");
+		if (health <= 0) {
+			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
+			GetComponent<Rigidbody>().useGravity = true;
+			if(transform.position.y < -200) SceneManager.LoadScene ("GameOver");
+			return;
+		}
+
+
 		
 		
 		float h = Input.GetAxis("Horizontal");
@@ -70,8 +79,12 @@ public class PlayerControls : MonoBehaviour {
 		turn(currentTurn);
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			fire ();
+			firing = true;
 		}
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			firing = false;
+		}
+		if (firing) fire ();
 
         handleThrusterEffect();
 		updatePlayerHeathText();
