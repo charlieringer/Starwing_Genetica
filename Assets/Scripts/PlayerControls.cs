@@ -60,6 +60,10 @@ public class PlayerControls : MonoBehaviour {
 		if (health <= 0) {
 			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
 			GetComponent<Rigidbody>().useGravity = true;
+			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
+			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
+			LeftParticle.Stop();
+			RightParticle.Stop();
 			if(transform.position.y < -400) SceneManager.LoadScene ("GameOver");
 			return;
 		}
