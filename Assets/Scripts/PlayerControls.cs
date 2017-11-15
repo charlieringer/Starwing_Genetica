@@ -32,6 +32,16 @@ public class PlayerControls : MonoBehaviour {
 
 	public Image playerHealthBar;
 	public Image playerShieldBar;
+
+	public Text bulletText;
+	public Text reloadingText;
+
+	int bullets = 200;
+
+	bool firing = false;
+	bool reloading = false;
+	float reloadProgress;
+	float reloadTime = 1.5f;
 	
 	void Awake(){}
     
@@ -47,19 +57,49 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 
-		if(health <= 0) SceneManager.LoadScene ("GameOver");
+		if (health <= 0) {
+			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
+			GetComponent<Rigidbody>().useGravity = true;
+			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
+			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
+			LeftParticle.Stop();
+			RightParticle.Stop();
+			if(transform.position.y < -400) SceneManager.LoadScene ("GameOver");
+			return;
+		}
+
+		if (reloading) {
+			if (reloadProgress > reloadTime) {
+				bullets = 200;
+				reloadProgress = 0f;
+				reloadingText.text = "";
+				reloading = false;
+			} else {
+				reloadProgress += Time.fixedDeltaTime;
+			}
+		}
 		
 		
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-		currentSpeed += v * Time.fixedDeltaTime * accel;
-		currentSpeed -= decel * Time.fixedDeltaTime;
+
+		if (v < 0.001 && v > -0.001) {
+			currentSpeed = currentSpeed / decel;
+		} else {
+			currentSpeed += v * Time.fixedDeltaTime * accel;
+		}
+
+		if (h < 0.001 && h > -0.001) {
+			currentTurn = currentTurn / decel;
+		} else {
+			currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+		}
 
 		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
 		if(currentSpeed < 0) currentSpeed = 0;
 
-		currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+
 		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
 		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
 
@@ -70,8 +110,12 @@ public class PlayerControls : MonoBehaviour {
 		turn(currentTurn);
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			fire ();
+			firing = true;
 		}
+		if (Input.GetKeyUp (KeyCode.Space)) {
+			firing = false;
+		}
+		if (firing) fire ();
 
         handleThrusterEffect();
 		updatePlayerHeathText();
@@ -92,6 +136,14 @@ public class PlayerControls : MonoBehaviour {
 
 	public void fire()
 	{
+		
+		if (bullets <= 0) {
+			firing = false;
+			reloading = true;
+			reloadingText.text = "RELOADING";
+			return;
+		}
+		bullets -= 2;
 		Vector3 leftGun = leftBarrel.transform.position;
 		Vector3 rightGun = rightBarrel.transform.position;
 
@@ -106,9 +158,6 @@ public class PlayerControls : MonoBehaviour {
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
         Destroy (bulletR, 2.0f);
-
-
-
 
 	}
 
@@ -203,6 +252,7 @@ public class PlayerControls : MonoBehaviour {
 	 {
 		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
 		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
+		bulletText.text = bullets + "/200";
 	 }
 
 	void takeDamage(float damage)
