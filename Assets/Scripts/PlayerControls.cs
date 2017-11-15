@@ -134,6 +134,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		
 		if (bullets <= 0) {
+			firing = false;
 			reloading = true;
 			reloadingText.text = "RELOADING";
 			return;

@@ -925,7 +925,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 523539024
+  randomSeed: -206844810
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4195,7 +4195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   starColour: {r: 1, g: 1, b: 1, a: 0}
   maxStars: 250
-  starSize: 0.3
+  starSize: 0.5
   starDistance: 100
   starClipDistance: 15
 --- !u!1 &749692996
@@ -4880,6 +4880,21 @@ Prefab:
       propertyPath: reloadingText
       value: 
       objectReference: {fileID: 2110226759}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: topSpeed
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: maxTurn
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: accel
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
