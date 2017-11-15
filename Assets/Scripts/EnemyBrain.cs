@@ -319,7 +319,7 @@ public class EnemyBrain : MonoBehaviour {
         float BoosterAmmount;
 
         // consider only the first 3 genes 
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             booster.Add(gene[i]);
         }
