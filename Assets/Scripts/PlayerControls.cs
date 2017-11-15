@@ -36,20 +36,24 @@ public class PlayerControls : MonoBehaviour {
 	public Text bulletText;
 	public Text reloadingText;
 
+    public AudioClip ShootingSound;
+    public AudioClip ThrustersSound;
+    public AudioSource source;
+ 
 	int bullets = 200;
 
 	bool firing = false;
 	bool reloading = false;
 	float reloadProgress;
 	float reloadTime = 1.5f;
-	
 	void Awake(){}
     
 
 	// Use this for initialization
 	void Start () {
 		maxHealth = health;
-	}
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -115,8 +119,10 @@ public class PlayerControls : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			firing = false;
 		}
-		if (firing) fire ();
-
+        if (firing){
+            source.PlayOneShot(ShootingSound, .1f);
+            fire();
+        }
         handleThrusterEffect();
 		updatePlayerHeathText();
 
@@ -175,6 +181,7 @@ public class PlayerControls : MonoBehaviour {
         {
             LeftEmission.rateOverTime = 100.0f;
             RightEmission.rateOverTime = 100.0f;
+            //source.PlayOneShot(ThrustersSound, 0.1f);
         }
         else if (v > 0 && h == 0)
         {
