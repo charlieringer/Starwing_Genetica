@@ -5696,7 +5696,7 @@ MonoBehaviour:
   enemy: {fileID: 1298231865522550, guid: 501c9173c920b4b159a96fe4fbbb9fe6, type: 2}
   GAManager: {fileID: 1366092520}
   pauseManager: {fileID: 756049869}
-  waveSize: 20
+  waveSize: 10
   enemies: []
   deadEnemies: []
   initalWavebudget: 30
