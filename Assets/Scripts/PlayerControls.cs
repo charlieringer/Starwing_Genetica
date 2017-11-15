@@ -37,12 +37,11 @@ public class PlayerControls : MonoBehaviour {
 	public Text reloadingText;
 
     public AudioClip ShootingSound;
-    public AudioClip ThrustersSound;
     public AudioClip LaserBoosterSound;
     public AudioClip ShieldBoosterSound;
     public AudioClip ThrustersBoosterSound;
-    public AudioClip LaserHit;
-    public AudioClip ShieldHit;
+    public AudioClip Hit;
+    public AudioClip Death;
     public AudioSource source;
  
 	int bullets = 200;
@@ -67,7 +66,8 @@ public class PlayerControls : MonoBehaviour {
 			return;
 
 		if (health <= 0) {
-			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
+            source.PlayOneShot(Death, .2f);
+            transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
 			GetComponent<Rigidbody>().useGravity = true;
 			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
 			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
@@ -119,13 +119,13 @@ public class PlayerControls : MonoBehaviour {
 		turn(currentTurn);
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-			firing = true;
+            source.PlayOneShot(ShootingSound, .2f);
+            firing = true;
 		}
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			firing = false;
 		}
         if (firing){
-            source.PlayOneShot(ShootingSound, .1f);
             fire();
         }
         handleThrusterEffect();
@@ -186,7 +186,6 @@ public class PlayerControls : MonoBehaviour {
         {
             LeftEmission.rateOverTime = 100.0f;
             RightEmission.rateOverTime = 100.0f;
-            //source.PlayOneShot(ThrustersSound, 0.1f);
         }
         else if (v > 0 && h == 0)
         {
@@ -242,7 +241,7 @@ public class PlayerControls : MonoBehaviour {
 			if (shields > 100)
 				shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
-            source.PlayOneShot(ShieldBoosterSound, 0.5f);
+            source.PlayOneShot(ShieldBoosterSound, 2.0f);
             Destroy(collision.gameObject);
 		}
 
@@ -250,7 +249,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			topSpeed += collision.gameObject.GetComponent<Booster> ().boostAmount;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
-            source.PlayOneShot(ThrustersBoosterSound, 0.5f);
+            source.PlayOneShot(ThrustersBoosterSound, 2.0f);
             Destroy(collision.gameObject);
 		}
 
@@ -258,7 +257,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
-            source.PlayOneShot(LaserBoosterSound, 0.5f);
+            source.PlayOneShot(LaserBoosterSound, 2.0f);
             Destroy(collision.gameObject);
 		}
 	}
@@ -272,17 +271,17 @@ public class PlayerControls : MonoBehaviour {
 
 	void takeDamage(float damage)
 	{
-        source.PlayOneShot(LaserHit, .5f);
+        
         if (shields >= damage) {
-            source.PlayOneShot(ShieldHit, .5f);
+            source.PlayOneShot(Hit, .2f);
             shields -= damage;
 
 		} else if (shields > 0) {
-            source.PlayOneShot(ShieldHit, .5f);
+            source.PlayOneShot(Hit, .2f);
             health -= (damage - shields);
             shields = 0;
 		} else {
-            source.PlayOneShot(ShieldHit, .5f);
+            source.PlayOneShot(Hit, .2f);
             health -= damage;
 		}
 	}

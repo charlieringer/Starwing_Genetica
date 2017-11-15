@@ -47,7 +47,7 @@ public class EnemyManager : MonoBehaviour {
                 //print("enemyIndex:" + enemyIndex + " enemies[enemyIndex].GetComponent<EnemyBrain>().health:" + enemies[enemyIndex].GetComponent<EnemyBrain>().health);
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
                 {
-					enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
+                    enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
 					//enemies[enemyIndex].transform.Rotate (20, 0, 20);
                     //enemies.RemoveAt(enemyIndex);
                     //print("destroied an enemy");

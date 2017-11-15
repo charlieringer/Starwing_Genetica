@@ -49,10 +49,10 @@ public class EnemyBrain : MonoBehaviour {
 	public float timeAliveTimer;
 	private bool timerStarted;
 
-    private bool hasTriggeredDrop = false;
-
-    public AudioClip LaserHit;
+    public AudioClip Hit;
     public AudioSource source;
+
+    private bool hasTriggeredDrop = false;
 
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
@@ -285,7 +285,7 @@ public class EnemyBrain : MonoBehaviour {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
-            source.PlayOneShot(LaserHit, .5f);
+            source.PlayOneShot(Hit, .2f);
             Destroy(collision.gameObject);
         }
 
@@ -357,7 +357,7 @@ public class EnemyBrain : MonoBehaviour {
         }
         else
         {
-            if (pShield <= 0.2)
+            if (pShield <= 0.1)
             {
 				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];
