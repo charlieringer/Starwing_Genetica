@@ -12,13 +12,17 @@ public class ChooseScriptController : MonoBehaviour {
 	public GameObject selection2;
 	public GameObject selection3;
 
-	// Use this for initialization
-	void Awake () {
+    public AudioClip ButtonSound;
+    public AudioSource source;
+
+    // Use this for initialization
+    void Awake () {
 		selectionHighlights [0] = selection1;
 		selectionHighlights [1] = selection2;
 		selectionHighlights [2] = selection3;
-		
-	}
+
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,17 +30,20 @@ public class ChooseScriptController : MonoBehaviour {
 			selectionHighlights[currentSelection].SetActive(false);
 			currentSelection--;
 			selectionHighlights[currentSelection].SetActive(true);
-		}
+            source.PlayOneShot(ButtonSound, 1.0f);
+        }
 		if (Input.GetKeyDown (KeyCode.RightArrow) && currentSelection != 2) {
 			selectionHighlights[currentSelection].SetActive(false);
 			currentSelection++;
 			selectionHighlights[currentSelection].SetActive(true);
-		}
+            source.PlayOneShot(ButtonSound, 1.0f);
+        }
 
 		if(Input.GetKeyDown(KeyCode.Return))
 		{
 			SceneManager.LoadScene ("Main Scene");
-		}
+            source.PlayOneShot(ButtonSound, .1f);
+        }
 	}
 		
 }

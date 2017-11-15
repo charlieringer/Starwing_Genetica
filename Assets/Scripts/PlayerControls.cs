@@ -38,6 +38,9 @@ public class PlayerControls : MonoBehaviour {
 
     public AudioClip ShootingSound;
     public AudioClip ThrustersSound;
+    public AudioClip LaserBoosterSound;
+    public AudioClip ShieldBoosterSound;
+    public AudioClip ThrustersBoosterSound;
     public AudioSource source;
  
 	int bullets = 200;
@@ -237,21 +240,24 @@ public class PlayerControls : MonoBehaviour {
 			if (shields > 100)
 				shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
-			Destroy(collision.gameObject);
+            source.PlayOneShot(ShieldBoosterSound, 0.5f);
+            Destroy(collision.gameObject);
 		}
 
 		if(collision.gameObject.name.Contains("SpeedPowerup"))
 		{
 			topSpeed += collision.gameObject.GetComponent<Booster> ().boostAmount;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
-			Destroy(collision.gameObject);
+            source.PlayOneShot(ThrustersBoosterSound, 0.5f);
+            Destroy(collision.gameObject);
 		}
 
 		if(collision.gameObject.name.Contains("WeaponPowerup"))
 		{
 			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
-			Destroy(collision.gameObject);
+            source.PlayOneShot(LaserBoosterSound, 0.5f);
+            Destroy(collision.gameObject);
 		}
 	}
 
