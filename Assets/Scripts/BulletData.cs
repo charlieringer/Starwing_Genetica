@@ -26,8 +26,8 @@ public class BulletData : MonoBehaviour {
 
 	public void explode()
 	{
-		var exp = GetComponent<ParticleSystem>();
-		exp.Play();
+		//var exp = GetComponent<ParticleSystem>();
+		//exp.Play();
 	}
 
 }

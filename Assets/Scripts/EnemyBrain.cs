@@ -275,7 +275,7 @@ public class EnemyBrain : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Enemy")
+        if (collision.gameObject.name.Contains("shot_prefab") && collision.gameObject.GetComponent<BulletData>().parentShip != "Enemy")
         {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData> ().explode ();

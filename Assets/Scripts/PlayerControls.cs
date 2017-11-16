@@ -235,7 +235,7 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
+		if(collision.gameObject.name.Contains("shot_prefab") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData>().updateParentDamageDealt();
@@ -243,7 +243,7 @@ public class PlayerControls : MonoBehaviour {
 			Destroy(collision.gameObject);
 		}
 
-		if(collision.gameObject.name.Contains("Enemy(Clone)"))
+		if(collision.gameObject.name =="Enemy(Clone)")
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			takeDamage (damage);
