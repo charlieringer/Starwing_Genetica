@@ -225,7 +225,7 @@ public class PlayerControls : MonoBehaviour {
 			Destroy(collision.gameObject);
 		}
 
-		if(collision.gameObject.name.Contains("Enemy(Clone)"))
+		if(collision.gameObject.name =="Enemy(Clone)")
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			takeDamage (damage);
