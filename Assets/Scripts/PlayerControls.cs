@@ -46,7 +46,12 @@ public class PlayerControls : MonoBehaviour {
 	float fireRateTimer = 0f;
 	float fireRate = 0.1f;
 	
-	void Awake(){}
+	void Awake()
+	{
+		maxHealth = StaticData.startingShipHealth;
+		bulletDamage = StaticData.startingShipDamage;
+		topSpeed = StaticData.startingShipSpeed;
+	}
     
 
 	// Use this for initialization
@@ -68,7 +73,9 @@ public class PlayerControls : MonoBehaviour {
 			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
 			LeftParticle.Stop();
 			RightParticle.Stop();
-			if(transform.position.y < -400) SceneManager.LoadScene ("GameOver");
+			if (transform.position.y < -400) {
+				SceneManager.LoadScene ("GameOver");
+			}
 			return;
 		}
 

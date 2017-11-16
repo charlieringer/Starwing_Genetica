@@ -57,7 +57,9 @@ public class EnemyManager : MonoBehaviour {
 					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
 					foreach (float gene in genes) {
 						playerScore += gene;
+
 					}
+					StaticData.score = playerScore;
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
 
