@@ -13,9 +13,11 @@ public class DummyPlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
 		//changed colour based on gene (speed and bullet speed) information
-		transform.GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( damage, 100, 225)/225, 20/225, 20/225, 225/225);
-		transform.GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(128, ValueRemapping(speed, 500, 225)/225, 0, 225/225);
+		transform.GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( damage, 100, 225)/225, 20/225, 20/225, 0);
+		transform.GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(speed, 500, 128)/225, 0, 0);
 		transform.GetChild(0).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0, ValueRemapping(health, 1000, 225)/225, 0);
 	}
 

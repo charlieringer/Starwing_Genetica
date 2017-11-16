@@ -113,22 +113,16 @@ public class PlayerControls : MonoBehaviour {
 		thrust(currentSpeed);
 		turn(currentTurn);
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			firing = true;
-		}
-		if (Input.GetKeyUp (KeyCode.Space)) {
-			firing = false;
-		}
-		if (firing) fire ();
+		if (Input.GetKey(KeyCode.Space)) fire ();
 	
 
         handleThrusterEffect();
 
 
 		//changed colour based on gene (speed and bullet speed) information
-		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 225)/225, 0, 0, 0);
-		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(128, ValueRemapping(topSpeed, 500, 225)/225, 0, 0);
-		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0, ValueRemapping(health, maxHealth, 225)/225, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 225)/225, 20/225, 20/225, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(topSpeed, 500, 128)/225, 0, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(1, 1, ValueRemapping(health, maxHealth, 225)/225, 0);
     }
 
 
@@ -287,6 +281,8 @@ public class PlayerControls : MonoBehaviour {
 
 	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
 	{
+		if (initialVal >= initialHigh)
+			return targetHigh;
 		return ((initialVal*targetHigh)/initialHigh);
 	}
 
