@@ -42,16 +42,16 @@ public class ChooseScriptController : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Return))
 		{
 			if (currentSelection == 0) {
-				StaticData.startingShipHealth = 700;
-				StaticData.startingShipDamage = 50;
+				StaticData.startingShipHealth = 1400; //700;
+				StaticData.startingShipDamage = 100;//50;
 				StaticData.startingShipSpeed = 200;
 			} else if (currentSelection == 1) {
-				StaticData.startingShipHealth = 400;
-				StaticData.startingShipDamage = 25;
+				StaticData.startingShipHealth = 800;//400;
+				StaticData.startingShipDamage = 50;//25;
 				StaticData.startingShipSpeed = 400;
 			} else if (currentSelection == 2) {
-				StaticData.startingShipHealth = 550;
-				StaticData.startingShipDamage = 75;
+				StaticData.startingShipHealth = 1100;//550;
+				StaticData.startingShipDamage = 150;//75;
 				StaticData.startingShipSpeed = 300;
 			}
 			SceneManager.LoadScene ("Main Scene");
