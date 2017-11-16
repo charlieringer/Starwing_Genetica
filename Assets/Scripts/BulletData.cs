@@ -7,6 +7,7 @@ public class BulletData : MonoBehaviour {
 	public float damage = 0f;
 	public string parentShip = "";
 	public GameObject parent;
+	public GameObject sparksPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -26,8 +27,9 @@ public class BulletData : MonoBehaviour {
 
 	public void explode()
 	{
-		//var exp = GetComponent<ParticleSystem>();
-		//exp.Play();
+		GameObject sparks = Instantiate (sparksPrefab, transform.position, transform.rotation);
+		var sparksParticles = sparks.GetComponent<ParticleSystem>();
+		sparksParticles.Play();
 	}
 
 }
