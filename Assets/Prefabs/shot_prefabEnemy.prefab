@@ -182,6 +182,8 @@ MonoBehaviour:
   damage: 10
   parentShip: Player
   parent: {fileID: 0}
+  sparksPrefab: {fileID: 1255962717615014, guid: b24954599a77e4bb9a1fd2d7538e4d1e,
+    type: 2}
 --- !u!136 &136385813015328176
 CapsuleCollider:
   m_ObjectHideFlags: 1
