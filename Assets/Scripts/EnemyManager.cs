@@ -26,8 +26,12 @@ public class EnemyManager : MonoBehaviour {
     public GameObject waveCompleteWrapper;
 	public float playerScore;
 
+    public AudioClip WaveCompletedSound;
+    public AudioSource source;
+
     void Start ()
 	{
+        source = GetComponent<AudioSource>();
         //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
@@ -47,7 +51,7 @@ public class EnemyManager : MonoBehaviour {
                 //print("enemyIndex:" + enemyIndex + " enemies[enemyIndex].GetComponent<EnemyBrain>().health:" + enemies[enemyIndex].GetComponent<EnemyBrain>().health);
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
                 {
-					enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
+                    enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
 					//enemies[enemyIndex].transform.Rotate (20, 0, 20);
                     //enemies.RemoveAt(enemyIndex);
                     //print("destroied an enemy");
@@ -57,7 +61,9 @@ public class EnemyManager : MonoBehaviour {
 					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
 					foreach (float gene in genes) {
 						playerScore += gene;
+
 					}
+					StaticData.score = playerScore;
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
 
@@ -146,6 +152,7 @@ public class EnemyManager : MonoBehaviour {
     {
         if (!atEndOfWave)
         {
+            source.PlayOneShot(WaveCompletedSound, 2.0f);
             atEndOfWave = true;
             timeTillNextWave = 3f;
             waveCompleteWrapper.SetActive( true);

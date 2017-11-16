@@ -51,11 +51,10 @@ public class EnemyBrain : MonoBehaviour {
 
     private bool hasTriggeredDrop = false;
 
-
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
-	}
+    }
 		
 	void Update () {
 		
@@ -81,7 +80,6 @@ public class EnemyBrain : MonoBehaviour {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
             if (!hasTriggeredDrop)
             {
-                print("destroyed ship at position  " + transform.position);
                 hasTriggeredDrop = true;
                 BoosterDrop(gene);
             }
@@ -301,6 +299,10 @@ public class EnemyBrain : MonoBehaviour {
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
 
+		if (bulletDamage < 0)
+			bulletDamage = 0;
+		bulletDamage+=2;
+
         playerSeekDistance = gene[3] * 40;
         playerFleeDistance = gene[4] * 40;
         playerFleeBuffer = playerFleeDistance + 60;
@@ -353,7 +355,7 @@ public class EnemyBrain : MonoBehaviour {
         }
         else
         {
-            if (pShield <= 0.2)
+            if (pShield <= 0.1)
             {
 				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];

@@ -19,7 +19,6 @@ public class GAenemy  {
     float lifeSpam;
     float bulletDamage;
 
-    System.Random r = new System.Random();
 
 	// Use this for initialization
 	void Start () {
