@@ -300,6 +300,10 @@ public class EnemyBrain : MonoBehaviour {
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
 
+		if (bulletDamage < 0)
+			bulletDamage = 0;
+		bulletDamage+=2;
+
         playerSeekDistance = gene[3] * 40;
         playerFleeDistance = gene[4] * 40;
         playerFleeBuffer = playerFleeDistance + 60;
