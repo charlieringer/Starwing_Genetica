@@ -324,8 +324,6 @@ public class EnemyBrain : MonoBehaviour {
         var pBooster = random.NextDouble();
         // p for shieldBooster
         var pShield = random.NextDouble();
-        // p for randomBooster
-        var pRandom = random.NextDouble();
 
         List<float> booster = new List< float > ();
         int BoosterType;

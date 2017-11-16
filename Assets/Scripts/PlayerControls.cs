@@ -42,6 +42,7 @@ public class PlayerControls : MonoBehaviour {
     public AudioClip ThrustersBoosterSound;
     public AudioClip Hit;
     public AudioClip Death;
+    public AudioClip ReloadSound;
     public AudioSource source;
  
 	int bullets = 200;
@@ -78,7 +79,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 
 		if (health <= 0) {
-            source.PlayOneShot(Death, .2f);
+            source.PlayOneShot(Death, .1f);
             transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
 			GetComponent<Rigidbody>().useGravity = true;
 			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
@@ -92,6 +93,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 
 		if (reloading) {
+            source.PlayOneShot(ReloadSound, 0.2f);
 			if (reloadProgress > reloadTime) {
 				bullets = 200;
 				reloadProgress = 0f;
@@ -135,7 +137,7 @@ public class PlayerControls : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Space) && !reloading) 
         {
         fire ();
-        source.PlayOneShot(ShootingSound, .05f);
+        source.PlayOneShot(ShootingSound, .02f);
         }
 	
         handleThrusterEffect();

@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23630982438846222}
   - component: {fileID: 54756927264269172}
   - component: {fileID: 114396554018067940}
+  - component: {fileID: 122100936899573974}
   m_Layer: 0
   m_Name: SpeedPowerup
   m_TagString: Untagged
@@ -124,3 +125,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boostAmount: 0
+--- !u!122 &122100936899573974
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1681520796527418}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278253823
+  m_Size: 2

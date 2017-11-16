@@ -569,6 +569,7 @@ MonoBehaviour:
     type: 3}
   Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
   Death: {fileID: 8300000, guid: 6015a80d434fea54586ee9a095d0dae5, type: 3}
+  ReloadSound: {fileID: 8300000, guid: 6849bfc6db989b94d9ca42582b51cdb4, type: 3}
   source: {fileID: 0}
 --- !u!114 &114496609633221982
 MonoBehaviour:
