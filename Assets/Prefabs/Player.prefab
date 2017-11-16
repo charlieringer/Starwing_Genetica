@@ -170,8 +170,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1965373799360104}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.7, y: 3, z: 8}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 3.7, y: 1.5, z: 8}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
   m_RootOrder: 5
@@ -243,8 +243,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1253833833516512}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.7, y: 3, z: 8}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: -3.7, y: 1.5, z: 8}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
   m_RootOrder: 4
@@ -334,7 +334,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 300
+  topSpeed: 400
   decel: 10
   accel: 150
   turnSpeed: 300
@@ -557,6 +557,7 @@ MonoBehaviour:
   RThruster: {fileID: 1253833833516512}
   leftBarrel: {fileID: 1472403324012326}
   rightBarrel: {fileID: 1218390125434408}
+  hitAlert: {fileID: 0}
   currentSpeed: 0
   playerHealthBar: {fileID: 0}
   playerShieldBar: {fileID: 0}
@@ -3961,7 +3962,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1198920303
+  randomSeed: -363075860
   InitialModule:
     serializedVersion: 3
     enabled: 1
