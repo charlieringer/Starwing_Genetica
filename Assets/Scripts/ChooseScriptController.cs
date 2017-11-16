@@ -44,15 +44,15 @@ public class ChooseScriptController : MonoBehaviour {
 			if (currentSelection == 0) {
 				StaticData.startingShipHealth = 1400; //700;
 				StaticData.startingShipDamage = 100;//50;
-				StaticData.startingShipSpeed = -300;
+				StaticData.startingShipSpeed = -340;
 			} else if (currentSelection == 1) {
 				StaticData.startingShipHealth = 800;//400;
 				StaticData.startingShipDamage = 50;//25;
-				StaticData.startingShipSpeed = -500;
+				StaticData.startingShipSpeed = -600;
 			} else if (currentSelection == 2) {
 				StaticData.startingShipHealth = 1100;//550;
 				StaticData.startingShipDamage = 150;//75;
-				StaticData.startingShipSpeed = - 400;
+				StaticData.startingShipSpeed = - 450;
 			}
 			SceneManager.LoadScene ("Main Scene");
             source.PlayOneShot(ButtonSound, .1f);
