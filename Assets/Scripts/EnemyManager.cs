@@ -26,8 +26,12 @@ public class EnemyManager : MonoBehaviour {
     public GameObject waveCompleteWrapper;
 	public float playerScore;
 
+    public AudioClip WaveCompletedSound;
+    public AudioSource source;
+
     void Start ()
 	{
+        source = GetComponent<AudioSource>();
         //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
@@ -146,6 +150,7 @@ public class EnemyManager : MonoBehaviour {
     {
         if (!atEndOfWave)
         {
+            source.PlayOneShot(WaveCompletedSound, 2.0f);
             atEndOfWave = true;
             timeTillNextWave = 3f;
             waveCompleteWrapper.SetActive( true);

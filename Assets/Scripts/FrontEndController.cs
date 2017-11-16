@@ -5,16 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class FrontEndController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    public AudioClip ButtonSound;
+    public AudioSource source;
+
+    // Use this for initialization
+    void Start () {
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Return))
 			{
-			SceneManager.LoadScene ("ChooseShip");
+            source.PlayOneShot(ButtonSound, 0.5f);
+            SceneManager.LoadScene ("ChooseShip");
 			}
 	}
 }

@@ -49,15 +49,11 @@ public class EnemyBrain : MonoBehaviour {
 	public float timeAliveTimer;
 	private bool timerStarted;
 
-    public AudioClip Hit;
-    public AudioSource source;
-
     private bool hasTriggeredDrop = false;
 
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
-        source = GetComponent<AudioSource>();
     }
 		
 	void Update () {
@@ -285,7 +281,6 @@ public class EnemyBrain : MonoBehaviour {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
-            source.PlayOneShot(Hit, .2f);
             Destroy(collision.gameObject);
         }
 

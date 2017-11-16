@@ -119,13 +119,13 @@ public class PlayerControls : MonoBehaviour {
 		turn(currentTurn);
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
-            source.PlayOneShot(ShootingSound, .2f);
             firing = true;
 		}
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			firing = false;
 		}
         if (firing){
+            source.PlayOneShot(ShootingSound, .2f);
             fire();
         }
         handleThrusterEffect();
