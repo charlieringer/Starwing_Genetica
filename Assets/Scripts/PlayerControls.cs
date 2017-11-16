@@ -217,7 +217,7 @@ public class PlayerControls : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collision)
 	{
-		if(collision.gameObject.name.Contains("Bullet") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
+		if(collision.gameObject.name.Contains("shot_prefab") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData>().updateParentDamageDealt();
