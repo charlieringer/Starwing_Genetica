@@ -26,6 +26,7 @@ public class PlayerControls : MonoBehaviour {
     public GameObject leftBarrel;
 	public GameObject rightBarrel;
 
+	public GameObject hitAlert;
 
 	public float currentSpeed = 0;
 	private float currentTurn = 0;
@@ -67,6 +68,7 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (hitAlert.activeSelf) hitAlert.SetActive (false);
 		updatePlayerHeathText();
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
@@ -288,6 +290,7 @@ public class PlayerControls : MonoBehaviour {
 
 	void takeDamage(float damage)
 	{
+		hitAlert.SetActive (true);
 		if (damage <= 0)
 			return;
 		if (shields >= damage) {
