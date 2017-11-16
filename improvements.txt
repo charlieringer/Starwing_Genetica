@@ -133,4 +133,24 @@ Anon 12
 * I find the ships but they immediatly come to the back
 * Make the spawn range bigger again
 
- 
+Anon 13
+
+* Feel really disorientated
+* It's quite difficult
+* Not aware of shooting other ships (more particle in the explosion particle)
+
+Anon 14
+
+* The control are still not there
+* It feels there is a latency in turning expecially when shooting 
+* You get disoriented
+* There is not point of reference
+* Delay between camera and ship turning
+* Link the opacity of the particle to the speed of the ship
+* Guns are too far apart
+* Fixed camera and ship slightly rotating
+* Introduce Application.Quit()
+* Animate main menu background
+* Link particle to the speed of player
+* Stop faster but not that fast
+* 
