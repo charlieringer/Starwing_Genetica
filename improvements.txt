@@ -1,26 +1,26 @@
 ########################## FIRST PLAYTESTING DAY #########################################
 
-Anon
+Anon 1
 
 * Visual feedback on hitting
 * Very hard to see enemy bullets
 * More visual feedback from driving
 * Possibly add a switch view in option
 
-Dani guapo
+Dani Guapo
 
 * Shooting is not visible
 * Prefer the back view
 * More explicit camera effect when speeding up
 
-Pete looking fresh
+Pete Looking Fresh
 
 * Feedback on hit
 * There should be sound
 * Pod racing controll
 * Grid beneath you / compass / speedup
 
-Ivan the terrible
+Ivan The Terrible
 
 * Too swingy, too much momentum
 * Bullets dimension, they are too small
@@ -57,7 +57,6 @@ Anon 3
 * The angle momentum doesn't feel good
 * Try to test ortographic prediction
 
-
 Anon 4
 
 * It takes alot of time for turning
@@ -91,4 +90,47 @@ Anon 6
 * Implement stars as particle effect, attach the particle system to the player and spawn them in front of him/her
 * Implement a minimap (using a second camera)
 * Use the starfield as menu backrground
+
+###################################  THIRD PLAYTESTING #######################################
+
+Anon 7
+
+* The feeling is to not really hit enemyes
+
+Anon 8
+
+* The game is fucking hard
+* It's hard to dodge the bullets
+* Turning is too fast
+* There are too many bullets
+
+Anon 9
+
+* Would be nice to have more variation 
+* Possibly put light on bullets 
+
+Anon 10
+
+*  It's difficult to dodge
+*  Would be nice to have a progressive numbers of enemies
+
+Anon 11
+
+* Introduce manual reload
+
+################################### FOURTH PLAYTESTING #######################################
+
+Anon 12
+
+* The game sucks
+* I keep loosing
+* There is no reference point
+* The enemies are right behind me all the time
+* It feels like a dogfight
+* The low speed ship need more speed
+* I would like to receive health
+* It has annoying controls
+* I find the ships but they immediatly come to the back
+* Make the spawn range bigger again
+
  
