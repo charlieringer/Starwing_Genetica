@@ -16,9 +16,12 @@ public class FrontEndController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.Return))
-			{
+		{
             source.PlayOneShot(ButtonSound, 0.5f);
             SceneManager.LoadScene ("ChooseShip");
-			}
+		}
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Application.Quit ();
+		}
 	}
 }
