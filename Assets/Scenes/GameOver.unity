@@ -860,6 +860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonSound: {fileID: 8300000, guid: 9815b0f7fa81bfb4fa4bcc8ca2eca624, type: 3}
   source: {fileID: 0}
+  scoreText: {fileID: 784228174}
 --- !u!4 &1944475321
 Transform:
   m_ObjectHideFlags: 0

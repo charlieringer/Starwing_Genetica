@@ -41,6 +41,19 @@ public class ChooseScriptController : MonoBehaviour {
 
 		if(Input.GetKeyDown(KeyCode.Return))
 		{
+			if (currentSelection == 0) {
+				StaticData.startingShipHealth = 700;
+				StaticData.startingShipDamage = 50;
+				StaticData.startingShipSpeed = 200;
+			} else if (currentSelection == 1) {
+				StaticData.startingShipHealth = 400;
+				StaticData.startingShipDamage = 25;
+				StaticData.startingShipSpeed = 400;
+			} else if (currentSelection == 2) {
+				StaticData.startingShipHealth = 550;
+				StaticData.startingShipDamage = 75;
+				StaticData.startingShipSpeed = 300;
+			}
 			SceneManager.LoadScene ("Main Scene");
             source.PlayOneShot(ButtonSound, .1f);
         }

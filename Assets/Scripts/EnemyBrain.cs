@@ -66,7 +66,7 @@ public class EnemyBrain : MonoBehaviour {
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
 
         //change size based on the health value from the gene
-        float scalingValueIncrement = ValueRemapping(gene[0], 9, 1); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
+        float scalingValueIncrement = ValueRemapping(gene[0], 9, 3); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         transform.localScale = new Vector3(0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement);
 
 
@@ -80,7 +80,6 @@ public class EnemyBrain : MonoBehaviour {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
             if (!hasTriggeredDrop)
             {
-                print("destroyed ship at position  " + transform.position);
                 hasTriggeredDrop = true;
                 BoosterDrop(gene);
             }
@@ -299,6 +298,10 @@ public class EnemyBrain : MonoBehaviour {
         maxSpeed = gene[1] * 30;
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
+
+		if (bulletDamage < 0)
+			bulletDamage = 0;
+		bulletDamage+=2;
 
         playerSeekDistance = gene[3] * 40;
         playerFleeDistance = gene[4] * 40;
