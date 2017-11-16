@@ -135,7 +135,7 @@ public class PlayerControls : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Space) && !reloading) 
         {
         fire ();
-        source.PlayOneShot(ShootingSound, .2f);
+        source.PlayOneShot(ShootingSound, .05f);
         }
 	
         handleThrusterEffect();
