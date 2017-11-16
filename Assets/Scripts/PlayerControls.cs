@@ -134,7 +134,7 @@ public class PlayerControls : MonoBehaviour {
 
 		//changed colour based on gene (speed and bullet speed) information
 		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 225)/225, 20/225, 20/225, 0);
-		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(topSpeed, 500, 128)/225, 0, 0);
+		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(topSpeed, 500, 225)/225, 0, 0);
 		transform.GetChild(3).GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0, ValueRemapping(health, maxHealth, 225)/225, 0);
     }
 
