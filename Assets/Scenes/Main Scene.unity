@@ -756,7 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.297}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.128}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4978,6 +4978,11 @@ Prefab:
       propertyPath: ThrustersSound
       value: 
       objectReference: {fileID: 8300000, guid: 3ef98c872a832344186402ce93b64a11, type: 3}
+    - target: {fileID: 114357210009053346, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+        type: 2}
+      propertyPath: hitAlert
+      value: 
+      objectReference: {fileID: 573684268}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
