@@ -38,7 +38,6 @@ public class PlayerControls : MonoBehaviour {
 
 	int bullets = 200;
 
-	bool firing = false;
 	bool reloading = false;
 	float reloadProgress;
 	float reloadTime = 1.5f;
@@ -65,6 +64,13 @@ public class PlayerControls : MonoBehaviour {
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
+	
+		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
+			reloading = true;
+			reloadingText.text = "RELOADING";
+		}
+
+
 
 		if (health <= 0) {
 			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
@@ -120,7 +126,7 @@ public class PlayerControls : MonoBehaviour {
 		thrust(currentSpeed);
 		turn(currentTurn);
 
-		if (Input.GetKey(KeyCode.Space)) fire ();
+		if (Input.GetKey(KeyCode.Space) && !reloading) fire ();
 	
 
         handleThrusterEffect();
@@ -146,9 +152,7 @@ public class PlayerControls : MonoBehaviour {
 
 	public void fire()
 	{
-		
 		if (bullets <= 0) {
-			firing = false;
 			reloading = true;
 			reloadingText.text = "RELOADING";
 			return;

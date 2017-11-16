@@ -81,7 +81,6 @@ public class EnemyBrain : MonoBehaviour {
 			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
             if (!hasTriggeredDrop)
             {
-                print("destroyed ship at position  " + transform.position);
                 hasTriggeredDrop = true;
                 BoosterDrop(gene);
             }
