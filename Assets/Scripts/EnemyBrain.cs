@@ -67,13 +67,20 @@ public class EnemyBrain : MonoBehaviour {
 
         //change size based on the health value from the gene
         float scalingValueIncrement = ValueRemapping(gene[0], 9, 3); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
-        transform.localScale = new Vector3(0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement, 0.5f+scalingValueIncrement);
+        //scale the Thrusters
+        for (int childIndex=1; childIndex < 3; childIndex++)
+        {
+            transform.GetChild(childIndex).transform.localScale =
+                new Vector3(0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement);
+        }
+        //change the ship
+        transform.localScale = new Vector3(0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement);
 
 
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
         //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
-		if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
+        if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 		if (health <= 0) 
         {

@@ -13,7 +13,7 @@ public class GameOveHandler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         source = GetComponent<AudioSource>();
-		scoreText.text = "Score: " + StaticData.score;
+		scoreText.text = "Score: " + StaticData.score.ToString ("N0");
 	}
 
     // Update is called once per frame
