@@ -277,6 +277,8 @@ public class PlayerControls : MonoBehaviour {
 
 	void takeDamage(float damage)
 	{
+		if (damage <= 0)
+			return;
 		if (shields >= damage) {
 			shields -= damage;
 
