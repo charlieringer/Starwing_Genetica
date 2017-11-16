@@ -28,6 +28,8 @@ public class PlayerControls : MonoBehaviour {
 
 	public GameObject hitAlert;
 
+	Rigidbody rb;
+
 	public float currentSpeed = 0;
 	private float currentTurn = 0;
 
@@ -65,6 +67,7 @@ public class PlayerControls : MonoBehaviour {
 	void Start () {
 		maxHealth = health;
         source = GetComponent<AudioSource>();
+		rb = GetComponent<Rigidbody> ();
     }
 	
 	// Update is called once per frame
@@ -115,31 +118,34 @@ public class PlayerControls : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-
-		if (v < 0.001 && v > -0.001) {
-			currentSpeed = currentSpeed / decel;
-		} else {
-			currentSpeed += v * Time.fixedDeltaTime * accel;
-		}
-
-		if (h < 0.001 && h > -0.001) {
-			currentTurn = currentTurn / decel;
-		} else {
-			currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-		}
-
-		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
-		if(currentSpeed < 0) currentSpeed = 0;
+		rb.AddTorque (transform.up * h * turnSpeed);
+		rb.AddForce (transform.forward * v * accel);
 
 
-		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
-		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
-
-		if (currentTurn > maxTurn ) currentTurn = maxTurn;
-		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
-
-		thrust(currentSpeed);
-		turn(currentTurn);
+//		if (v < 0.001 && v > -0.001) {
+//			currentSpeed = currentSpeed / decel;
+//		} else {
+//			currentSpeed += v * Time.fixedDeltaTime * accel;
+//		}
+//
+//		if (h < 0.001 && h > -0.001) {
+//			currentTurn = currentTurn / decel;
+//		} else {
+//			currentTurn += h * Time.fixedDeltaTime * turnSpeed;
+//		}
+//
+//		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
+//		if(currentSpeed < 0) currentSpeed = 0;
+//
+//
+//		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
+//		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
+//
+//		if (currentTurn > maxTurn ) currentTurn = maxTurn;
+//		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
+//
+//		thrust(currentSpeed);
+//		turn(currentTurn);
 
 		if (Input.GetKey(KeyCode.Space) && !reloading) 
         {
@@ -253,8 +259,10 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			takeDamage (damage);
-			currentSpeed *= 0.8f;
-			currentTurn *= 0.8f;
+			//currentSpeed *= 0.8f;
+			//currentTurn *= 0.8f;
+			rb.velocity = rb.velocity*0.6f; //Vector3.zero;
+			rb.angularVelocity = rb.angularVelocity*0.6f;//Vector3.zero;
 			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}

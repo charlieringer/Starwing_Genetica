@@ -66,15 +66,15 @@ public class EnemyBrain : MonoBehaviour {
         transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
 
         //change size based on the health value from the gene
-        float scalingValueIncrement = ValueRemapping(gene[0], 9, 3); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
+        float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         //scale the Thrusters
         for (int childIndex=1; childIndex < 3; childIndex++)
         {
             transform.GetChild(childIndex).transform.localScale =
-                new Vector3(0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement);
+                new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
         }
         //change the ship
-        transform.localScale = new Vector3(0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement, 0.5f + scalingValueIncrement);
+        transform.localScale = new Vector3(01f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
 
 
         //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
@@ -301,7 +301,7 @@ public class EnemyBrain : MonoBehaviour {
     {
         gene = _genes;
 
-        health = (gene[0] * 30) + 40 ;
+        health = (gene[0] * 20) + 40 ;
         maxSpeed = gene[1] * 30;
         bulletSpeed = gene[2] * 75;
         bulletDamage = 10 - gene[2];
