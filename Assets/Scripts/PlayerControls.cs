@@ -44,7 +44,7 @@ public class PlayerControls : MonoBehaviour {
 	float reloadTime = 1.5f;
 
 	float fireRateTimer = 0f;
-	float fireRate = 0.1f;
+	float fireRate = 0.15f;
 	
 	void Awake(){}
     
