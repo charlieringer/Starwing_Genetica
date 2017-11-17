@@ -26,6 +26,8 @@ public class EnemyManager : MonoBehaviour {
     public GameObject waveCompleteWrapper;
 	public float playerScore;
 
+    public float currentWave = 1;
+
     public AudioClip WaveCompletedSound;
     public AudioSource source;
 
@@ -83,31 +85,15 @@ public class EnemyManager : MonoBehaviour {
 
     void SpawnInital (GameObject privateEnemy)
 	{
-		for (int i = 0; i < waveSize; i++) { 
-            // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-            GameObject newEnemy = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
-			newEnemy.GetComponent<EnemyBrain>().player = this.player;
-			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-
-			float[] rawGenes = new float[6];
-
-			for(int j = 0; j < rawGenes.Length; j++) rawGenes[j] = 1;
-			for (int j = 0; j < initalWavebudget; j++) {
-				int randomIndx = Random.Range (0, rawGenes.Length);
-				rawGenes [randomIndx]++;
-			}
-
-			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
-
-			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
-            enemies.Add(newEnemy); //adding all enemies created to the list
+		for (int i = 0; i < waveSize; i++) {
+            makeNewRandomEnemy(privateEnemy);
         }
     }
 
     public void SpawnGA(IDictionary<int, GAenemy> newGAPopulation)
     {//privateEnemy gameObj (see the other Spawn function) is replaced straight with the public enemy gameobject;
         //enemies = new List<GameObject>();
-
+        currentWave++;
         for (int i = 0; i < waveSize; i++)
         {
 
@@ -125,6 +111,29 @@ public class EnemyManager : MonoBehaviour {
 			Destroy (deadEnemies [i]);
 		}
         deadEnemies = new List<GameObject>();
+    }
+
+    void makeNewRandomEnemy(GameObject privateEnemy)
+    {
+        // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
+        GameObject newEnemy = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
+        newEnemy.GetComponent<EnemyBrain>().player = this.player;
+        newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
+
+        float[] rawGenes = new float[6];
+
+        for (int j = 0; j < rawGenes.Length; j++) rawGenes[j] = 1;
+        for (int j = 0; j < initalWavebudget; j++)
+        {
+            int randomIndx = Random.Range(0, rawGenes.Length);
+            rawGenes[randomIndx]++;
+        }
+
+        newEnemy.GetComponent<EnemyBrain>().setGenoPheno(rawGenes);
+
+        newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
+        enemies.Add(newEnemy); //adding all enemies created to the list
+
     }
 
     Vector3 GenerateRandomTransform(){
@@ -162,14 +171,16 @@ public class EnemyManager : MonoBehaviour {
         {
             ScaleFitnessVariables();
             IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(deadEnemies);
-           
-            //testing 
-            //foreach(GameObject en in deadEnemies)
-            //{
-            //    print (en.GetComponent<EnemyBrain>().timeAliveTimer+ "and dam: "+ en.GetComponent<EnemyBrain>().damageDealt);
-            //}
 
             SpawnGA(newPop);
+            if (currentWave % 2 == 1)
+            {
+                initalWavebudget +=2;
+                waveSize += 2;
+                makeNewRandomEnemy(enemy);
+                makeNewRandomEnemy(enemy);
+
+            }
             atEndOfWave = false;
             waveCompleteWrapper.SetActive(false);
 
