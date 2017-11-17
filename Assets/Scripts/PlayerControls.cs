@@ -103,7 +103,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 
 		if (reloading) {
-            source.PlayOneShot(ReloadSound, 0.2f);
+            source.PlayOneShot(ReloadSound, 0.1f);
 			if (reloadProgress > reloadTime) {
 				bullets = 200;
 				reloadProgress = 0f;
