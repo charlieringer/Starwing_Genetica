@@ -272,7 +272,7 @@ public class PlayerControls : MonoBehaviour {
 			shields += (collision.gameObject.GetComponent<Booster> ().boostAmount)*2;
 			if (shields >= 100) shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
-            source.PlayOneShot(ShieldBoosterSound, 2.0f);
+            source.PlayOneShot(ShieldBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 
@@ -280,7 +280,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			topSpeed += collision.gameObject.GetComponent<Booster> ().boostAmount;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
-            source.PlayOneShot(ThrustersBoosterSound, 2.0f);
+            source.PlayOneShot(ThrustersBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 
@@ -288,7 +288,7 @@ public class PlayerControls : MonoBehaviour {
 		{
 			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
-            source.PlayOneShot(LaserBoosterSound, 2.0f);
+            source.PlayOneShot(LaserBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 	}
