@@ -88,9 +88,8 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 	
-		if (!barrelRolling && (Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
-			doABarrelRoll ();
-
+		if (!barrelRolling && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X))) {
+				doABarrelRoll ();
 		}
 
 		if (barrelRolling)
@@ -348,7 +347,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		barrelRolling = true;
 		barrelRollTotalTurn = 0;
-		if(Input.GetKeyDown(KeyCode.Q))
+		if(Input.GetKeyDown(KeyCode.Z))
 		{
 			barrelRollRotation = -10;
 			barrelRollForce = 700;
