@@ -52,9 +52,14 @@ public class PlayerControls : MonoBehaviour {
 
 	bool reloading = false;
 	float reloadProgress;
-	float reloadTime = 1.5f;
+	float reloadTime = 1f;
 	float fireRateTimer = 0f;
 	float fireRate = 0.15f;
+
+	int barrelRollTotalTurn = 0;
+	int barrelRollForce = 0;
+	int barrelRollRotation = 0;
+	bool barrelRolling = false;
 	
 	void Awake()
 	{
@@ -83,6 +88,14 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 	
+		if (!barrelRolling && (Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
+			doABarrelRoll ();
+
+		}
+
+		if (barrelRolling)
+			continueToBarrelRoll ();
+
 		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
 			reloading = true;
 			reloadingText.text = "RELOADING";
@@ -192,13 +205,13 @@ public class PlayerControls : MonoBehaviour {
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletL, 2.0f);
+		Destroy (bulletL, 0.5f);
 
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, transform.rotation);
 		bulletR.GetComponent<Rigidbody> ().velocity = (bulletR.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
-        Destroy (bulletR, 2.0f);
+        Destroy (bulletR, 0.5f);
 
 	}
 
@@ -329,4 +342,33 @@ public class PlayerControls : MonoBehaviour {
 		return ((initialVal*targetHigh)/initialHigh);
 	}
 
+
+
+	private void doABarrelRoll()
+	{
+		barrelRolling = true;
+		barrelRollTotalTurn = 0;
+		if(Input.GetKeyDown(KeyCode.Q))
+		{
+			barrelRollRotation = -10;
+			barrelRollForce = 700;
+		} else {		
+			barrelRollRotation = 10;
+			barrelRollForce = -700;
+		}
+
+		continueToBarrelRoll ();
+
+
+	}
+
+	private void continueToBarrelRoll()
+	{
+		rb.AddForce (transform.right * barrelRollForce);
+		transform.GetChild(3).gameObject.transform.Rotate(0,0,barrelRollRotation);
+		barrelRollTotalTurn += barrelRollRotation;
+		if (barrelRollTotalTurn >= 360 || barrelRollTotalTurn <= -360) {
+			barrelRolling = false;
+		}
+	}
 }

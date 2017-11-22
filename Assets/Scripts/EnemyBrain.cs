@@ -224,7 +224,7 @@ public class EnemyBrain : MonoBehaviour {
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
                 bullets.Add(bullet);
-                Destroy(bullet, 2.0f);
+                Destroy(bullet, 0.5f);
             }
         }
     }
@@ -302,15 +302,15 @@ public class EnemyBrain : MonoBehaviour {
         gene = _genes;
 
         health = (gene[0] * 20) + 40 ;
-        maxSpeed = gene[1] * 30;
-        bulletSpeed = gene[2] * 75;
+        maxSpeed = gene[1] * 30 + 20;
+        bulletSpeed = gene[2] * 75 + 20;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)
 			bulletDamage = 0;
 		bulletDamage+=2;
 
-        playerSeekDistance = gene[3] * 40;
+        playerSeekDistance = gene[3] * 80;
         playerFleeDistance = gene[4] * 40;
         playerFleeBuffer = playerFleeDistance + 60;
         enemiesAvoidDistance = gene[5] * 16;
