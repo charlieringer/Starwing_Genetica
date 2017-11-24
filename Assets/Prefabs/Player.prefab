@@ -11,21 +11,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1378946538589800}
   m_IsPrefabParent: 1
---- !u!1 &1218390125434408
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4823946422730512}
-  m_Layer: 0
-  m_Name: RightBarrel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1253833833516512
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,21 +84,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1472403324012326
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4138707187685936}
-  m_Layer: 0
-  m_Name: LeftBarrel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1578304177285146
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +144,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4101725505560246
 Transform:
@@ -187,27 +157,12 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4381864949112946}
-  - {fileID: 4138707187685936}
   - {fileID: 4348260105608802}
   - {fileID: 4303762855723932}
   - {fileID: 4368977369285420}
   - {fileID: 4076885140882826}
-  - {fileID: 4823946422730512}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4138707187685936
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1472403324012326}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4303762855723932
 Transform:
@@ -221,7 +176,7 @@ Transform:
   m_Children:
   - {fileID: 4880590203462480}
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4348260105608802
 Transform:
@@ -234,7 +189,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4368977369285420
 Transform:
@@ -247,7 +202,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4381864949112946
 Transform:
@@ -261,19 +216,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4101725505560246}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4823946422730512
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1218390125434408}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4101725505560246}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4880590203462480
 Transform:
@@ -542,23 +484,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topSpeed: 400
-  decel: 10
-  accel: 150
-  turnSpeed: 300
-  maxTurn: 100
+  accel: 0
   health: 700
   maxHealth: 700
-  bulletDamage: 50
-  bulletSpeed: 600
+  bulletDamage: 0
+  bulletSpeed: 1
   bulletPreFab: {fileID: 136330, guid: 9a0c3383523899643a8d0661cfaca4e4, type: 2}
   pauseManager: {fileID: 0}
   LThruster: {fileID: 1965373799360104}
   RThruster: {fileID: 1253833833516512}
-  leftBarrel: {fileID: 1472403324012326}
-  rightBarrel: {fileID: 1218390125434408}
+  LBarrel: {fileID: 0}
+  RBarrel: {fileID: 0}
   hitAlert: {fileID: 0}
-  currentSpeed: 0
   playerHealthBar: {fileID: 0}
   playerShieldBar: {fileID: 0}
   bulletText: {fileID: 0}
@@ -571,7 +508,7 @@ MonoBehaviour:
   Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
   Death: {fileID: 8300000, guid: 6015a80d434fea54586ee9a095d0dae5, type: 3}
   ReloadSound: {fileID: 8300000, guid: 6849bfc6db989b94d9ca42582b51cdb4, type: 3}
-  source: {fileID: 0}
+  source: {fileID: 82225353495790106}
 --- !u!114 &114496609633221982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -645,7 +582,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1548422520
+  randomSeed: -630485381
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3962,7 +3899,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -363075860
+  randomSeed: 271297585
   InitialModule:
     serializedVersion: 3
     enabled: 1

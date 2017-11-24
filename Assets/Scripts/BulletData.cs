@@ -8,6 +8,7 @@ public class BulletData : MonoBehaviour {
 	public string parentShip = "";
 	public GameObject parent;
 	public GameObject sparksPrefab;
+	public GameObject laserPiecesPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +31,12 @@ public class BulletData : MonoBehaviour {
 		GameObject sparks = Instantiate (sparksPrefab, transform.position, transform.rotation);
 		var sparksParticles = sparks.GetComponent<ParticleSystem>();
 		sparksParticles.Play();
+		Destroy (sparks, 0.5f);
+
+		GameObject laser = Instantiate (laserPiecesPrefab, transform.position, transform.rotation);
+		var laserParticles = sparks.GetComponent<ParticleSystem>();
+		laserParticles.Play();
+		Destroy (laser, 0.5f);
 	}
 
 }

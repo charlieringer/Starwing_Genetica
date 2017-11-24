@@ -44,8 +44,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	public List<GameObject> otherEnemies;
 
-	List<GameObject> bullets = new List<GameObject>();
-
 	public float timeAliveTimer;
 	private bool timerStarted;
 
@@ -77,8 +75,6 @@ public class EnemyBrain : MonoBehaviour {
         transform.localScale = new Vector3(01f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
 
 
-        //transform.GetChild(0).gameObject.GetComponent<Transform>().ro
-        //    .localScale = new Vector3(1+scalingValueIncrement, 1+scalingValueIncrement, 1+scalingValueIncrement);
 
         if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
@@ -132,7 +128,7 @@ public class EnemyBrain : MonoBehaviour {
     public void seekTarget()
     {
 
-        Vector3 targetPrediction = target.normalized * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime;
+        Vector3 targetPrediction = target.normalized * 0 * playerPathPredictionAmount * Time.fixedDeltaTime;
         Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
@@ -153,7 +149,6 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity *= 1 - decel;
         currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
-        //transform.position.y = 0f;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
 
@@ -212,18 +207,18 @@ public class EnemyBrain : MonoBehaviour {
     {
         if (Time.time > timeLastFired + fireSpeed)
         {
-            Vector3 dirFromAtoB = (transform.position - (target + target * player.GetComponent<PlayerControls>().currentSpeed * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
+            Vector3 dirFromAtoB = (transform.position - (target + target * 0 * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd > 0.97)
+            if (dotProd > 0.95)
             {
                 timeLastFired = Time.time;
                 GameObject bullet = Instantiate(bulletPreFab, transform.position, transform.rotation);
-                bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * -bulletSpeed - GetComponent<Rigidbody>().velocity;
+				bullet.transform.localScale = new Vector3(ValueRemapping(bulletDamage, 10, 0.6f), ValueRemapping(bulletDamage, 10, 0.6f), ValueRemapping(bulletDamage, 10, 0.6f));
+				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
-                bullets.Add(bullet);
                 Destroy(bullet, 0.5f);
             }
         }
@@ -237,9 +232,7 @@ public class EnemyBrain : MonoBehaviour {
             stateMachine.changeState(new Seeking());
         }
     }
-
-
-
+		
 
     public void checkRoamingLocationProximity()
     {
@@ -303,7 +296,9 @@ public class EnemyBrain : MonoBehaviour {
 
         health = (gene[0] * 20) + 40 ;
         maxSpeed = gene[1] * 30 + 20;
-        bulletSpeed = gene[2] * 75 + 20;
+        bulletSpeed = gene[2] * 100 + 20;
+		//bulletSpeed = gene[2] * 1 + 20;
+		//bulletSpeed = 1;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)
@@ -346,18 +341,18 @@ public class EnemyBrain : MonoBehaviour {
             if (BoosterType == 0) {
 				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			}
 			else if (BoosterType == 1) {
 				GameObject boosterDrop = Instantiate (SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			} else {
 				GameObject boosterDrop = Instantiate (WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			}
 
@@ -372,21 +367,21 @@ public class EnemyBrain : MonoBehaviour {
             {
                 GameObject boosterDrop = Instantiate(ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
                 boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 boosterDrop.transform.parent = null;
             }
             else if (BoosterType == 1)
             {
                 GameObject boosterDrop = Instantiate(SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
                 boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 boosterDrop.transform.parent = null;
             }
             else
             {
                 GameObject boosterDrop = Instantiate(WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
                 boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 boosterDrop.transform.parent = null;
             }
 
@@ -398,7 +393,7 @@ public class EnemyBrain : MonoBehaviour {
             {
 				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
 				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];
-				boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
             }  
 
@@ -420,6 +415,7 @@ public class EnemyBrain : MonoBehaviour {
 
     private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
     {
+		if(initialVal > initialHigh) return targetHigh;
         return ((initialVal*targetHigh)/initialHigh);
     }
 

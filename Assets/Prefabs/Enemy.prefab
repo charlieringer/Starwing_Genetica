@@ -328,7 +328,7 @@ MonoBehaviour:
   playerSeekDistance: 400
   playerFleeDistance: 80
   playerFleeBuffer: 140
-  fireSpeed: 0.1
+  fireSpeed: 0.15
   bulletSpeed: 400
   bulletDamage: 10
   enemiesAvoidDistance: 80

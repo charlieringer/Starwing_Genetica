@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 23413655970673650}
   - component: {fileID: 33991532425907612}
   - component: {fileID: 114153528862264166}
-  - component: {fileID: 114314659825166314}
   - component: {fileID: 108458258881380082}
   - component: {fileID: 54677160917908680}
   - component: {fileID: 114455251006949404}
@@ -157,17 +156,6 @@ MonoBehaviour:
   m_lineColor: {r: 1, g: 0, b: 0, a: 0}
   m_lineWidth: 66
   m_lightSaberFactor: 0.747
---- !u!114 &114314659825166314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1186724225514680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb039d3a64491f4ebfc852d25b5ee70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114455251006949404
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,6 +171,8 @@ MonoBehaviour:
   parentShip: Player
   parent: {fileID: 0}
   sparksPrefab: {fileID: 1255962717615014, guid: b24954599a77e4bb9a1fd2d7538e4d1e,
+    type: 2}
+  laserPiecesPrefab: {fileID: 1156310557624688, guid: 292f42d060531f242a7497b072dc350c,
     type: 2}
 --- !u!136 &136385813015328176
 CapsuleCollider:

@@ -6,11 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour {
     
-    public float topSpeed;
-	public float decel;
-	public float accel;
-	public float turnSpeed;
-    public float maxTurn;
+    public float accel;
+
 	public float health;
 	public float maxHealth;
 	private float shields = 0f;
@@ -23,15 +20,13 @@ public class PlayerControls : MonoBehaviour {
 
     public GameObject LThruster;
     public GameObject RThruster;
-    public GameObject leftBarrel;
-	public GameObject rightBarrel;
+
+	public GameObject LBarrel;
+	public GameObject RBarrel;
 
 	public GameObject hitAlert;
 
 	Rigidbody rb;
-
-	public float currentSpeed = 0;
-	private float currentTurn = 0;
 
 	public Image playerHealthBar;
 	public Image playerShieldBar;
@@ -57,15 +52,18 @@ public class PlayerControls : MonoBehaviour {
 	float fireRate = 0.15f;
 
 	int barrelRollTotalTurn = 0;
-	int barrelRollForce = 0;
-	int barrelRollRotation = 0;
+	float barrelRollForce = 0;
+	float barrelRollRotation = 0;
 	bool barrelRolling = false;
+
+	private float turnSpeed;
 	
 	void Awake()
 	{
 		maxHealth = StaticData.startingShipHealth;
 		bulletDamage = StaticData.startingShipDamage;
-		topSpeed = StaticData.startingShipSpeed;
+		accel = StaticData.startingShipSpeed;
+		turnSpeed = accel / 6f;
 	}
 
 	// Use this for initialization
@@ -80,9 +78,10 @@ public class PlayerControls : MonoBehaviour {
 		if (hitAlert.activeSelf) hitAlert.SetActive (false);
 
         //changed colour based on gene (speed and bullet speed) information
-		transform.GetChild(3).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 225)/225, 20/225, 20/225, 0);
-		transform.GetChild(3).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(topSpeed, 500, 225)/225, 0, 0);
-		transform.GetChild(3).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0, ValueRemapping(health, maxHealth, 225)/225, 0);
+		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 1), 0, 0, 0);
+		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(accel, 600, 1), 0, 0);
+		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0,ValueRemapping(shields, 100, 1), 0);
+		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[2].color = new Color(ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), 0);
 		updatePlayerHeathText();
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
@@ -92,8 +91,7 @@ public class PlayerControls : MonoBehaviour {
 				doABarrelRoll ();
 		}
 
-		if (barrelRolling)
-			continueToBarrelRoll ();
+		if (barrelRolling) continueToBarrelRoll ();
 
 		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
 			reloading = true;
@@ -130,34 +128,11 @@ public class PlayerControls : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
+
 		rb.AddTorque (transform.up * h * turnSpeed);
-		rb.AddForce (transform.forward * v * accel);
+		if(v > -0.001) rb.AddForce (transform.forward * v * -accel);
 
 
-//		if (v < 0.001 && v > -0.001) {
-//			currentSpeed = currentSpeed / decel;
-//		} else {
-//			currentSpeed += v * Time.fixedDeltaTime * accel;
-//		}
-//
-//		if (h < 0.001 && h > -0.001) {
-//			currentTurn = currentTurn / decel;
-//		} else {
-//			currentTurn += h * Time.fixedDeltaTime * turnSpeed;
-//		}
-//
-//		if (currentSpeed > topSpeed)currentSpeed = topSpeed;
-//		if(currentSpeed < 0) currentSpeed = 0;
-//
-//
-//		if (currentTurn > 0) currentTurn -= decel*10 * Time.fixedDeltaTime;
-//		else if (currentTurn < 0) currentTurn += decel*10 * Time.fixedDeltaTime;
-//
-//		if (currentTurn > maxTurn ) currentTurn = maxTurn;
-//		if (currentTurn < -maxTurn) currentTurn = -maxTurn;
-//
-//		thrust(currentSpeed);
-//		turn(currentTurn);
 
 		if (Input.GetKey(KeyCode.Space) && !reloading) 
         {
@@ -170,17 +145,6 @@ public class PlayerControls : MonoBehaviour {
 		
     }
 
-
-	private void thrust(float amount)
-	{
-		transform.position += transform.forward * Time.fixedDeltaTime * -amount;
-	}
-
-	private void turn(float amount)
-	{
-		float yaw = currentTurn * Time.fixedDeltaTime;
-		transform.Rotate (0, yaw, 0);
-	}
 
 	public void fire()
 	{
@@ -195,23 +159,23 @@ public class PlayerControls : MonoBehaviour {
 			return;
 		}
 		fireRateTimer = 0;
-
 		bullets -= 2;
-		Vector3 leftGun = leftBarrel.transform.position;
-		Vector3 rightGun = rightBarrel.transform.position;
+		Vector3 positon = transform.position;
+		Vector3 leftGun = LBarrel.transform.position;
+		Vector3 rightGun = RBarrel.transform.position;
 
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, transform.rotation);
-		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
+		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
 		Destroy (bulletL, 0.5f);
 
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, transform.rotation);
-		bulletR.GetComponent<Rigidbody> ().velocity = (bulletR.transform.forward * -bulletSpeed )+ GetComponent<Rigidbody>().velocity; 
+		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
+	
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
         Destroy (bulletR, 0.5f);
-
 	}
 
     public void handleThrusterEffect()
@@ -271,8 +235,6 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			takeDamage (damage);
-			//currentSpeed *= 0.8f;
-			//currentTurn *= 0.8f;
 			rb.velocity = rb.velocity*0.6f; //Vector3.zero;
 			rb.angularVelocity = rb.angularVelocity*0.6f;//Vector3.zero;
 			
@@ -290,7 +252,8 @@ public class PlayerControls : MonoBehaviour {
 
 		if(collision.gameObject.name.Contains("SpeedPowerup"))
 		{
-			topSpeed += collision.gameObject.GetComponent<Booster> ().boostAmount;
+			accel += collision.gameObject.GetComponent<Booster> ().boostAmount;
+			turnSpeed = accel / 6f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
             source.PlayOneShot(ThrustersBoosterSound, 1.0f);
             Destroy(collision.gameObject);
@@ -298,7 +261,7 @@ public class PlayerControls : MonoBehaviour {
 
 		if(collision.gameObject.name.Contains("WeaponPowerup"))
 		{
-			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.5f;
+			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.1f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
             source.PlayOneShot(LaserBoosterSound, 1.0f);
             Destroy(collision.gameObject);
@@ -349,11 +312,11 @@ public class PlayerControls : MonoBehaviour {
 		barrelRollTotalTurn = 0;
 		if(Input.GetKeyDown(KeyCode.Z)  || Input.GetKeyDown(KeyCode.Q))
 		{
-			barrelRollRotation = -10;
-			barrelRollForce = 700;
+			barrelRollRotation = -accel/50;
+			barrelRollForce = accel;
 		} else {		
-			barrelRollRotation = 10;
-			barrelRollForce = -700;
+			barrelRollRotation = accel/50;
+			barrelRollForce = -accel;
 		}
 
 		continueToBarrelRoll ();
@@ -364,9 +327,10 @@ public class PlayerControls : MonoBehaviour {
 	private void continueToBarrelRoll()
 	{
 		rb.AddForce (transform.right * barrelRollForce);
-		transform.GetChild(3).gameObject.transform.Rotate(0,0,barrelRollRotation);
-		barrelRollTotalTurn += barrelRollRotation;
+		transform.GetChild(2).gameObject.transform.Rotate(0,0,barrelRollRotation);
+		barrelRollTotalTurn += (int)barrelRollRotation;
 		if (barrelRollTotalTurn >= 360 || barrelRollTotalTurn <= -360) {
+			transform.GetChild(2).gameObject.transform.rotation = new Quaternion(0,0,0,0) ;
 			barrelRolling = false;
 		}
 	}
