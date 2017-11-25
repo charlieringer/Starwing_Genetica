@@ -14,6 +14,6 @@ public class MiniMapController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		Vector3 targetLoc = target.transform.position;
-		this.transform.position = new Vector3 (targetLoc.x, 800 , targetLoc.z);
+		this.transform.position = new Vector3 (targetLoc.x, 4000 , targetLoc.z);
 	}
 }

@@ -30,6 +30,7 @@ public class PlayerControls : MonoBehaviour {
 
 	public Image playerHealthBar;
 	public Image playerShieldBar;
+	public Image playerRollBar;
 
 	public Text bulletText;
 	public Text reloadingText;
@@ -50,6 +51,9 @@ public class PlayerControls : MonoBehaviour {
 	float reloadTime = 1f;
 	float fireRateTimer = 0f;
 	float fireRate = 0.15f;
+
+	float barrelRollCharge = 200;
+	public float barrelRollCost = 20;
 
 	int barrelRollTotalTurn = 0;
 	float barrelRollForce = 0;
@@ -87,9 +91,13 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 	
-		if (!barrelRolling && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
+		if (!barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
 				doABarrelRoll ();
 		}
+
+		barrelRollCharge += Time.fixedDeltaTime * 4;
+		if (barrelRollCharge > 200)
+			barrelRollCharge = 200;
 
 		if (barrelRolling) continueToBarrelRoll ();
 
@@ -272,6 +280,7 @@ public class PlayerControls : MonoBehaviour {
 	 {
 		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
 		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
+		playerRollBar.rectTransform.sizeDelta = new Vector2((barrelRollCharge/200) *110f , 15);
 		bulletText.text = bullets + "/200";
 	 }
 
@@ -318,7 +327,7 @@ public class PlayerControls : MonoBehaviour {
 			barrelRollRotation = accel/50;
 			barrelRollForce = -accel;
 		}
-
+		barrelRollCharge -= barrelRollCost;
 		continueToBarrelRoll ();
 
 

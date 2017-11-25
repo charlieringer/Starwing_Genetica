@@ -60,9 +60,9 @@ public class EnemyBrain : MonoBehaviour {
 		
 	void FixedUpdate() {
 		//changed colour based on gene (speed and bullet speed) information
-        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 225)/225, 20/225, 20/225, 225/225);
-        transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(225/225, ValueRemapping(gene[2], 9, 225)/225, 0, 225/225);
-
+		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 1f), ValueRemapping(gene[1], 9, 0f), ValueRemapping(gene[1], 9, 0f), 1);
+		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(ValueRemapping(gene[2], 9, 0f), ValueRemapping(gene[2], 9, 1f), ValueRemapping(gene[2], 9, 0f), 1);
+		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(0.5f, 0.5f, 0.5f, 1);
         //change size based on the health value from the gene
         float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         //scale the Thrusters
@@ -128,7 +128,7 @@ public class EnemyBrain : MonoBehaviour {
     public void seekTarget()
     {
 
-        Vector3 targetPrediction = target.normalized * 0 * playerPathPredictionAmount * Time.fixedDeltaTime;
+		Vector3 targetPrediction = target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime;
         Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
 
         float arriveDistance = Vector3.Distance(target, transform.position);
@@ -207,10 +207,10 @@ public class EnemyBrain : MonoBehaviour {
     {
         if (Time.time > timeLastFired + fireSpeed)
         {
-            Vector3 dirFromAtoB = (transform.position - (target + target * 0 * playerPathPredictionAmount * Time.fixedDeltaTime)).normalized;
+			Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
             float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd > 0.95)
+            if (dotProd > 0.97)
             {
                 timeLastFired = Time.time;
                 GameObject bullet = Instantiate(bulletPreFab, transform.position, transform.rotation);
