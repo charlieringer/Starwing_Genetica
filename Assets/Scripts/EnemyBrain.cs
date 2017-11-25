@@ -219,7 +219,7 @@ public class EnemyBrain : MonoBehaviour {
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
-                Destroy(bullet, 0.5f);
+				Destroy(bullet, bulletSpeed/500);
             }
         }
     }
