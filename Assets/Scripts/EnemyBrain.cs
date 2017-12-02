@@ -213,13 +213,13 @@ public class EnemyBrain : MonoBehaviour {
             if (dotProd > 0.97)
             {
                 timeLastFired = Time.time;
-                GameObject bullet = Instantiate(bulletPreFab, transform.position, transform.rotation);
-				bullet.transform.localScale = new Vector3(ValueRemapping(bulletDamage, 10, 0.6f), ValueRemapping(bulletDamage, 10, 0.6f), ValueRemapping(bulletDamage, 10, 0.6f));
+				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
+				bullet.transform.localScale = new Vector3(ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f));
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
-				Destroy(bullet, bulletSpeed/500);
+				Destroy(bullet, 500f/bulletSpeed);
             }
         }
     }
@@ -295,17 +295,15 @@ public class EnemyBrain : MonoBehaviour {
         gene = _genes;
 
         health = (gene[0] * 20) + 40 ;
-        maxSpeed = gene[1] * 30 + 20;
-        bulletSpeed = gene[2] * 100 + 20;
-		//bulletSpeed = gene[2] * 1 + 20;
-		//bulletSpeed = 1;
+        maxSpeed = gene[1] * 50 + 20;
+        bulletSpeed = gene[2] * 200 + 20;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)
 			bulletDamage = 0;
 		bulletDamage+=2;
 
-        playerSeekDistance = gene[3] * 80;
+        playerSeekDistance = gene[3] * 80 + 40;
         playerFleeDistance = gene[4] * 40;
         playerFleeBuffer = playerFleeDistance + 60;
         enemiesAvoidDistance = gene[5] * 16;
