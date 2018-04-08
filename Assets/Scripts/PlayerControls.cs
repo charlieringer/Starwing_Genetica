@@ -21,10 +21,14 @@ public class PlayerControls : MonoBehaviour {
     public GameObject LThruster;
     public GameObject RThruster;
 
+	public GameObject smoke;
+
 	public GameObject LBarrel;
 	public GameObject RBarrel;
 
 	public GameObject hitAlert;
+
+	public GameObject shield;
 
 	Rigidbody rb;
 
@@ -79,7 +83,8 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (hitAlert.activeSelf) hitAlert.SetActive (false);
+		if (hitAlert.activeSelf)
+			hitAlert.SetActive (false);
 
         //changed colour based on gene (speed and bullet speed) information
 		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 1), 0, 0, 0);
@@ -107,6 +112,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 
 		if (health <= 0) {
+			shield.GetComponent<MeshRenderer> ().material.color = new Color (0f,0f,0f,0f);
             source.PlayOneShot(Death, .1f);
             transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
 			GetComponent<Rigidbody>().useGravity = true;
@@ -150,7 +156,13 @@ public class PlayerControls : MonoBehaviour {
 	
         handleThrusterEffect();
 
-		
+		shield.GetComponent<MeshRenderer> ().material.color = new Color (0.1f, 0.78f, 0.85f, (float)((shields / 100) * 0.33));
+
+
+		ParticleSystem smokeParticle = smoke.GetComponent<ParticleSystem>();
+		var particles = smokeParticle.emission;
+		Debug.Log (1 - (health / maxHealth));
+		particles.rateOverTime = (1-(health/maxHealth))*25.0f;
     }
 
 
@@ -176,14 +188,14 @@ public class PlayerControls : MonoBehaviour {
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletL, 0.5f);
+		Destroy (bulletL, 0.75f);
 
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, transform.rotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 	
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
-        Destroy (bulletR, 0.5f);
+        Destroy (bulletR, 0.75f);
 	}
 
     public void handleThrusterEffect()
@@ -286,20 +298,22 @@ public class PlayerControls : MonoBehaviour {
 
 	void takeDamage(float damage)
 	{
-		hitAlert.SetActive (true);
 		if (damage <= 0)
 			return;
+		source.PlayOneShot(Hit, .2f);
+
+
+
+		if(shields > 0)shield.GetComponent<MeshRenderer> ().material.color = new Color (0.1f, 0.78f, 0.85f, 0.75f);
+		else hitAlert.SetActive (true);
 		if (shields >= damage) {
-            source.PlayOneShot(Hit, .2f);
 			shields -= damage;
 
 		} else if (shields > 0) {
-            source.PlayOneShot(Hit, .2f);
 			health -= (damage - shields);
 			shields = 0f;
         }
         else {
-            source.PlayOneShot(Hit, .2f);
             health -= damage;
 		}
 		if (shields >= 100)

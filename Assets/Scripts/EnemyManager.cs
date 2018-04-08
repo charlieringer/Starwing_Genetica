@@ -18,15 +18,17 @@ public class EnemyManager : MonoBehaviour {
 	public int initalWavebudget;
     public Text shipsRemainingText;
     public Text waveCompleteText;
+	public Text waveStartText;
 	public Text playerScoreText;
     //check health. make the enemy die;
 
     private float timeTillNextWave;
     private bool atEndOfWave = false;
     public GameObject waveCompleteWrapper;
+	public GameObject startWaveWrapper;
 	public float playerScore;
 
-    public float currentWave = 1;
+    public int currentWave = 0;
 
     public AudioClip WaveCompletedSound;
     public AudioSource source;
@@ -37,11 +39,17 @@ public class EnemyManager : MonoBehaviour {
         //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
-        SpawnInital(enemy);
+
 	}
 
     private void Update()
     {
+		if (currentWave == 0) {
+			updateInitalWave();
+			writeShipsRemianing();
+			writePlayerScore ();
+			return;
+		}
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
         //print("enemies.Count:" + enemies.Count);
@@ -155,6 +163,24 @@ public class EnemyManager : MonoBehaviour {
 	private void writePlayerScore()
 	{
 		playerScoreText.text = playerScore.ToString("N0");
+	}
+
+	private void updateInitalWave()
+	{
+		if (!startWaveWrapper.activeSelf)
+		{
+			timeTillNextWave = 3f;
+			startWaveWrapper.SetActive( true);
+		} 
+
+		if(timeTillNextWave < 0.0001)
+		{
+			SpawnInital (enemy);
+			currentWave = 1;
+			startWaveWrapper.SetActive(false);
+		}
+		waveStartText.text = timeTillNextWave.ToString("N0");
+		timeTillNextWave -= Time.deltaTime;
 	}
 
     private void updateEndOfWave()

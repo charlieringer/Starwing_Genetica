@@ -17,13 +17,6 @@ public class GAmanager : MonoBehaviour {
   
         // Use this for initialization
     void Start () {
-       if (isTesting)
-        {
-            string path = "test.txt";
-
-            writer = System.IO.File.AppendText(path);
-            writer = new StreamWriter(path, true);
-        } 
        
     }
 	
