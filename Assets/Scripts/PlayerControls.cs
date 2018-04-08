@@ -11,7 +11,7 @@ public class PlayerControls : MonoBehaviour {
 	public float health;
 	public float maxHealth;
 	private float shields = 0f;
-
+	private int damageLevel = 0;
 	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
@@ -86,11 +86,12 @@ public class PlayerControls : MonoBehaviour {
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
 
+
         //changed colour based on gene (speed and bullet speed) information
-		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 1), 0, 0, 0);
-		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(accel, 600, 1), 0, 0);
-		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0,ValueRemapping(shields, 100, 1), 0);
-		transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[2].color = new Color(ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), 0);
+		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 1), 0, 0, 0);
+		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(accel, 600, 1), 0, 0);
+		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0,ValueRemapping(shields, 100, 1), 0);
+		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[2].color = new Color(ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), 0);
 		updatePlayerHeathText();
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
@@ -158,6 +159,26 @@ public class PlayerControls : MonoBehaviour {
 
 		shield.GetComponent<MeshRenderer> ().material.color = new Color (0.1f, 0.78f, 0.85f, (float)((shields / 100) * 0.33));
 
+
+		if ((health / maxHealth) < 0.75 && damageLevel == 0) {
+			damageLevel += 1;
+			transform.GetChild (9).GetChild (0).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (2).GetChild (0).gameObject.SetActive (false);
+		}if ((health / maxHealth) < 0.5  && damageLevel == 1) {
+			damageLevel += 1;
+			transform.GetChild (9).GetChild (1).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (2).GetChild (1).gameObject.SetActive (false);
+		}if ((health / maxHealth) < 0.25 && damageLevel == 2)
+		{
+			damageLevel += 1;
+			transform.GetChild (9).GetChild (3).GetComponent<ParticleSystem>().Play();
+			transform.GetChild (2).GetChild (3).gameObject.SetActive (false);
+		}if ((health / maxHealth) < 0.1 && damageLevel == 3) {
+			damageLevel += 1;
+			transform.GetChild (9).GetChild (2).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (2).GetChild (2).gameObject.SetActive (false);
+
+		}
 
 		ParticleSystem smokeParticle = smoke.GetComponent<ParticleSystem>();
 		var particles = smokeParticle.emission;
