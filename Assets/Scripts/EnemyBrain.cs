@@ -72,7 +72,7 @@ public class EnemyBrain : MonoBehaviour {
         for (int childIndex=1; childIndex < 3; childIndex++)
         {
 			transform.GetChild (activeModel).GetChild(childIndex).transform.localScale =
-                new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
+				new Vector3(0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f);
         }
         //change the ship
         transform.localScale = new Vector3(01f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);

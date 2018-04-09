@@ -34,7 +34,7 @@ public class DummyAI : MonoBehaviour  {
 
 	public void pickRandomRoamingTarget()
 	{
-		target = new Vector3((int)(random.Next(800)) - 400 + 400, 0, (int)(random.Next(800)) - 400);
+		target = new Vector3((int)(random.Next(800)) - 400 + 400, transform.position.y, (int)(random.Next(800)) - 400);
 	}
 
 	public void roamToTarget()

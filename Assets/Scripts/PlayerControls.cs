@@ -63,6 +63,10 @@ public class PlayerControls : MonoBehaviour {
 	float barrelRollForce = 0;
 	float barrelRollRotation = 0;
 	bool barrelRolling = false;
+	bool uturning = false;
+
+	int specialCharges = 100;
+	int specialManov = 0;
 
 	private float turnSpeed;
 	
@@ -97,8 +101,12 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 	
-		if (!barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
+		if (!uturning && !barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
 				doABarrelRoll ();
+		}
+
+		if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.F))) {
+			doAUTurn ();
 		}
 
 		barrelRollCharge += Time.fixedDeltaTime * 4;
@@ -106,6 +114,7 @@ public class PlayerControls : MonoBehaviour {
 			barrelRollCharge = 200;
 
 		if (barrelRolling) continueToBarrelRoll ();
+		if (uturning) continueToUTurn ();
 
 		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
 			reloading = true;
@@ -162,20 +171,20 @@ public class PlayerControls : MonoBehaviour {
 
 		if ((health / maxHealth) < 0.75 && damageLevel == 0) {
 			damageLevel += 1;
-			transform.GetChild (9).GetChild (0).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (7).GetChild (0).GetComponent<ParticleSystem> ().Play ();
 			transform.GetChild (2).GetChild (0).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.5  && damageLevel == 1) {
 			damageLevel += 1;
-			transform.GetChild (9).GetChild (1).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (7).GetChild (1).GetComponent<ParticleSystem> ().Play ();
 			transform.GetChild (2).GetChild (1).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.25 && damageLevel == 2)
 		{
 			damageLevel += 1;
-			transform.GetChild (9).GetChild (3).GetComponent<ParticleSystem>().Play();
+			transform.GetChild (7).GetChild (3).GetComponent<ParticleSystem>().Play();
 			transform.GetChild (2).GetChild (3).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.1 && damageLevel == 3) {
 			damageLevel += 1;
-			transform.GetChild (9).GetChild (2).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (7).GetChild (2).GetComponent<ParticleSystem> ().Play ();
 			transform.GetChild (2).GetChild (2).gameObject.SetActive (false);
 
 		}
@@ -230,32 +239,32 @@ public class PlayerControls : MonoBehaviour {
 
         if (v == 0 && h == 0)
         {
-            LeftEmission.rateOverTime = 100.0f;
-            RightEmission.rateOverTime = 100.0f;
+            LeftEmission.rateOverTime = 10.0f;
+            RightEmission.rateOverTime = 10.0f;
         }
         else if (v > 0 && h == 0)
         {
-            LeftEmission.rateOverTime = 400.0f;
-            RightEmission.rateOverTime = 400.0f;
+            LeftEmission.rateOverTime = 1000.0f;
+            RightEmission.rateOverTime = 1000.0f;
         }
         else if (v > 0 && h < 0)
         {
-            LeftEmission.rateOverTime = 100.0f;
-            RightEmission.rateOverTime = 400.0f;
+            LeftEmission.rateOverTime = 600.0f;
+            RightEmission.rateOverTime = 2000.0f;
         }
         else if (v > 0 && h > 0)
         {
-            LeftEmission.rateOverTime = 400.0f;
-            RightEmission.rateOverTime = 100.0f;
+            LeftEmission.rateOverTime = 2000.0f;
+            RightEmission.rateOverTime = 600.0f;
         }
         else if (v == 0 && h > 0)
         {
             LeftEmission.rateOverTime = 400.0f;
-            RightEmission.rateOverTime = 100.0f;
+            RightEmission.rateOverTime = 10.0f;
         }
         else if (v == 0 && h < 0)
         {
-            LeftEmission.rateOverTime = 100.0f;
+            LeftEmission.rateOverTime = 10.0f;
             RightEmission.rateOverTime = 400.0f;
         }
     }
@@ -323,7 +332,6 @@ public class PlayerControls : MonoBehaviour {
 		source.PlayOneShot(Hit, .2f);
 
 
-
 		if(shields > 0)shield.GetComponent<MeshRenderer> ().material.color = new Color (0.1f, 0.78f, 0.85f, 0.75f);
 		else hitAlert.SetActive (true);
 		if (shields >= damage) {
@@ -338,6 +346,8 @@ public class PlayerControls : MonoBehaviour {
 		}
 		if (shields >= 100)
 			shields = 100;
+		transform.GetChild (8).GetComponent<ParticleSystem> ().Play ();
+		
 	}
 
 	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
@@ -346,9 +356,7 @@ public class PlayerControls : MonoBehaviour {
 			return targetHigh;
 		return ((initialVal*targetHigh)/initialHigh);
 	}
-
-
-
+		
 	private void doABarrelRoll()
 	{
 		barrelRolling = true;
@@ -375,6 +383,33 @@ public class PlayerControls : MonoBehaviour {
 		if (barrelRollTotalTurn >= 360 || barrelRollTotalTurn <= -360) {
 			transform.GetChild(2).gameObject.transform.rotation = new Quaternion(0,0,0,0) ;
 			barrelRolling = false;
+		}
+	}
+
+	private void doAUTurn()
+	{
+		uturning = true;
+		barrelRollTotalTurn = 0;
+
+		barrelRollRotation = -accel/50;
+		barrelRollForce = accel;
+
+		specialCharges -= 1;
+		continueToUTurn ();
+	}
+
+	private void continueToUTurn()
+	{
+		rb.AddForce (transform.right * barrelRollForce);
+		rb.AddForce (transform.forward * barrelRollForce);
+		transform.GetChild(2).gameObject.transform.Rotate(0,0,barrelRollRotation);
+		transform.GetChild(2).gameObject.transform.Rotate(barrelRollRotation,0,0);
+		barrelRollTotalTurn += (int)barrelRollRotation;
+		if (barrelRollTotalTurn >= 180 || barrelRollTotalTurn <= -180) {
+			transform.RotateAround (transform.position, transform.up, 180f);;
+			transform.GetChild(2).gameObject.transform.rotation = new Quaternion(0,0,0,0);
+
+			uturning = false;
 		}
 	}
 }
