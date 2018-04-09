@@ -182,8 +182,7 @@ public class PlayerControls : MonoBehaviour {
 
 		ParticleSystem smokeParticle = smoke.GetComponent<ParticleSystem>();
 		var particles = smokeParticle.emission;
-		Debug.Log (1 - (health / maxHealth));
-		particles.rateOverTime = (1-(health/maxHealth))*25.0f;
+		particles.rateOverTime = (1-(health/maxHealth))*15.0f;
     }
 
 

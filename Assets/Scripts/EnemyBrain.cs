@@ -49,9 +49,12 @@ public class EnemyBrain : MonoBehaviour {
 
     private bool hasTriggeredDrop = false;
 
+	private int activeModel;
+
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
+
     }
 		
 	void Update () {
@@ -60,15 +63,15 @@ public class EnemyBrain : MonoBehaviour {
 		
 	void FixedUpdate() {
 		//changed colour based on gene (speed and bullet speed) information
-		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 1f), ValueRemapping(gene[1], 9, 0f), ValueRemapping(gene[1], 9, 0f), 1);
-		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(ValueRemapping(gene[2], 9, 0f), ValueRemapping(gene[2], 9, 1f), ValueRemapping(gene[2], 9, 0f), 1);
-		transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(0.5f, 0.5f, 0.5f, 1);
+		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 1f), ValueRemapping(gene[1], 9, 0f), ValueRemapping(gene[1], 9, 0f), 1);
+		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(ValueRemapping(gene[2], 9, 0f), ValueRemapping(gene[2], 9, 1f), ValueRemapping(gene[2], 9, 0f), 1);
+		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(0.5f, 0.5f, 0.5f, 1);
         //change size based on the health value from the gene
         float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         //scale the Thrusters
         for (int childIndex=1; childIndex < 3; childIndex++)
         {
-            transform.GetChild(childIndex).transform.localScale =
+			transform.GetChild (activeModel).GetChild(childIndex).transform.localScale =
                 new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
         }
         //change the ship
@@ -282,12 +285,7 @@ public class EnemyBrain : MonoBehaviour {
             health -= damage;
             Destroy(collision.gameObject);
         }
-
-        if (collision.gameObject.name == "Enemy(Clone)")
-        {
-            //health = 0;
-            //collision.gameObject.GetComponent<EnemyBrain>().health = 0;
-        }
+			
     }
 
     public void setGenoPheno(float[] _genes)
@@ -296,7 +294,7 @@ public class EnemyBrain : MonoBehaviour {
 
         health = (gene[0] * 20) + 40 ;
         maxSpeed = gene[1] * 50 + 20;
-        bulletSpeed = gene[2] * 200 + 20;
+        bulletSpeed = gene[2] * 200 + 60;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)
@@ -307,6 +305,15 @@ public class EnemyBrain : MonoBehaviour {
         playerFleeDistance = gene[4] * 40;
         playerFleeBuffer = playerFleeDistance + 60;
         enemiesAvoidDistance = gene[5] * 16;
+
+
+		if (gene [0] > gene [1] && gene [0] > gene [2])
+			activeModel = 0;
+		else if (gene [1] > gene [2])
+			activeModel = 1;
+		else
+			activeModel = 2;
+		transform.GetChild (activeModel).gameObject.SetActive (true); 
     }
 
     public void BoosterDrop(float[] _genes)
