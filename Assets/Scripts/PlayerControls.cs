@@ -69,7 +69,10 @@ public class PlayerControls : MonoBehaviour {
 	bool uturning = false;
 
 	int specialCharges = 100;
-	int specialManov = 0;
+	int specialManov = 2;
+
+	bool hasPlow = false;
+	float plowTimer = 0.0f;
 
 	private float turnSpeed;
 	
@@ -78,7 +81,12 @@ public class PlayerControls : MonoBehaviour {
 		maxHealth = StaticData.startingShipHealth;
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
+		specialManov = StaticData.startShipSpecial;
 		turnSpeed = accel / 6f;
+
+		if(specialManov == 0)transform.GetChild (2).GetChild (6).gameObject.SetActive (true);
+		if(specialManov == 1)transform.GetChild (2).GetChild (7).gameObject.SetActive (true);
+		if(specialManov == 2)transform.GetChild (2).GetChild (8).gameObject.SetActive (true);
 	}
 
 	// Use this for initialization
@@ -169,12 +177,32 @@ public class PlayerControls : MonoBehaviour {
         fire ();
         source.PlayOneShot(ShootingSound, .02f);
         }
-		if (Input.GetKey(KeyCode.T) && !reloading && rocketCoolDown == 0) 
+		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
 		{
 			fireRocket ();
 			rocketCoolDown = 1.5f;
+			specialCharges -= 1;
 			source.PlayOneShot(ShootingSound, .02f);
 		}
+
+		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && specialManov == 2 && hasPlow == false && specialCharges > 0) 
+		{
+			hasPlow = true;
+			specialCharges -= 1;
+			plowTimer = 5;
+			transform.GetChild (2).GetChild (8).GetChild (0).gameObject.SetActive (true);
+			transform.GetChild (2).GetChild (8).GetChild (1).gameObject.SetActive (true);
+		}
+
+		if (hasPlow) {
+			plowTimer -= Time.deltaTime;
+			if (plowTimer <= 0) {
+				hasPlow = false;
+				transform.GetChild (2).GetChild (8).GetChild (0).gameObject.SetActive (false);
+				transform.GetChild (2).GetChild (8).GetChild (1).gameObject.SetActive (false);
+			}
+		}
+
 	
         handleThrusterEffect();
 
@@ -247,7 +275,7 @@ public class PlayerControls : MonoBehaviour {
 		positon.z += 25;
 
 		GameObject bulletL = Instantiate (rocketPreFab, positon, transform.rotation);
-		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * (-bulletSpeed*0.2f)) + GetComponent<Rigidbody>().velocity;
+		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * (-bulletSpeed*0.4f)) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
 		//Destroy (bulletL, 1.5f);
@@ -309,7 +337,7 @@ public class PlayerControls : MonoBehaviour {
 		if(collision.gameObject.name =="Enemy(Clone)")
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
-			takeDamage (damage);
+			if(!hasPlow)takeDamage (damage);
 			rb.velocity = rb.velocity*0.6f; //Vector3.zero;
 			rb.angularVelocity = rb.angularVelocity*0.6f;//Vector3.zero;
 			

@@ -13,7 +13,7 @@ public class RocketScript : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		timer += Time.deltaTime;
-		if (timer > 1.5)
+		if (timer > 2.5)
 			explode();
 	}
 
@@ -23,16 +23,16 @@ public class RocketScript : MonoBehaviour {
 		exp.Play();
 		Destroy(gameObject, exp.duration);
 
-		Collider[] others = Physics.OverlapSphere (transform.position, 150);
+		Collider[] others = Physics.OverlapSphere (transform.position, 300);
 
 		foreach (Collider obj in  others)
 		{
 			var brain = obj.GetComponent<EnemyBrain>();
 			if (brain != null)
 			{
-				float damage = 150 - Vector3.Distance (transform.position, obj.transform.position);
+				float damage = 300 - Vector3.Distance (transform.position, obj.transform.position);
 
-				brain.health -= damage*2;
+				brain.health -= damage;
 			}
 		}
 		var th = transform.GetChild (0).GetChild (0).GetComponent<ParticleSystem>();

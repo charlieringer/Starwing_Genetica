@@ -7,6 +7,7 @@ public class StaticData {
 	public static float startingShipHealth;
 	public static float startingShipDamage;
 	public static float startingShipSpeed;
+	public static int startShipSpecial;
 	public static float score;
 
 	// Use this for initialization

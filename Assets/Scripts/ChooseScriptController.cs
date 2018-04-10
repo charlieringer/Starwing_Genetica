@@ -12,6 +12,10 @@ public class ChooseScriptController : MonoBehaviour {
 	public GameObject selection2;
 	public GameObject selection3;
 
+	public GameObject ship1;
+	public GameObject ship2;
+	public GameObject ship3;
+
     public AudioClip ButtonSound;
     public AudioSource source;
 
@@ -46,24 +50,47 @@ public class ChooseScriptController : MonoBehaviour {
             source.PlayOneShot(ButtonSound, 0.5f);
         }
 
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			SceneManager.LoadScene ("Menu");
+		}
+
 		if(Input.GetKeyDown(KeyCode.Return))
 		{
 			if (currentSelection == 0) {
 				StaticData.startingShipHealth = 1200; //700;
-				StaticData.startingShipDamage = 100;//50;
-				StaticData.startingShipSpeed = 400;
+				StaticData.startingShipDamage = 50;//50;
+				StaticData.startingShipSpeed = 500;
+				StaticData.startShipSpecial = 1;
 			} else if (currentSelection == 1) {
 				StaticData.startingShipHealth = 800;//400;
-				StaticData.startingShipDamage = 50;//25;
-				StaticData.startingShipSpeed = 600;
+				StaticData.startingShipDamage = 100;//25;
+				StaticData.startingShipSpeed = 700;
+				StaticData.startShipSpecial = 2;
 			} else if (currentSelection == 2) {
 				StaticData.startingShipHealth = 1000;//550;
 				StaticData.startingShipDamage = 150;//75;
-				StaticData.startingShipSpeed = 500;
+				StaticData.startingShipSpeed = 400;
+				StaticData.startShipSpecial = 0;
 			}
 			SceneManager.LoadScene ("Main Scene");
             source.PlayOneShot(ButtonSound, .1f);
         }
+
+		if (currentSelection == 0) {
+			ship1.transform.transform.Rotate(0,Time.deltaTime*210, 0);
+			ship1.transform.transform.Rotate(Time.deltaTime*200,0, 0);
+			ship1.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+		}
+		if (currentSelection == 1) {
+			ship2.transform.transform.Rotate(0,Time.deltaTime*210, 0);
+			ship2.transform.transform.Rotate(Time.deltaTime*200,0, 0);
+			ship2.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+		}
+		if (currentSelection == 2) {
+			ship3.transform.transform.Rotate(0,Time.deltaTime*210, 0);
+			ship3.transform.transform.Rotate(Time.deltaTime*200,0, 0);
+			ship3.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+		}
 	}
 		
 }
