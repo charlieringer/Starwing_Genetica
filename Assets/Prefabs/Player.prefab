@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 33635171656426468}
   - component: {fileID: 23602213068947644}
   - component: {fileID: 64886269800555108}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: spaceCraft4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

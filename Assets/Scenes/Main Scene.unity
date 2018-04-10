@@ -1026,18 +1026,6 @@ Prefab:
       propertyPath: reloadingText
       value: 
       objectReference: {fileID: 2110226759}
-    - target: {fileID: 114402207601172972, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-        type: 2}
-      propertyPath: bulletPreFab
-      value: 
-      objectReference: {fileID: 1186724225514680, guid: 9a0c3383523899643a8d0661cfaca4e4,
-        type: 2}
-    - target: {fileID: 114402207601172972, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-        type: 2}
-      propertyPath: rocketPreFab
-      value: 
-      objectReference: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
