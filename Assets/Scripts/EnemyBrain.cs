@@ -283,10 +283,24 @@ public class EnemyBrain : MonoBehaviour {
             float damage = collision.gameObject.GetComponent<BulletData>().damage;
 			collision.gameObject.GetComponent<BulletData> ().explode ();
             health -= damage;
-            Destroy(collision.gameObject);
         }
-			
+
+		if (collision.gameObject.name.Contains("Rocket("))
+		{
+			collision.gameObject.GetComponent<RocketScript> ().explode ();
+		}
+
+
     }
+
+	void OnParticleCollision(GameObject other)
+	{
+		//if (other.name.Contains ("RocketExplosion")) {
+			health -= 100;
+			Debug.Log ("Boom");
+
+		//}
+	}
 
     public void setGenoPheno(float[] _genes)
     {

@@ -15,6 +15,7 @@ public class PlayerControls : MonoBehaviour {
 	public float bulletDamage;
 	public float bulletSpeed;
 	public GameObject bulletPreFab;
+	public GameObject rocketPreFab;
 
 	public GameObject pauseManager;
 
@@ -55,6 +56,8 @@ public class PlayerControls : MonoBehaviour {
 	float reloadTime = 1f;
 	float fireRateTimer = 0f;
 	float fireRate = 0.15f;
+
+	float rocketCoolDown = 0.0f;
 
 	float barrelRollCharge = 200;
 	public float barrelRollCost = 20;
@@ -116,6 +119,9 @@ public class PlayerControls : MonoBehaviour {
 		if (barrelRolling) continueToBarrelRoll ();
 		if (uturning) continueToUTurn ();
 
+		rocketCoolDown -= Time.deltaTime;
+		if (rocketCoolDown < 0)
+			rocketCoolDown = 0f;
 		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
 			reloading = true;
 			reloadingText.text = "RELOADING";
@@ -163,6 +169,12 @@ public class PlayerControls : MonoBehaviour {
         fire ();
         source.PlayOneShot(ShootingSound, .02f);
         }
+		if (Input.GetKey(KeyCode.T) && !reloading && rocketCoolDown == 0) 
+		{
+			fireRocket ();
+			rocketCoolDown = 1.5f;
+			source.PlayOneShot(ShootingSound, .02f);
+		}
 	
         handleThrusterEffect();
 
@@ -225,6 +237,20 @@ public class PlayerControls : MonoBehaviour {
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
         Destroy (bulletR, 0.75f);
+	}
+
+	public void fireRocket()
+	{
+		specialCharges -= 1;
+		Vector3 positon = transform.position;
+		positon.y -= 5;
+		positon.z += 25;
+
+		GameObject bulletL = Instantiate (rocketPreFab, positon, transform.rotation);
+		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * (-bulletSpeed*0.2f)) + GetComponent<Rigidbody>().velocity;
+		bulletL.GetComponent<BulletData>().damage = bulletDamage;
+		bulletL.GetComponent<BulletData>().parentShip = "Player";
+		//Destroy (bulletL, 1.5f);
 	}
 
     public void handleThrusterEffect()

@@ -2136,6 +2136,8 @@ MonoBehaviour:
   bulletSpeed: 1000
   bulletPreFab: {fileID: 1186724225514680, guid: 9a0c3383523899643a8d0661cfaca4e4,
     type: 2}
+  rocketPreFab: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035,
+    type: 2}
   pauseManager: {fileID: 0}
   LThruster: {fileID: 1493768041794076}
   RThruster: {fileID: 1105012207389276}
