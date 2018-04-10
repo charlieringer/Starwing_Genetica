@@ -31,6 +31,9 @@ public class PlayerControls : MonoBehaviour {
 
 	public GameObject shield;
 
+	public GameObject target;
+	public GameObject[] enemies;
+
 	Rigidbody rb;
 
 	public Image playerHealthBar;
@@ -87,7 +90,7 @@ public class PlayerControls : MonoBehaviour {
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
 		specialManov = StaticData.startShipSpecial;
-		turnSpeed = accel / 10;
+		turnSpeed = accel / 60;
 
 		if(specialManov == 0)transform.GetChild (2).GetChild (6).gameObject.SetActive (true);
 		if(specialManov == 1)transform.GetChild (2).GetChild (7).gameObject.SetActive (true);
@@ -103,6 +106,15 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		
+		foreach(GameObject enemy in enemies)
+		{
+			if (enemy.isActiveSelf())
+			{
+			
+			}
+		}
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
 
