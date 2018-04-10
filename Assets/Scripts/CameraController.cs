@@ -9,24 +9,28 @@ public class CameraController : MonoBehaviour {
 
 	void Start () 
 	{
-		float desiredAngle = target.transform.eulerAngles.y;
-		Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
+		//float desiredY = target.transform.eulerAngles.y;
+		//float desiredZ = target.transform.eulerAngles.z;
+		//float desiredX = target.transform.eulerAngles.x;
+		//Quaternion rotation = Quaternion.Euler(desiredX, desiredY, desiredZ);
 
-		Vector3 velocity = Vector3.zero;
+		//Vector3 velocity = Vector3.zero;
 		//Vector3 targetVec = target.transform.position;
 		//targetVec += offset;
-		transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.02f);
+		//transform.position = Vector3.SmoothDamp (transform.position, target.transform.position - (rotation * - offset), ref velocity, 0.02f);
 		//transform.position = target.transform.position - (rotation * - offset);
 		transform.LookAt (target.transform);
-		transform.rotation *= Quaternion.Euler (-25, 0, 0);
+		//transform.rotation *= Quaternion.Euler (-25, 0, 0);
 
 	}
 
 
 	void FixedUpdate () 
 	{
-		float desiredAngle = target.transform.eulerAngles.y;
-		Quaternion rotation = Quaternion.Euler(0, desiredAngle, 0);
+		float desiredY = target.transform.eulerAngles.y;
+		float desiredZ = target.transform.eulerAngles.z;
+		float desiredX = target.transform.eulerAngles.x;
+		Quaternion rotation = Quaternion.Euler(desiredX, desiredY, desiredZ);
 
 		Vector3 velocity = Vector3.zero;
 		//Vector3 targetVec = target.transform.position;

@@ -82,7 +82,7 @@ public class PlayerControls : MonoBehaviour {
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
 		specialManov = StaticData.startShipSpecial;
-		turnSpeed = accel / 6f;
+		turnSpeed = accel / 10;
 
 		if(specialManov == 0)transform.GetChild (2).GetChild (6).gameObject.SetActive (true);
 		if(specialManov == 1)transform.GetChild (2).GetChild (7).gameObject.SetActive (true);
@@ -112,7 +112,7 @@ public class PlayerControls : MonoBehaviour {
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
 	
-		if (!uturning && !barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.Q) || Input.GetKeyDown (KeyCode.E))) {
+		if (!uturning && !barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D))) {
 				doABarrelRoll ();
 		}
 
@@ -168,13 +168,14 @@ public class PlayerControls : MonoBehaviour {
 
 
 		rb.AddTorque (transform.up * h * turnSpeed);
-		if(v > -0.001) rb.AddForce (transform.forward * v * -accel);
+		rb.AddTorque (transform.right * v * turnSpeed);
+		if(Input.GetKey(KeyCode.W)) rb.AddForce (transform.forward  * -accel);
 
 
 
-		if (Input.GetKey(KeyCode.Space) && !reloading) 
+		if ((Input.GetKey(KeyCode.Space)||Input.GetMouseButton(0)) && !reloading) 
         {
-        fire ();
+        fire();
         source.PlayOneShot(ShootingSound, .02f);
         }
 		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
@@ -202,7 +203,6 @@ public class PlayerControls : MonoBehaviour {
 				transform.GetChild (2).GetChild (8).GetChild (1).gameObject.SetActive (false);
 			}
 		}
-
 	
         handleThrusterEffect();
 
@@ -284,7 +284,7 @@ public class PlayerControls : MonoBehaviour {
     public void handleThrusterEffect()
     {
         float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+		float v = Input.GetKey(KeyCode.W) ? 1 : 0;
 
         ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
         ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
@@ -415,7 +415,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		barrelRolling = true;
 		barrelRollTotalTurn = 0;
-		if(Input.GetKeyDown(KeyCode.Z)  || Input.GetKeyDown(KeyCode.Q))
+		if(Input.GetKeyDown(KeyCode.Z)  || Input.GetKeyDown(KeyCode.A))
 		{
 			barrelRollRotation = -accel/50;
 			barrelRollForce = accel;

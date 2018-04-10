@@ -60,13 +60,13 @@ public class EnemyManager : MonoBehaviour {
             {
                 //print("enemyIndex:" + enemyIndex + " enemies[enemyIndex].GetComponent<EnemyBrain>().health:" + enemies[enemyIndex].GetComponent<EnemyBrain>().health);
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
-                {
-                    enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
+                //{
+                //    enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
 					//enemies[enemyIndex].transform.Rotate (20, 0, 20);
                     //enemies.RemoveAt(enemyIndex);
                     //print("destroied an enemy");
-                }
-				if(enemies[enemyIndex].transform.position.y < -200)
+                //}
+				//if(enemies[enemyIndex].transform.position.y < -200)
 				{
 					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
 					foreach (float gene in genes) {
@@ -77,8 +77,9 @@ public class EnemyManager : MonoBehaviour {
                     //add it to the dead enemy list
                     deadEnemies.Add(enemies[enemyIndex]);
 
+
                     //destroy the game object and remove it from the list
-                    //Destroy(enemies[enemyIndex]);
+                    Destroy(enemies[enemyIndex]);
                     enemies.RemoveAt(enemyIndex);
 				}
             }

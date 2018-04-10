@@ -122,7 +122,7 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-        currentVelocity.y = 0f;
+        //currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
         //transform.position.y = 0f;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
@@ -150,7 +150,7 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-        currentVelocity.y = 0f;
+        //currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
@@ -175,7 +175,7 @@ public class EnemyBrain : MonoBehaviour {
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-        currentVelocity.y = 0f;
+        //currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
         transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
@@ -198,7 +198,7 @@ public class EnemyBrain : MonoBehaviour {
             if (willCollide)
             {
                 Vector3 avoidForce = ahead - otherEnemyLocation;
-                avoidForce.y = 0.0f;
+                //avoidForce.y = 0.0f;
                 totAvoidForce += avoidForce;
             }
         }
