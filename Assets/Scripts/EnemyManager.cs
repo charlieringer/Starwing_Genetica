@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour {
     public Text waveCompleteText;
 	public Text waveStartText;
 	public Text playerScoreText;
+	public GameObject deadEnemyExplosion;
     //check health. make the enemy die;
 
     private float timeTillNextWave;
@@ -79,7 +80,10 @@ public class EnemyManager : MonoBehaviour {
 
 
                     //destroy the game object and remove it from the list
-                    Destroy(enemies[enemyIndex]);
+					enemies[enemyIndex].SetActive(false);
+					var ex = Instantiate(deadEnemyExplosion, enemies [enemyIndex].transform.position, Quaternion.identity);
+					ex.GetComponent<ParticleSystem> ().Play ();
+					Destroy (ex, 0.5f);
                     enemies.RemoveAt(enemyIndex);
 				}
             }

@@ -35,7 +35,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float maxSpeed;
 	public float maxTurn;
-	protected static float NEARBY = 5f;
+	protected static float NEARBY = 50f;
 	protected static System.Random random = new System.Random();
 
 	private Vector3 target;
@@ -118,6 +118,7 @@ public class EnemyBrain : MonoBehaviour {
         Vector3 steering = desiredVelocity - currentVelocity;
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
+		steering += avoidPlayer ();
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -146,6 +147,7 @@ public class EnemyBrain : MonoBehaviour {
         Vector3 steering = desiredVelocity - currentVelocity;
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
+		steering += avoidPlayer ();
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -171,6 +173,7 @@ public class EnemyBrain : MonoBehaviour {
 
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
+		steering += avoidPlayer ();
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -206,14 +209,38 @@ public class EnemyBrain : MonoBehaviour {
         return totAvoidForce;
     }
 
+	public Vector3 avoidPlayer()
+	{
+		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
+		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+		Vector3 totAvoidForce = new Vector3();
+
+		Vector3 bounds = player.transform.localScale;
+		float rad = bounds.x * playerFleeDistance ;
+		Vector3 playerLoc = player.transform.position;
+
+		bool willCollide = Vector3.Distance(playerLoc, ahead) <= rad ? true : Vector3.Distance(playerLoc, ahead2) <= rad;
+		if (Vector3.Distance(playerLoc, transform.position) <= rad) willCollide = true;
+
+		if (willCollide)
+		{
+			Vector3 avoidForce = ahead - playerLoc;
+			//avoidForce.y = 0.0f;
+			totAvoidForce += avoidForce;
+		}
+		totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
+		return totAvoidForce;
+	}
+
     public void fire()
     {
         if (Time.time > timeLastFired + fireSpeed)
         {
-			Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
-            float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
+			//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
+			Vector3 dirFromAtoB = (transform.position - target);
+			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
 
-            if (dotProd > 0.97)
+            if (dotProd > 0.95)
             {
                 timeLastFired = Time.time;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
@@ -222,7 +249,7 @@ public class EnemyBrain : MonoBehaviour {
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
-				Destroy(bullet, 500f/bulletSpeed);
+				Destroy(bullet, 750f/bulletSpeed);
             }
         }
     }
@@ -257,6 +284,7 @@ public class EnemyBrain : MonoBehaviour {
 
     public void checkPlayerAvoidProximity()
     {
+		return;
         if (player == null) return;
         if (Vector3.Distance(transform.position, target) < playerFleeDistance)
         {
@@ -274,6 +302,7 @@ public class EnemyBrain : MonoBehaviour {
     {
         if (player == null) return;
         target = player.transform.position;
+		print (player.transform.position);
     }
 
     void OnTriggerEnter(Collider collision)
@@ -308,16 +337,16 @@ public class EnemyBrain : MonoBehaviour {
 
         health = (gene[0] * 20) + 40 ;
         maxSpeed = gene[1] * 50 + 20;
-        bulletSpeed = gene[2] * 200 + 60;
+        bulletSpeed = gene[2] * 400 + 120;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)
 			bulletDamage = 0;
 		bulletDamage+=2;
 
-        playerSeekDistance = gene[3] * 80 + 40;
-        playerFleeDistance = gene[4] * 40;
-        playerFleeBuffer = playerFleeDistance + 60;
+        playerSeekDistance = gene[3] * 160 + 80;
+        playerFleeDistance = gene[4] * 10 + 10;
+        playerFleeBuffer = playerFleeDistance + 400;
         enemiesAvoidDistance = gene[5] * 16;
 
 
@@ -374,6 +403,7 @@ public class EnemyBrain : MonoBehaviour {
 				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
 				boosterDrop.transform.parent = null;
 			}
+
 
         }
 

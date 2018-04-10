@@ -1035,6 +1035,14 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4810571266629266, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1335897506423052, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
@@ -6337,6 +6345,8 @@ MonoBehaviour:
   waveCompleteText: {fileID: 1371313150}
   waveStartText: {fileID: 169686120}
   playerScoreText: {fileID: 1761481261}
+  deadEnemyExplosion: {fileID: 1484319555961902, guid: 7dffbec9c40644cdc9f2c643bf63df87,
+    type: 2}
   waveCompleteWrapper: {fileID: 28513009}
   startWaveWrapper: {fileID: 1159850630}
   playerScore: 0

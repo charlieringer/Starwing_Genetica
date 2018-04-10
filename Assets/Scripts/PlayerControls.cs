@@ -78,6 +78,11 @@ public class PlayerControls : MonoBehaviour {
 	
 	void Awake()
 	{
+		Cursor.lockState = CursorLockMode.Locked;
+		// Hide cursor when locking
+		Cursor.visible = (CursorLockMode.Locked != CursorLockMode.Locked);
+
+
 		maxHealth = StaticData.startingShipHealth;
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;

@@ -107,10 +107,6 @@ GameObject:
   - component: {fileID: 114981976008398862}
   - component: {fileID: 54630629865872630}
   - component: {fileID: 65728407629480006}
-  - component: {fileID: 65375111540742444}
-  - component: {fileID: 136064023455861908}
-  - component: {fileID: 136540542835838134}
-  - component: {fileID: 136013259046062812}
   - component: {fileID: 82081729719068656}
   m_Layer: 0
   m_Name: Enemy
@@ -816,18 +812,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!65 &65375111540742444
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1298231865522550}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 7.5, y: 4.5, z: 7}
-  m_Center: {x: 0, y: 2, z: 3}
 --- !u!65 &65728407629480006
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -838,8 +822,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 12, y: 1, z: 5}
-  m_Center: {x: 0, y: 0.5, z: 2}
+  m_Size: {x: 25, y: 10, z: 20}
+  m_Center: {x: 0, y: 2, z: -2}
 --- !u!82 &82081729719068656
 AudioSource:
   m_ObjectHideFlags: 1
@@ -955,48 +939,9 @@ MonoBehaviour:
   damageDealt: 0
   decel: 0.1
   maxSpeed: 100
-  maxTurn: 50
+  maxTurn: 20
   otherEnemies: []
   timeAliveTimer: 0
---- !u!136 &136013259046062812
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1298231865522550}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 2
-  m_Height: 14
-  m_Direction: 2
-  m_Center: {x: 0, y: 1, z: -1}
---- !u!136 &136064023455861908
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1298231865522550}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 9
-  m_Direction: 2
-  m_Center: {x: -5, y: 0.5, z: 0.5}
---- !u!136 &136540542835838134
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1298231865522550}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 9
-  m_Direction: 2
-  m_Center: {x: 5, y: 0.5, z: 0.5}
 --- !u!198 &198055434356603524
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -11140,7 +11085,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1823574454
+  randomSeed: -1752911816
   InitialModule:
     serializedVersion: 3
     enabled: 1
