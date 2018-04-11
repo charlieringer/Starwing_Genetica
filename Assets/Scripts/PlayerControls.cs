@@ -311,9 +311,10 @@ public class PlayerControls : MonoBehaviour {
 		positon.y -= 5;
 		positon.z += 25;
 
-		GameObject bulletL = Instantiate (rocketPreFab, positon, transform.rotation);
+		GameObject bulletL = Instantiate (rocketPreFab, transform.GetChild (0).GetChild (11).position, transform.rotation);
 		bulletL.GetComponent<RocketScript> ().target = targetObj;
 		bulletL.GetComponent<RocketScript> ().targetLoc = target;
+		bulletL.GetComponent<RocketScript> ().currentVelocity = rb.velocity;
 		//Destroy (bulletL, 1.5f);
 	}
 

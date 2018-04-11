@@ -2210,6 +2210,36 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1060782276}
+--- !u!1 &1072967204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1297483787339958, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1072967205}
+  m_Layer: 0
+  m_Name: Front Gun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1072967205
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4585431210237740, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1072967204}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -4, z: -20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1686150933}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1076400540
 GameObject:
   m_ObjectHideFlags: 0
@@ -3556,6 +3586,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 88d30b0450c3e4cbb9bbe5c378c874a9, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1686150933 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4757032853965128, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1686150932}
 --- !u!1 &1726139502
 GameObject:
   m_ObjectHideFlags: 0
