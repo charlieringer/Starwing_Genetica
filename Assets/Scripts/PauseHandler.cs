@@ -9,6 +9,9 @@ public class PauseHandler : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		Cursor.lockState = CursorLockMode.Locked;
+		// Hide cursor when locking
+		Cursor.visible = (CursorLockMode.Locked != CursorLockMode.Locked);
     }
 	
 	// Update is called once per frame
@@ -21,6 +24,13 @@ public class PauseHandler : MonoBehaviour {
         {
 			isPaused = !isPaused;
 			pausedPanel.SetActive (isPaused);
+
+			if (isPaused)
+				Cursor.lockState = CursorLockMode.None;
+			else
+				Cursor.lockState = CursorLockMode.Locked;
+			// Hide cursor when locking
+			Cursor.visible = (CursorLockMode.Locked != CursorLockMode.Locked);
 		}
 	}
 }

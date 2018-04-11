@@ -39,7 +39,7 @@ public class EnemyBrain : MonoBehaviour {
 	protected static System.Random random = new System.Random();
 
 	private Vector3 target;
-	private Vector3 currentVelocity = new Vector3(0,0,0);
+	public Vector3 currentVelocity = new Vector3(0,0,0);
 	private float timeLastFired = 0;
 
 	public List<GameObject> otherEnemies;
@@ -98,7 +98,7 @@ public class EnemyBrain : MonoBehaviour {
 
     public void pickRandomRoamingTarget()
     {
-        target = new Vector3((int)player.transform.position.x + (random.Next(80)) - 40, 0, (int)player.transform.position.z + (random.Next(80)) - 40);
+		target = new Vector3((int)player.transform.position.x + (random.Next(80)) - 40, (int)player.transform.position.y + (random.Next(80)) - 40, (int)player.transform.position.z + (random.Next(80)) - 40);
     }
 
     public void roamToTarget()
@@ -238,7 +238,7 @@ public class EnemyBrain : MonoBehaviour {
         {
 			//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
 			Vector3 dirFromAtoB = (transform.position - target);
-			float dotProd = Vector3.Dot(dirFromAtoB, transform.forward);
+			float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
 
             if (dotProd > 0.95)
             {
@@ -302,7 +302,6 @@ public class EnemyBrain : MonoBehaviour {
     {
         if (player == null) return;
         target = player.transform.position;
-		print (player.transform.position);
     }
 
     void OnTriggerEnter(Collider collision)
@@ -321,15 +320,6 @@ public class EnemyBrain : MonoBehaviour {
 
 
     }
-
-	void OnParticleCollision(GameObject other)
-	{
-		//if (other.name.Contains ("RocketExplosion")) {
-			health -= 100;
-			Debug.Log ("Boom");
-
-		//}
-	}
 
     public void setGenoPheno(float[] _genes)
     {

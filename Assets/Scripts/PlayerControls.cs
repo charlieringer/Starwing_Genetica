@@ -31,8 +31,8 @@ public class PlayerControls : MonoBehaviour {
 
 	public GameObject shield;
 
-	public GameObject target;
-	public GameObject[] enemies;
+	private Vector3 target;
+	public List<GameObject> enemies;
 
 	Rigidbody rb;
 
@@ -81,11 +81,6 @@ public class PlayerControls : MonoBehaviour {
 	
 	void Awake()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
-		// Hide cursor when locking
-		Cursor.visible = (CursorLockMode.Locked != CursorLockMode.Locked);
-
-
 		maxHealth = StaticData.startingShipHealth;
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
@@ -106,24 +101,30 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-		
+		target = transform.position - transform.forward*1000;
 		foreach(GameObject enemy in enemies)
 		{
-			if (enemy.isActiveSelf())
+			float max = 0.0f;
+			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 1000 && Vector3.Distance(transform.position, enemy.transform.position) > 200)
 			{
-			
+				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
+				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
+
+				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
+				if (dotProd > 0.9 && dotProd > max) {
+					max = dotProd;
+					target = enemy.transform.position + enemy.GetComponent<EnemyBrain>().currentVelocity * Time.fixedDeltaTime;
+					Debug.Log ("target");
+				}
 			}
 		}
+
+		//transform.GetChild (3).transform.rotation = Quaternion.LookRotation(transform.position - target);
+		//transform.GetChild (3).transform.rotation = transform.rotation;
+		Debug.DrawLine (transform.position, target, Color.green);
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
-
-
-        //changed colour based on gene (speed and bullet speed) information
-		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(ValueRemapping( bulletDamage, 100, 1), 0, 0, 0);
-		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(1, ValueRemapping(accel, 600, 1), 0, 0);
-		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(0, 0,ValueRemapping(shields, 100, 1), 0);
-		//transform.GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[2].color = new Color(ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), ValueRemapping(health, maxHealth, 1), 0);
+    
 		updatePlayerHeathText();
 
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
@@ -192,8 +193,8 @@ public class PlayerControls : MonoBehaviour {
 
 		if ((Input.GetKey(KeyCode.Space)||Input.GetMouseButton(0)) && !reloading) 
         {
-        fire();
-        source.PlayOneShot(ShootingSound, .02f);
+        	fire();
+        	source.PlayOneShot(ShootingSound, .02f);
         }
 		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
 		{
@@ -270,18 +271,32 @@ public class PlayerControls : MonoBehaviour {
 		Vector3 leftGun = LBarrel.transform.position;
 		Vector3 rightGun = RBarrel.transform.position;
 
-		GameObject bulletL = Instantiate (bulletPreFab, leftGun, transform.rotation);
+		Quaternion rotation;
+
+		if (target != null)
+		{
+			//rotation = Quaternion.LookRotation( target.transform.position - transform.position);
+			rotation = Quaternion.LookRotation(transform.position - target);
+		}
+		else rotation = transform.rotation;
+
+		Quaternion noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+		Quaternion leftRotation = Quaternion.LookRotation(leftGun - target);// * noise;
+		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletL, 0.75f);
+		Destroy (bulletL, 0.5f);
 
-		GameObject bulletR = Instantiate (bulletPreFab, rightGun, transform.rotation);
+		noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
+		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
+		bulletR.transform.rotation *= noise;
 	
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
-        Destroy (bulletR, 0.75f);
+        Destroy (bulletR, 0.5f);
 	}
 
 	public void fireRocket()

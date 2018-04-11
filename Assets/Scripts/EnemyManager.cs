@@ -37,6 +37,7 @@ public class EnemyManager : MonoBehaviour {
     void Start ()
 	{
         source = GetComponent<AudioSource>();
+		player.GetComponent<PlayerControls> ().enemies = enemies;
         //GameObject privateEnemy = enemy;
         // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
         //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
@@ -152,7 +153,7 @@ public class EnemyManager : MonoBehaviour {
     Vector3 GenerateRandomTransform(){
         Vector3 pos;
         float x = Random.Range(player.transform.position.x-4000, player.transform.position.x + 4000);
-        float y = 0f;
+		float y = Random.Range(player.transform.position.y-4000, player.transform.position.y + 4000);
         float z = Random.Range(player.transform.position.z - 4000, player.transform.position.z + 4000);
         pos = new Vector3(x, y, z);
         transform.position = pos;
