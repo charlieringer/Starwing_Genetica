@@ -141,7 +141,7 @@ public class PlayerControls : MonoBehaviour {
 				doABarrelRoll ();
 		}
 
-		if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetKeyDown (KeyCode.C) || Input.GetKeyDown (KeyCode.F))) {
+		if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetMouseButton (1) || Input.GetKeyDown (KeyCode.F))) {
 			doAUTurn ();
 		}
 
@@ -203,7 +203,7 @@ public class PlayerControls : MonoBehaviour {
         	fire();
         	source.PlayOneShot(ShootingSound, .02f);
         }
-		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
+		if ((Input.GetMouseButton(1)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
 		{
 			fireRocket ();
 			rocketCoolDown = 1.5f;
@@ -211,7 +211,7 @@ public class PlayerControls : MonoBehaviour {
 			source.PlayOneShot(ShootingSound, .02f);
 		}
 
-		if ((Input.GetKey(KeyCode.C)||Input.GetKey(KeyCode.F)) && specialManov == 2 && hasPlow == false && specialCharges > 0) 
+		if ((Input.GetMouseButton(1)||Input.GetKey(KeyCode.F)) && specialManov == 2 && hasPlow == false && specialCharges > 0) 
 		{
 			hasPlow = true;
 			specialCharges -= 1;
