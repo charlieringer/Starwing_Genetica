@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class StaticData {
 
-	public static float startingShipHealth;
-	public static float startingShipDamage;
-	public static float startingShipSpeed;
+	public static float startingShipHealth = 1200;
+	public static float startingShipDamage = 100;
+	public static float startingShipSpeed = 500;
 	public static int startShipSpecial;
 	public static float score;
 

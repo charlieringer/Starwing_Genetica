@@ -327,7 +327,7 @@ public class EnemyBrain : MonoBehaviour {
 
         health = (gene[0] * 20) + 40 ;
         maxSpeed = gene[1] * 50 + 20;
-        bulletSpeed = gene[2] * 400 + 120;
+        bulletSpeed = gene[2] * 600 + 240;
         bulletDamage = 10 - gene[2];
 
 		if (bulletDamage < 0)

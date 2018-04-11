@@ -87,9 +87,9 @@ public class PlayerControls : MonoBehaviour {
 		specialManov = StaticData.startShipSpecial;
 		turnSpeed = accel / 60;
 
-		if(specialManov == 0)transform.GetChild (2).GetChild (6).gameObject.SetActive (true);
-		if(specialManov == 1)transform.GetChild (2).GetChild (7).gameObject.SetActive (true);
-		if(specialManov == 2)transform.GetChild (2).GetChild (8).gameObject.SetActive (true);
+		if(specialManov == 0)transform.GetChild (0).GetChild (6).gameObject.SetActive (true);
+		if(specialManov == 1)transform.GetChild (0).GetChild (7).gameObject.SetActive (true);
+		if(specialManov == 2)transform.GetChild (0).GetChild (8).gameObject.SetActive (true);
 	}
 
 	// Use this for initialization
@@ -102,10 +102,11 @@ public class PlayerControls : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		target = transform.position - transform.forward*1000;
+		transform.GetChild (1).transform.position = target;
 		foreach(GameObject enemy in enemies)
 		{
 			float max = 0.0f;
-			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 1000 && Vector3.Distance(transform.position, enemy.transform.position) > 200)
+			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 1000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
 			{
 				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
 				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
@@ -113,15 +114,16 @@ public class PlayerControls : MonoBehaviour {
 				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
 				if (dotProd > 0.9 && dotProd > max) {
 					max = dotProd;
-					target = enemy.transform.position + enemy.GetComponent<EnemyBrain>().currentVelocity * Time.fixedDeltaTime;
-					Debug.Log ("target");
+					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
+					transform.GetChild (1).transform.position = enemy.transform.position;
 				}
 			}
 		}
 
 		//transform.GetChild (3).transform.rotation = Quaternion.LookRotation(transform.position - target);
-		//transform.GetChild (3).transform.rotation = transform.rotation;
-		Debug.DrawLine (transform.position, target, Color.green);
+
+		//Debug.DrawLine (LBarrel.transform.position, target, Color.green);
+		//pwDebug.DrawLine (RBarrel.transform.position, target, Color.green);
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
     
@@ -209,16 +211,16 @@ public class PlayerControls : MonoBehaviour {
 			hasPlow = true;
 			specialCharges -= 1;
 			plowTimer = 5;
-			transform.GetChild (2).GetChild (8).GetChild (0).gameObject.SetActive (true);
-			transform.GetChild (2).GetChild (8).GetChild (1).gameObject.SetActive (true);
+			transform.GetChild (0).GetChild (8).GetChild (0).gameObject.SetActive (true);
+			transform.GetChild (0).GetChild (8).GetChild (1).gameObject.SetActive (true);
 		}
 
 		if (hasPlow) {
 			plowTimer -= Time.deltaTime;
 			if (plowTimer <= 0) {
 				hasPlow = false;
-				transform.GetChild (2).GetChild (8).GetChild (0).gameObject.SetActive (false);
-				transform.GetChild (2).GetChild (8).GetChild (1).gameObject.SetActive (false);
+				transform.GetChild (0).GetChild (8).GetChild (0).gameObject.SetActive (false);
+				transform.GetChild (0).GetChild (8).GetChild (1).gameObject.SetActive (false);
 			}
 		}
 	
@@ -229,21 +231,21 @@ public class PlayerControls : MonoBehaviour {
 
 		if ((health / maxHealth) < 0.75 && damageLevel == 0) {
 			damageLevel += 1;
-			transform.GetChild (7).GetChild (0).GetComponent<ParticleSystem> ().Play ();
-			transform.GetChild (2).GetChild (0).gameObject.SetActive (false);
+			transform.GetChild (5).GetChild (0).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (0).GetChild (0).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.5  && damageLevel == 1) {
 			damageLevel += 1;
-			transform.GetChild (7).GetChild (1).GetComponent<ParticleSystem> ().Play ();
-			transform.GetChild (2).GetChild (1).gameObject.SetActive (false);
+			transform.GetChild (5).GetChild (1).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (0).GetChild (1).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.25 && damageLevel == 2)
 		{
 			damageLevel += 1;
-			transform.GetChild (7).GetChild (3).GetComponent<ParticleSystem>().Play();
-			transform.GetChild (2).GetChild (3).gameObject.SetActive (false);
+			transform.GetChild (5).GetChild (3).GetComponent<ParticleSystem>().Play();
+			transform.GetChild (0).GetChild (3).gameObject.SetActive (false);
 		}if ((health / maxHealth) < 0.1 && damageLevel == 3) {
 			damageLevel += 1;
-			transform.GetChild (7).GetChild (2).GetComponent<ParticleSystem> ().Play ();
-			transform.GetChild (2).GetChild (2).gameObject.SetActive (false);
+			transform.GetChild (5).GetChild (2).GetComponent<ParticleSystem> ().Play ();
+			transform.GetChild (0).GetChild (2).gameObject.SetActive (false);
 
 		}
 
@@ -281,7 +283,7 @@ public class PlayerControls : MonoBehaviour {
 		else rotation = transform.rotation;
 
 		Quaternion noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-		Quaternion leftRotation = Quaternion.LookRotation(leftGun - target);// * noise;
+		Quaternion leftRotation = Quaternion.LookRotation(leftGun - target) * noise;
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
@@ -289,7 +291,7 @@ public class PlayerControls : MonoBehaviour {
 		Destroy (bulletL, 0.5f);
 
 		noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target) * noise;
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 		bulletR.transform.rotation *= noise;
@@ -432,7 +434,7 @@ public class PlayerControls : MonoBehaviour {
 		}
 		if (shields >= 100)
 			shields = 100;
-		transform.GetChild (8).GetComponent<ParticleSystem> ().Play ();
+		transform.GetChild (6).GetComponent<ParticleSystem> ().Play ();
 		
 	}
 
@@ -464,10 +466,10 @@ public class PlayerControls : MonoBehaviour {
 	private void continueToBarrelRoll()
 	{
 		rb.AddForce (transform.right * barrelRollForce);
-		transform.GetChild(2).gameObject.transform.Rotate(0,0,barrelRollRotation);
+		transform.GetChild(0).gameObject.transform.Rotate(0,0,barrelRollRotation);
 		barrelRollTotalTurn += (int)barrelRollRotation;
 		if (barrelRollTotalTurn >= 360 || barrelRollTotalTurn <= -360) {
-			transform.GetChild(2).gameObject.transform.rotation = new Quaternion(0,0,0,0) ;
+			transform.GetChild(0).gameObject.transform.rotation = new Quaternion(0,0,0,0) ;
 			barrelRolling = false;
 		}
 	}
@@ -488,12 +490,12 @@ public class PlayerControls : MonoBehaviour {
 	{
 		rb.AddForce (transform.right * barrelRollForce);
 		rb.AddForce (transform.forward * barrelRollForce);
-		transform.GetChild(2).gameObject.transform.Rotate(0,0,barrelRollRotation);
-		transform.GetChild(2).gameObject.transform.Rotate(barrelRollRotation,0,0);
+		transform.GetChild(0).gameObject.transform.Rotate(0,0,barrelRollRotation);
+		transform.GetChild(0).gameObject.transform.Rotate(barrelRollRotation,0,0);
 		barrelRollTotalTurn += (int)barrelRollRotation;
 		if (barrelRollTotalTurn >= 180 || barrelRollTotalTurn <= -180) {
 			transform.RotateAround (transform.position, transform.up, 180f);;
-			transform.GetChild(2).gameObject.transform.rotation = new Quaternion(0,0,0,0);
+			transform.GetChild(0).gameObject.transform.rotation = new Quaternion(0,0,0,0);
 
 			uturning = false;
 		}

@@ -555,7 +555,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 202542124}
-  - component: {fileID: 202542133}
   - component: {fileID: 202542132}
   - component: {fileID: 202542131}
   - component: {fileID: 202542130}
@@ -765,50 +764,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &202542133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114402207601172972, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 202542123}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accel: 100
-  health: 700
-  maxHealth: 700
-  bulletDamage: 100
-  bulletSpeed: 1000
-  bulletPreFab: {fileID: 1186724225514680, guid: 9a0c3383523899643a8d0661cfaca4e4,
-    type: 2}
-  rocketPreFab: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035,
-    type: 2}
-  pauseManager: {fileID: 0}
-  LThruster: {fileID: 855133434}
-  RThruster: {fileID: 1211656458}
-  smoke: {fileID: 0}
-  LBarrel: {fileID: 1326266481}
-  RBarrel: {fileID: 122277446}
-  hitAlert: {fileID: 0}
-  shield: {fileID: 0}
-  playerHealthBar: {fileID: 0}
-  playerShieldBar: {fileID: 0}
-  playerRollBar: {fileID: 0}
-  bulletText: {fileID: 0}
-  reloadingText: {fileID: 0}
-  ShootingSound: {fileID: 8300000, guid: 150300f26fd3ad64c8841135b83252ce, type: 3}
-  LaserBoosterSound: {fileID: 8300000, guid: 850d3594c7f9a574e8ae825dc03d2bf6, type: 3}
-  ShieldBoosterSound: {fileID: 8300000, guid: ebafc39bafc48f34ca1e0d85c989dddc, type: 3}
-  ThrustersBoosterSound: {fileID: 8300000, guid: 022b9d08b9735d84193514d0a04037e1,
-    type: 3}
-  Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
-  Death: {fileID: 8300000, guid: 6015a80d434fea54586ee9a095d0dae5, type: 3}
-  ReloadSound: {fileID: 8300000, guid: 6849bfc6db989b94d9ca42582b51cdb4, type: 3}
-  source: {fileID: 202542125}
-  barrelRollCost: 20
 --- !u!114 &202542134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,7 +1431,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 433455346}
-  - component: {fileID: 433455355}
   - component: {fileID: 433455354}
   - component: {fileID: 433455353}
   - component: {fileID: 433455352}
@@ -1686,50 +1640,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &433455355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114402207601172972, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 433455345}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accel: 100
-  health: 700
-  maxHealth: 700
-  bulletDamage: 100
-  bulletSpeed: 1000
-  bulletPreFab: {fileID: 1186724225514680, guid: 9a0c3383523899643a8d0661cfaca4e4,
-    type: 2}
-  rocketPreFab: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035,
-    type: 2}
-  pauseManager: {fileID: 0}
-  LThruster: {fileID: 2102075462}
-  RThruster: {fileID: 1369788010}
-  smoke: {fileID: 0}
-  LBarrel: {fileID: 2060138618}
-  RBarrel: {fileID: 1720785488}
-  hitAlert: {fileID: 0}
-  shield: {fileID: 0}
-  playerHealthBar: {fileID: 0}
-  playerShieldBar: {fileID: 0}
-  playerRollBar: {fileID: 0}
-  bulletText: {fileID: 0}
-  reloadingText: {fileID: 0}
-  ShootingSound: {fileID: 8300000, guid: 150300f26fd3ad64c8841135b83252ce, type: 3}
-  LaserBoosterSound: {fileID: 8300000, guid: 850d3594c7f9a574e8ae825dc03d2bf6, type: 3}
-  ShieldBoosterSound: {fileID: 8300000, guid: ebafc39bafc48f34ca1e0d85c989dddc, type: 3}
-  ThrustersBoosterSound: {fileID: 8300000, guid: 022b9d08b9735d84193514d0a04037e1,
-    type: 3}
-  Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
-  Death: {fileID: 8300000, guid: 6015a80d434fea54586ee9a095d0dae5, type: 3}
-  ReloadSound: {fileID: 8300000, guid: 6849bfc6db989b94d9ca42582b51cdb4, type: 3}
-  source: {fileID: 433455347}
-  barrelRollCost: 20
 --- !u!114 &433455356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1860,7 +1770,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 643375324}
-  - component: {fileID: 643375333}
   - component: {fileID: 643375332}
   - component: {fileID: 643375331}
   - component: {fileID: 643375330}
@@ -2070,50 +1979,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &643375333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114402207601172972, guid: 88d30b0450c3e4cbb9bbe5c378c874a9,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 643375323}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47c4bebe3270f4a92909feead60ca284, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  accel: 100
-  health: 700
-  maxHealth: 700
-  bulletDamage: 100
-  bulletSpeed: 1000
-  bulletPreFab: {fileID: 1186724225514680, guid: 9a0c3383523899643a8d0661cfaca4e4,
-    type: 2}
-  rocketPreFab: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035,
-    type: 2}
-  pauseManager: {fileID: 0}
-  LThruster: {fileID: 943190379}
-  RThruster: {fileID: 2145833532}
-  smoke: {fileID: 0}
-  LBarrel: {fileID: 866893104}
-  RBarrel: {fileID: 703395882}
-  hitAlert: {fileID: 0}
-  shield: {fileID: 0}
-  playerHealthBar: {fileID: 0}
-  playerShieldBar: {fileID: 0}
-  playerRollBar: {fileID: 0}
-  bulletText: {fileID: 0}
-  reloadingText: {fileID: 0}
-  ShootingSound: {fileID: 8300000, guid: 150300f26fd3ad64c8841135b83252ce, type: 3}
-  LaserBoosterSound: {fileID: 8300000, guid: 850d3594c7f9a574e8ae825dc03d2bf6, type: 3}
-  ShieldBoosterSound: {fileID: 8300000, guid: ebafc39bafc48f34ca1e0d85c989dddc, type: 3}
-  ThrustersBoosterSound: {fileID: 8300000, guid: 022b9d08b9735d84193514d0a04037e1,
-    type: 3}
-  Hit: {fileID: 8300000, guid: 45cec6e9714e9b44e96787d0c0e49b3e, type: 3}
-  Death: {fileID: 8300000, guid: 6015a80d434fea54586ee9a095d0dae5, type: 3}
-  ReloadSound: {fileID: 8300000, guid: 6849bfc6db989b94d9ca42582b51cdb4, type: 3}
-  source: {fileID: 643375325}
-  barrelRollCost: 20
 --- !u!114 &643375334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18980,52 +18845,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1803484991}
   m_Mesh: {fileID: 4300000, guid: 387ce2b1ce0a35649abf99ac076f2d2b, type: 3}
---- !u!1001 &1811435220
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707196343361634, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1191335481927066, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b16c1995a40c44e259fbd3ec1832e035, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1822527298
 GameObject:
   m_ObjectHideFlags: 0
