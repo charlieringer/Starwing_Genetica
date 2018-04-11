@@ -102,13 +102,14 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		target = transform.position - transform.forward*1000;
+		target = transform.position - transform.forward*2000;
+		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
 		targetObj = null;
 		transform.GetChild (1).transform.position = target;
 		foreach(GameObject enemy in enemies)
 		{
 			float max = 0.0f;
-			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 1000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
+			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 2000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
 			{
 				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
 				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
@@ -119,6 +120,7 @@ public class PlayerControls : MonoBehaviour {
 					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
 					targetObj = enemy;
 					transform.GetChild (1).transform.position = enemy.transform.position;
+					transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.red;
 				}
 			}
 		}
