@@ -307,15 +307,11 @@ public class PlayerControls : MonoBehaviour {
 	public void fireRocket()
 	{
 		specialCharges -= 1;
-		Vector3 positon = transform.position;
-		positon.y -= 5;
-		positon.z += 25;
+		Vector3 positon = transform.GetChild (0).GetChild (11).position;
 
-		GameObject bulletL = Instantiate (rocketPreFab, transform.GetChild (0).GetChild (11).position, transform.rotation);
-		bulletL.GetComponent<RocketScript> ().target = targetObj;
-		bulletL.GetComponent<RocketScript> ().targetLoc = target;
-		bulletL.GetComponent<RocketScript> ().currentVelocity = rb.velocity;
-		//Destroy (bulletL, 1.5f);
+		GameObject rocket = Instantiate (rocketPreFab, positon, transform.rotation);
+		rocket.GetComponent<RocketScript> ().target = targetObj;
+		rocket.GetComponent<RocketScript> ().currentVelocity = rb.velocity;
 	}
 
     public void handleThrusterEffect()

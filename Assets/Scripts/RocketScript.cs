@@ -5,10 +5,9 @@ using UnityEngine;
 public class RocketScript : MonoBehaviour {
 	float timer;
 	public GameObject target;
-	public Vector3 targetLoc;
-	int maxSpeed = 100;
+	int maxSpeed = 40;
 	public Vector3 currentVelocity;
-	int maxTurn = 40;
+	int maxTurn =  80;
 
 	// Use this for initialization
 	void Start () {
@@ -47,7 +46,11 @@ public class RocketScript : MonoBehaviour {
 
 	public void roamToTarget()
 	{
-		if(target != null) targetLoc = target.transform.position;
+		Vector3 targetLoc; 
+		if (target != null)
+			targetLoc = target.transform.position;
+		else
+			targetLoc = transform.position -transform.forward * 1000;
 		Vector3 desiredVelocity = targetLoc - transform.position;
 
 		desiredVelocity *= maxSpeed;
