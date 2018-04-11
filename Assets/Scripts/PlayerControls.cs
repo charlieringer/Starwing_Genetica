@@ -32,6 +32,7 @@ public class PlayerControls : MonoBehaviour {
 	public GameObject shield;
 
 	private Vector3 target;
+	private GameObject targetObj;
 	public List<GameObject> enemies;
 
 	Rigidbody rb;
@@ -102,6 +103,7 @@ public class PlayerControls : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		target = transform.position - transform.forward*1000;
+		targetObj = null;
 		transform.GetChild (1).transform.position = target;
 		foreach(GameObject enemy in enemies)
 		{
@@ -115,6 +117,7 @@ public class PlayerControls : MonoBehaviour {
 				if (dotProd > 0.9 && dotProd > max) {
 					max = dotProd;
 					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
+					targetObj = enemy;
 					transform.GetChild (1).transform.position = enemy.transform.position;
 				}
 			}
@@ -309,9 +312,8 @@ public class PlayerControls : MonoBehaviour {
 		positon.z += 25;
 
 		GameObject bulletL = Instantiate (rocketPreFab, positon, transform.rotation);
-		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * (-bulletSpeed*0.4f)) + GetComponent<Rigidbody>().velocity;
-		bulletL.GetComponent<BulletData>().damage = bulletDamage;
-		bulletL.GetComponent<BulletData>().parentShip = "Player";
+		bulletL.GetComponent<RocketScript> ().target = targetObj;
+		bulletL.GetComponent<RocketScript> ().targetLoc = target;
 		//Destroy (bulletL, 1.5f);
 	}
 
