@@ -239,6 +239,7 @@ public class PlayerControls : MonoBehaviour {
 		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
 		targetObj = null;
 		transform.GetChild (1).transform.position = target;
+		if(!StaticData.settings_targetlock) return;
 		foreach(GameObject enemy in enemies)
 		{
 			float max = 0.0f;
