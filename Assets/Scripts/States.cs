@@ -33,7 +33,7 @@ public class Seeking : State<EnemyBrain> {
 		agent.setPlayerAsTarget ();
 		agent.seekTarget (); 
 		bool changedState = agent.checkPlayerAvoidProximity ();
-		//if (changedState) return;
+		if (changedState) return;
 		agent.fire ();
 		agent.checkSeekOrRoamProximity ();
 	}

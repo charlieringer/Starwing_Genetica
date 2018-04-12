@@ -288,7 +288,7 @@ public class PlayerControls : MonoBehaviour {
 		else rotation = transform.rotation;
 
 		Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target);// * noise;
+		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target) * noise;
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
@@ -296,7 +296,7 @@ public class PlayerControls : MonoBehaviour {
 		Destroy (bulletL, 1000f/bulletSpeed);
 
 		noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target) * noise;
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 		bulletR.transform.rotation *= noise;

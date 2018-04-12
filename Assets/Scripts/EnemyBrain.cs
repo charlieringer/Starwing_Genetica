@@ -247,8 +247,11 @@ public class EnemyBrain : MonoBehaviour {
             if (dotProd > 0.95)
             {
                 timeLastFired = Time.time;
-				GameObject bullet = Instantiate (bulletPreFab, transform.position, transform.rotation);
+				Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+				Quaternion noiseyrotation = transform.rotation * noise;
+				GameObject bullet = Instantiate (bulletPreFab, transform.position, noiseyrotation);
 				bullet.transform.localScale = new Vector3(ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f));
+
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
