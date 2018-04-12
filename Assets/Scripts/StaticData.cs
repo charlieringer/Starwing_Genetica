@@ -10,6 +10,13 @@ public class StaticData {
 	public static int startShipSpecial;
 	public static float score;
 
+	public static bool settings_targetlock = true;
+	public static int settings_musicVol = 7;
+	public static int settings_sfxVol = 7;
+	public static Color settings_primColour;
+	public static Color settings_secColour;
+
+
 	// Use this for initialization
 	void Start () {
 		

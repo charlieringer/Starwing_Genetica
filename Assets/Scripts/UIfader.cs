@@ -8,7 +8,7 @@ public class UIfader : MonoBehaviour {
 	public Image linkedImage;
 	bool active = false;
 
-	float opacity = 0.0f;
+	public float opacity = 0.0f;
 
 	// Use this for initialization
 	void Start () {
