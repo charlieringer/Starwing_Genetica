@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 4181cb35bf05876499af30b811b935a4
-timeCreated: 1511601635
+guid: ff219bc5bab4cdd46ac0a42a17f8e0f2
+timeCreated: 1511601646
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -15,12 +15,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: _defaultMat
-    second: {fileID: 2100000, guid: 0ad5a8916382a1c49bb686330337b08a, type: 2}
+    second: {fileID: 2100000, guid: 99f2c7f3ade95bd458d6428dc51269d1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: metal
-    second: {fileID: 2100000, guid: 6d73d1502ffec204b9560bc404f19774, type: 2}
+    second: {fileID: 2100000, guid: b37248e8fe0d60a4ca78ba98ac8b9169, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
