@@ -18,17 +18,12 @@ public class PlayerControls : MonoBehaviour {
 	public GameObject rocketPreFab;
 
 	public GameObject pauseManager;
-
     public GameObject LThruster;
     public GameObject RThruster;
-
 	public GameObject smoke;
-
 	public GameObject LBarrel;
 	public GameObject RBarrel;
-
 	public GameObject hitAlert;
-
 	public GameObject shield;
 
 	private Vector3 target;
@@ -78,15 +73,16 @@ public class PlayerControls : MonoBehaviour {
 	bool hasPlow = false;
 	float plowTimer = 0.0f;
 
-	private float turnSpeed;
+	private float turnSpeed = 10;
 	
 	void Awake()
 	{
 		maxHealth = StaticData.startingShipHealth;
+		health = maxHealth;
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
 		specialManov = StaticData.startShipSpecial;
-		turnSpeed = accel / 60;
+		//turnSpeed = accel / 60;
 
 		if(specialManov == 0)transform.GetChild (0).GetChild (6).gameObject.SetActive (true);
 		if(specialManov == 1)transform.GetChild (0).GetChild (7).gameObject.SetActive (true);
@@ -102,33 +98,8 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		target = transform.position - transform.forward*2000;
-		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
-		targetObj = null;
-		transform.GetChild (1).transform.position = target;
-		foreach(GameObject enemy in enemies)
-		{
-			float max = 0.0f;
-			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 2000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
-			{
-				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
-				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
-
-				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
-				if (dotProd > 0.9 && dotProd > max) {
-					max = dotProd;
-					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
-					targetObj = enemy;
-					transform.GetChild (1).transform.position = enemy.transform.position;
-					transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.red;
-				}
-			}
-		}
-
-		//transform.GetChild (3).transform.rotation = Quaternion.LookRotation(transform.position - target);
-
-		//Debug.DrawLine (LBarrel.transform.position, target, Color.green);
-		//pwDebug.DrawLine (RBarrel.transform.position, target, Color.green);
+		updateTarget ();
+			
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
     
@@ -170,6 +141,9 @@ public class PlayerControls : MonoBehaviour {
 			LeftParticle.Stop();
 			RightParticle.Stop();
 			if (transform.position.y < -400) {
+				Cursor.lockState = CursorLockMode.None;
+				// Hide cursor when locking
+				Cursor.visible = (Cursor.lockState != CursorLockMode.Locked);
 				SceneManager.LoadScene ("GameOver");
 			}
 			return;
@@ -186,7 +160,7 @@ public class PlayerControls : MonoBehaviour {
 				reloadProgress += Time.fixedDeltaTime;
 			}
 		}
-		
+
 		
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
@@ -259,6 +233,32 @@ public class PlayerControls : MonoBehaviour {
 		particles.rateOverTime = (1-(health/maxHealth))*15.0f;
     }
 
+	public void updateTarget()
+	{
+		target = transform.position - transform.forward*2000;
+		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
+		targetObj = null;
+		transform.GetChild (1).transform.position = target;
+		foreach(GameObject enemy in enemies)
+		{
+			float max = 0.0f;
+			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 2000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
+			{
+				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
+				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
+
+				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
+				if (dotProd > 0.95 && dotProd > max) {
+					max = dotProd;
+					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
+					targetObj = enemy;
+					transform.GetChild (1).transform.position = enemy.transform.position;
+					transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.red;
+				}
+			}
+		}
+	}
+
 
 	public void fire()
 	{
@@ -273,7 +273,7 @@ public class PlayerControls : MonoBehaviour {
 			return;
 		}
 		fireRateTimer = 0;
-		bullets -= 2;
+		//bullets -= 2;
 		Vector3 positon = transform.position;
 		Vector3 leftGun = LBarrel.transform.position;
 		Vector3 rightGun = RBarrel.transform.position;
@@ -287,23 +287,23 @@ public class PlayerControls : MonoBehaviour {
 		}
 		else rotation = transform.rotation;
 
-		Quaternion noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-		Quaternion leftRotation = Quaternion.LookRotation(leftGun - target) * noise;
+		Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target);// * noise;
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletL, 0.5f);
+		Destroy (bulletL, 1000f/bulletSpeed);
 
-		noise = Quaternion.Euler(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
-		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target) * noise;
+		noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 		bulletR.transform.rotation *= noise;
 	
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
-        Destroy (bulletR, 0.5f);
+		Destroy (bulletR, 1000f/bulletSpeed);
 	}
 
 	public void fireRocket()
@@ -373,9 +373,6 @@ public class PlayerControls : MonoBehaviour {
 		{
 			float damage = collision.gameObject.GetComponent<EnemyBrain>().health;
 			if(!hasPlow)takeDamage (damage);
-			rb.velocity = rb.velocity*0.6f; //Vector3.zero;
-			rb.angularVelocity = rb.angularVelocity*0.6f;//Vector3.zero;
-			
 			collision.gameObject.GetComponent<EnemyBrain>().health = 0;
 		}
 
@@ -391,7 +388,7 @@ public class PlayerControls : MonoBehaviour {
 		if(collision.gameObject.name.Contains("SpeedPowerup"))
 		{
 			accel += collision.gameObject.GetComponent<Booster> ().boostAmount;
-			turnSpeed = accel / 6f;
+			//turnSpeed = accel / 6f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
             source.PlayOneShot(ThrustersBoosterSound, 1.0f);
             Destroy(collision.gameObject);
@@ -437,13 +434,6 @@ public class PlayerControls : MonoBehaviour {
 			shields = 100;
 		transform.GetChild (6).GetComponent<ParticleSystem> ().Play ();
 		
-	}
-
-	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
-	{
-		if (initialVal >= initialHigh)
-			return targetHigh;
-		return ((initialVal*targetHigh)/initialHigh);
 	}
 		
 	private void doABarrelRoll()

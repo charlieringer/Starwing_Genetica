@@ -32,7 +32,8 @@ public class Seeking : State<EnemyBrain> {
 	{
 		agent.setPlayerAsTarget ();
 		agent.seekTarget (); 
-		agent.checkPlayerAvoidProximity ();
+		bool changedState = agent.checkPlayerAvoidProximity ();
+		if (changedState) return;
 		agent.fire ();
 		agent.checkSeekOrRoamProximity ();
 	}
@@ -42,16 +43,24 @@ public class FleeingPlayer : State<EnemyBrain> {
 
 	public void enter(EnemyBrain agent)
 	{
-		agent.setPlayerAsTarget ();
+		//agent.setPlayerAsTarget ();
+		agent.pickRandomRoamingTarget();
+		Debug.Log("In Flee Mode");
 	}
 
-	public void exit(EnemyBrain agent){}
+	public void exit(EnemyBrain agent){
+		Debug.Log("Out Flee Mode");
+	}
 
 	public void execute(EnemyBrain agent)
 	{
-		agent.setPlayerAsTarget ();
-		agent.fleeTarget ();
-		agent.checkPlayerFleeBuffer ();
+		//agent.setPlayerAsTarget ();
+		//agent.fleeTarget ();
+		//agent.checkPlayerFleeBuffer ();
+		//Debug.Log("In Flee Mode");
+		agent.roamToTarget ();
+		agent.checkRoamingLocationProximity ();
+		//agent.checkPlayerSeekProximity ();
 	}
 }
 

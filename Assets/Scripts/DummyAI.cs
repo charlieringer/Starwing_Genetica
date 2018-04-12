@@ -34,7 +34,7 @@ public class DummyAI : MonoBehaviour  {
 
 	public void pickRandomRoamingTarget()
 	{
-		target = new Vector3((int)(random.Next(800)) - 400 + 400, transform.position.y, (int)(random.Next(800)) - 400);
+		target = new Vector3((int)(random.Next(800)) - 400 + 400, (int)(random.Next(800)) - 400, (int)(random.Next(800)) - 400);
 	}
 
 	public void roamToTarget()
@@ -57,7 +57,6 @@ public class DummyAI : MonoBehaviour  {
 		currentVelocity += steering;
 		currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
 		currentVelocity *= 1 - decel;
-		currentVelocity.y = 0f;
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		//transform.position.y = 0f;
 		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);

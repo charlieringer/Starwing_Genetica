@@ -5,9 +5,9 @@ using UnityEngine;
 public class RocketScript : MonoBehaviour {
 	float timer;
 	public GameObject target;
-	int maxSpeed = 40;
+	int maxSpeed = 35;
 	public Vector3 currentVelocity;
-	int maxTurn =  80;
+	int maxTurn =  70;
 
 	// Use this for initialization
 	void Start () {

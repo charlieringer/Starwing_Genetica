@@ -98,7 +98,7 @@ public class EnemyBrain : MonoBehaviour {
 
     public void pickRandomRoamingTarget()
     {
-		target = new Vector3((int)player.transform.position.x + (random.Next(80)) - 40, (int)player.transform.position.y + (random.Next(80)) - 40, (int)player.transform.position.z + (random.Next(80)) - 40);
+		target = new Vector3((int)player.transform.position.x + (random.Next(2000)) - 1000, (int)player.transform.position.y + (random.Next(2000)) - 1000, (int)player.transform.position.z + (random.Next(2000)) - 1000);
     }
 
     public void roamToTarget()
@@ -116,9 +116,11 @@ public class EnemyBrain : MonoBehaviour {
         else desiredVelocity *= maxSpeed;
 
         Vector3 steering = desiredVelocity - currentVelocity;
-        steering = Vector3.ClampMagnitude(steering, maxTurn);
-        steering += avoidOthers();
-		steering += avoidPlayer ();
+        
+		steering += avoidOthers();
+		steering += avoidPlayer();
+		steering = Vector3.ClampMagnitude(steering, maxTurn);
+
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -148,6 +150,7 @@ public class EnemyBrain : MonoBehaviour {
         steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
 		steering += avoidPlayer ();
+		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -171,9 +174,10 @@ public class EnemyBrain : MonoBehaviour {
 
         Vector3 steering = desiredVelocity - currentVelocity;
 
-        steering = Vector3.ClampMagnitude(steering, maxTurn);
+        
         steering += avoidOthers();
 		steering += avoidPlayer ();
+		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
         currentVelocity += steering;
         currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
@@ -216,7 +220,7 @@ public class EnemyBrain : MonoBehaviour {
 		Vector3 totAvoidForce = new Vector3();
 
 		Vector3 bounds = player.transform.localScale;
-		float rad = bounds.x * playerFleeDistance ;
+		float rad = bounds.x * playerFleeDistance/2 ;
 		Vector3 playerLoc = player.transform.position;
 
 		bool willCollide = Vector3.Distance(playerLoc, ahead) <= rad ? true : Vector3.Distance(playerLoc, ahead2) <= rad;
@@ -249,7 +253,7 @@ public class EnemyBrain : MonoBehaviour {
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
                 bullet.GetComponent<BulletData>().parentShip = "Enemy";
                 bullet.GetComponent<BulletData>().parent = this.gameObject;
-				Destroy(bullet, 750f/bulletSpeed);
+				Destroy(bullet, 2000f/bulletSpeed);
             }
         }
     }
@@ -282,20 +286,22 @@ public class EnemyBrain : MonoBehaviour {
 
     }
 
-    public void checkPlayerAvoidProximity()
+    public bool checkPlayerAvoidProximity()
     {
-		return;
-        if (player == null) return;
-        if (Vector3.Distance(transform.position, target) < playerFleeDistance)
+        if (player == null) return false;
+        //if (Vector3.Distance(transform.position, target) < playerFleeDistance)
+		if (Vector3.Distance(transform.position, target) < 200)
         {
             stateMachine.changeState(new FleeingPlayer());
+			return true;
         }
+		return false;
     }
 
     public void checkPlayerFleeBuffer()
     {
         if (player == null) return;
-        if (Vector3.Distance(transform.position, target) > playerFleeBuffer) stateMachine.changeState(new Roaming());
+        if (Vector3.Distance(transform.position, target) > playerFleeBuffer+10) stateMachine.changeState(new Roaming());
     }
 
     public void setPlayerAsTarget()

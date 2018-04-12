@@ -207,10 +207,12 @@ public class EnemyManager : MonoBehaviour {
             SpawnGA(newPop);
             if (currentWave % 2 == 1)
             {
-                initalWavebudget +=2;
-                waveSize += 2;
+                initalWavebudget +=4;
+                waveSize += 4;
                 makeNewRandomEnemy(enemy);
                 makeNewRandomEnemy(enemy);
+				makeNewRandomEnemy(enemy);
+				makeNewRandomEnemy(enemy);
 
             }
             atEndOfWave = false;

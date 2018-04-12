@@ -939,7 +939,7 @@ MonoBehaviour:
   damageDealt: 0
   decel: 0.1
   maxSpeed: 100
-  maxTurn: 20
+  maxTurn: 200
   currentVelocity: {x: 0, y: 0, z: 0}
   otherEnemies: []
   timeAliveTimer: 0
