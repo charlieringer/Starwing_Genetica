@@ -24,6 +24,11 @@ public class FrontEndMenuController : MonoBehaviour {
 	public Text targetLock;
 	public Text musicVol;
 	public Text sfxVol;
+	public GameObject primCol;
+	public GameObject secCol;
+
+	public Material primColMat;
+	public Material secColMat;
 
 	public GameObject menu;
 	public GameObject controls;
@@ -37,7 +42,7 @@ public class FrontEndMenuController : MonoBehaviour {
 	int mode = 0;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		selectionHighlights [0] = selection1.GetComponent<UIfader>();
 		selectionHighlights [1] = selection2.GetComponent<UIfader>();
 		selectionHighlights [2] = selection3.GetComponent<UIfader>();
@@ -69,11 +74,14 @@ public class FrontEndMenuController : MonoBehaviour {
 		}
 		musicVol.text = StaticData.settings_musicVol.ToString();
 		sfxVol.text = StaticData.settings_sfxVol.ToString();
-	}
 
-	void Start () {
+		primCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_primColour];
+		primColMat.color = StaticData.colours [StaticData.settings_primColour];
 
+		secCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_secColour];
+		secColMat.color = StaticData.colours [StaticData.settings_secColour];
 	}
+		
 
 	// Update is called once per frame
 	void Update () {
@@ -117,7 +125,6 @@ public class FrontEndMenuController : MonoBehaviour {
 				Application.Quit ();
 			}
 		} else if (mode == 2){
-			Debug.Log (currentSettingSelection);
 			if (Input.GetKeyDown (KeyCode.DownArrow) && currentSettingSelection != 4) {
 				settingsHighlights [currentSettingSelection].setActive (false);
 				currentSettingSelection++;
@@ -143,6 +150,7 @@ public class FrontEndMenuController : MonoBehaviour {
 				if (currentSettingSelection == 1) {
 					if (StaticData.settings_musicVol > 0) {
 						StaticData.settings_musicVol--;
+						AudioListener.volume = ((float)StaticData.settings_musicVol) / 10f;
 						musicVol.text = StaticData.settings_musicVol.ToString ();
 					}
 						
@@ -154,8 +162,14 @@ public class FrontEndMenuController : MonoBehaviour {
 					}
 				}
 				if (currentSettingSelection == 3) {
+					StaticData.settings_primColour = (StaticData.settings_primColour - 1)  < 0 ?  8 : (StaticData.settings_primColour - 1);;
+					primCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_primColour];
+					primColMat.color = StaticData.colours [StaticData.settings_primColour];
 				}
 				if (currentSettingSelection == 4) {
+					StaticData.settings_secColour = (StaticData.settings_secColour - 1)  < 0 ?  8 : (StaticData.settings_secColour - 1);
+					secCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_secColour];
+					secColMat.color = StaticData.colours [StaticData.settings_secColour];
 				}
 			}
 			if (Input.GetKeyDown (KeyCode.RightArrow)) {
@@ -172,6 +186,7 @@ public class FrontEndMenuController : MonoBehaviour {
 					if (StaticData.settings_musicVol < 10) {
 						StaticData.settings_musicVol++;
 						musicVol.text = StaticData.settings_musicVol.ToString ();
+						AudioListener.volume = ((float)StaticData.settings_musicVol) / 10f;
 					}
 				}
 				if (currentSettingSelection == 2) {
@@ -181,8 +196,14 @@ public class FrontEndMenuController : MonoBehaviour {
 					}
 				}
 				if (currentSettingSelection == 3) {
+					StaticData.settings_primColour = (StaticData.settings_primColour + 1) % 9;
+					primCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_primColour];
+					primColMat.color = StaticData.colours [StaticData.settings_primColour];
 				}
 				if (currentSettingSelection == 4) {
+					StaticData.settings_secColour = (StaticData.settings_secColour + 1) % 9;
+					secCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_secColour];
+					secColMat.color = StaticData.colours [StaticData.settings_secColour];
 				}
 
 			}

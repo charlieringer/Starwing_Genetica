@@ -13,13 +13,14 @@ public class StaticData {
 	public static bool settings_targetlock = true;
 	public static int settings_musicVol = 7;
 	public static int settings_sfxVol = 7;
-	public static Color settings_primColour;
-	public static Color settings_secColour;
+	public static int settings_primColour = 7;
+	public static int settings_secColour = 1;
 
+	public static Color[] colours = {Color.black, Color.blue, Color.cyan, Color.gray, Color.green, Color.magenta, Color.red, Color.white, Color.yellow};
 
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+
 	}
 	
 	// Update is called once per frame

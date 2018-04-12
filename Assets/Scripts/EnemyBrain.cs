@@ -54,7 +54,6 @@ public class EnemyBrain : MonoBehaviour {
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
-
     }
 		
 	void Update () {
@@ -62,11 +61,6 @@ public class EnemyBrain : MonoBehaviour {
 	}
 		
 	void FixedUpdate() {
-		//changed colour based on gene (speed and bullet speed) information
-		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = new Color(ValueRemapping(gene[1], 9, 1f), ValueRemapping(gene[1], 9, 0f), ValueRemapping(gene[1], 9, 0f), 1);
-		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[3].color = new Color(ValueRemapping(gene[2], 9, 0f), ValueRemapping(gene[2], 9, 1f), ValueRemapping(gene[2], 9, 0f), 1);
-		//transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[1].color = new Color(0.5f, 0.5f, 0.5f, 1);
-        //change size based on the health value from the gene
         float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
         //scale the Thrusters
         for (int childIndex=1; childIndex < 3; childIndex++)
@@ -75,9 +69,8 @@ public class EnemyBrain : MonoBehaviour {
 				new Vector3(0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f);
         }
         //change the ship
-        transform.localScale = new Vector3(01f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
-
-
+		//todo: This is broken becuase of sub models (I think)
+        transform.localScale = new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
 
         if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
@@ -147,7 +140,6 @@ public class EnemyBrain : MonoBehaviour {
         else desiredVelocity *= maxSpeed;
 
         Vector3 steering = desiredVelocity - currentVelocity;
-        steering = Vector3.ClampMagnitude(steering, maxTurn);
         steering += avoidOthers();
 		steering += avoidPlayer ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
