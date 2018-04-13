@@ -6,20 +6,21 @@ public class DummyPlayerController : MonoBehaviour {
 	public float health;
 	public float speed;
 	public float damage;
+
+	public float randRotX;
+	public float randRotY;
+	public float randRotZ;
+
 	// Use this for initialization
 	void Start () {
+		randRotX = Random.RandomRange (-40, 40);
+		randRotY = Random.RandomRange (-40, 40);
+		randRotZ = Random.RandomRange (-40, 40);
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		transform.Rotate(0,Time.deltaTime*45, 0);
-		transform.Rotate(Time.deltaTime*50,0, 0);
-		transform.Rotate(0, 0,Time.deltaTime*55);
-	}
-
-	private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
-	{
-		return ((initialVal*targetHigh)/initialHigh);
+	void FixedUpdate () {
+		transform.Rotate(randRotX*Time.deltaTime,randRotY*Time.deltaTime, randRotZ*Time.deltaTime);
 	}
 }

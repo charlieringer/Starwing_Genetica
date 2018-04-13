@@ -42,7 +42,7 @@ public class FrontEndMenuController : MonoBehaviour {
 	int mode = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		selectionHighlights [0] = selection1.GetComponent<UIfader>();
 		selectionHighlights [1] = selection2.GetComponent<UIfader>();
 		selectionHighlights [2] = selection3.GetComponent<UIfader>();
@@ -80,6 +80,7 @@ public class FrontEndMenuController : MonoBehaviour {
 
 		secCol.GetComponent<Image> ().color = StaticData.colours [StaticData.settings_secColour];
 		secColMat.color = StaticData.colours [StaticData.settings_secColour];
+		AudioListener.volume = ((float)StaticData.settings_musicVol) / 10f;
 	}
 		
 

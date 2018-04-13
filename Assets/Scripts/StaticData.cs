@@ -11,7 +11,7 @@ public class StaticData {
 	public static float score;
 
 	public static bool settings_targetlock = true;
-	public static int settings_musicVol = 7;
+	public static int settings_musicVol = 0;
 	public static int settings_sfxVol = 7;
 	public static int settings_primColour = 7;
 	public static int settings_secColour = 1;

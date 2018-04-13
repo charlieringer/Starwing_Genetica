@@ -503,7 +503,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 202542123}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 55, y: 8, z: 100}
+  m_LocalPosition: {x: 50, y: 8, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1326266482}
@@ -702,6 +702,9 @@ MonoBehaviour:
   health: 0
   speed: 0
   damage: 0
+  randRotX: 0
+  randRotY: 0
+  randRotZ: 0
 --- !u!1 &212289720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,6 +1014,9 @@ MonoBehaviour:
   ship3: {fileID: 202542123}
   ButtonSound: {fileID: 8300000, guid: 9815b0f7fa81bfb4fa4bcc8ca2eca624, type: 3}
   source: {fileID: 0}
+  randRotX: 0
+  randRotY: 0
+  randRotZ: 0
 --- !u!4 &232278616
 Transform:
   m_ObjectHideFlags: 0
@@ -1547,6 +1553,9 @@ MonoBehaviour:
   health: 0
   speed: 0
   damage: 0
+  randRotX: 0
+  randRotY: 0
+  randRotZ: 0
 --- !u!1 &449875940
 GameObject:
   m_ObjectHideFlags: 0
@@ -1827,7 +1836,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 643375323}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -55, y: 8, z: 100}
+  m_LocalPosition: {x: -50, y: 8, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 866893105}
@@ -2026,6 +2035,9 @@ MonoBehaviour:
   health: 0
   speed: 0
   damage: 0
+  randRotX: 0
+  randRotY: 0
+  randRotZ: 0
 --- !u!1 &647580654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,6 +2256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linkedImage: {fileID: 692154489}
+  opacity: 0
 --- !u!114 &692154489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2416,6 +2429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linkedImage: {fileID: 749764343}
+  opacity: 0
 --- !u!114 &749764343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19242,8 +19256,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.5025635, y: -130.0369}
-  m_SizeDelta: {x: 383.3178, y: 236.31158}
+  m_AnchoredPosition: {x: 0, y: -60}
+  m_SizeDelta: {x: 383.3178, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2086539999
 MonoBehaviour:
@@ -22786,6 +22800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linkedImage: {fileID: 2141296307}
+  opacity: 0
 --- !u!114 &2141296307
 MonoBehaviour:
   m_ObjectHideFlags: 0

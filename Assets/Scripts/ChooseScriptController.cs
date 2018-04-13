@@ -19,6 +19,10 @@ public class ChooseScriptController : MonoBehaviour {
     public AudioClip ButtonSound;
     public AudioSource source;
 
+	public float randRotX;
+	public float randRotY;
+	public float randRotZ;
+
     // Use this for initialization
     void Awake () {
 		selectionHighlights [0] = selection1.GetComponent<UIfader>();
@@ -32,6 +36,10 @@ public class ChooseScriptController : MonoBehaviour {
 		selectionHighlights [0].setActive(false);
 		selectionHighlights [1].setActive(true);
 		selectionHighlights [2].setActive(false);
+
+		randRotX = Random.RandomRange (-200, 200);
+		randRotY = Random.RandomRange (-200, 200);
+		randRotZ = Random.RandomRange (-200, 200);
 
 	}
 	
@@ -77,19 +85,13 @@ public class ChooseScriptController : MonoBehaviour {
         }
 
 		if (currentSelection == 0) {
-			ship1.transform.transform.Rotate(0,Time.deltaTime*210, 0);
-			ship1.transform.transform.Rotate(Time.deltaTime*200,0, 0);
-			ship1.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+			ship1.transform.transform.Rotate(randRotX*Time.deltaTime,randRotY*Time.deltaTime, randRotZ*Time.deltaTime);
 		}
 		if (currentSelection == 1) {
-			ship2.transform.transform.Rotate(0,Time.deltaTime*210, 0);
-			ship2.transform.transform.Rotate(Time.deltaTime*200,0, 0);
-			ship2.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+			ship2.transform.transform.Rotate(randRotX*Time.deltaTime,randRotY*Time.deltaTime, randRotZ*Time.deltaTime);
 		}
 		if (currentSelection == 2) {
-			ship3.transform.transform.Rotate(0,Time.deltaTime*210, 0);
-			ship3.transform.transform.Rotate(Time.deltaTime*200,0, 0);
-			ship3.transform.transform.Rotate(0, 0,Time.deltaTime*190);
+			ship3.transform.transform.Rotate(randRotX*Time.deltaTime,randRotY*Time.deltaTime, randRotZ*Time.deltaTime);
 		}
 	}
 		
