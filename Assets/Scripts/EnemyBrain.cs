@@ -54,6 +54,8 @@ public class EnemyBrain : MonoBehaviour {
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
+
+
     }
 		
 	void Update () {
@@ -61,16 +63,7 @@ public class EnemyBrain : MonoBehaviour {
 	}
 		
 	void FixedUpdate() {
-        float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
-        //scale the Thrusters
-        for (int childIndex=1; childIndex < 3; childIndex++)
-        {
-			transform.GetChild (activeModel).GetChild(childIndex).transform.localScale =
-				new Vector3(0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f);
-        }
-        //change the ship
-		//todo: This is broken becuase of sub models (I think)
-        transform.localScale = new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
+
 
         if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
@@ -112,6 +105,7 @@ public class EnemyBrain : MonoBehaviour {
         
 		steering += avoidOthers();
 		steering += avoidPlayer();
+		steering += avoidMeteors ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
 
@@ -142,6 +136,7 @@ public class EnemyBrain : MonoBehaviour {
         Vector3 steering = desiredVelocity - currentVelocity;
         steering += avoidOthers();
 		steering += avoidPlayer ();
+		steering += avoidMeteors ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
         currentVelocity += steering;
@@ -168,7 +163,8 @@ public class EnemyBrain : MonoBehaviour {
 
         
         steering += avoidOthers();
-		steering += avoidPlayer ();
+		steering += avoidPlayer();
+		steering += avoidMeteors();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
         currentVelocity += steering;
@@ -204,6 +200,32 @@ public class EnemyBrain : MonoBehaviour {
         totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
         return totAvoidForce;
     }
+
+	public Vector3 avoidMeteors()
+	{
+		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
+		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+		Vector3 totAvoidForce = new Vector3();
+
+		foreach(GameObject go in GameObject.FindGameObjectsWithTag("Meteor"))
+		{
+			Vector3 bounds = go.gameObject.transform.localScale;
+			float rad = bounds.x;
+			Vector3 meteorLoc = go.transform.position;
+
+			bool willCollide = Vector3.Distance(meteorLoc, ahead) <= rad ? true : Vector3.Distance(meteorLoc, ahead2) <= rad;
+			if (Vector3.Distance(meteorLoc, transform.position) <= rad) willCollide = true;
+
+			if (willCollide)
+			{
+				Vector3 avoidForce = ahead - meteorLoc;
+				//avoidForce.y = 0.0f;
+				totAvoidForce += avoidForce;
+			}
+		}
+		totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
+		return totAvoidForce;
+	}
 
 	public Vector3 avoidPlayer()
 	{
@@ -319,7 +341,10 @@ public class EnemyBrain : MonoBehaviour {
 			collision.gameObject.GetComponent<RocketScript> ().explode ();
 		}
 
-
+		if(collision.gameObject.name.Contains("Meteor"))
+		{
+			health = 0;
+		}
     }
 
     public void setGenoPheno(float[] _genes)
@@ -348,6 +373,18 @@ public class EnemyBrain : MonoBehaviour {
 		else
 			activeModel = 2;
 		transform.GetChild (activeModel).gameObject.SetActive (true); 
+		transform.GetChild (activeModel).GetChild (0).GetComponent<MiniMapShipController> ().target = player;
+
+		float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
+		//scale the Thrusters
+		for (int childIndex=1; childIndex < 3; childIndex++)
+		{
+			transform.GetChild (activeModel).GetChild(childIndex).transform.localScale =
+				new Vector3(0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f, 0.3f + scalingValueIncrement*0.5f);
+		}
+		//change the ship
+		//todo: This is broken becuase of sub models (I think)
+		transform.localScale = new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
     }
 
     public void BoosterDrop(float[] _genes)

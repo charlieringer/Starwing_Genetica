@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MiniMapShipController : MonoBehaviour {
 
+	public GameObject target;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,9 +15,11 @@ public class MiniMapShipController : MonoBehaviour {
 	void FixedUpdate () {
 		Vector3 oldRotation = this.transform.rotation.eulerAngles;
 		//oldRotation.y = 0.0f;
-		oldRotation.z = 0.0f;
-		oldRotation.x = 0.0f;
+		//oldRotation.z = 0.0f;
+		//oldRotation.x = 0.0f;
 		this.transform.rotation = Quaternion.Euler(oldRotation);
+
+		this.transform.rotation = target.transform.rotation;
 		
 	}
 }

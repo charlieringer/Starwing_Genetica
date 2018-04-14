@@ -66,18 +66,18 @@ public class ChooseScriptController : MonoBehaviour {
 		{
 			if (currentSelection == 0) {
 				StaticData.startingShipHealth = 1200; //700;
-				StaticData.startingShipDamage = 50;//50;
-				StaticData.startingShipSpeed = 500;
+				StaticData.startingShipDamage = 25;//50;
+				StaticData.startingShipSpeed = 400;
 				StaticData.startShipSpecial = 1;
 			} else if (currentSelection == 1) {
 				StaticData.startingShipHealth = 800;//400;
-				StaticData.startingShipDamage = 100;//25;
-				StaticData.startingShipSpeed = 700;
+				StaticData.startingShipDamage = 50;//25;
+				StaticData.startingShipSpeed = 600;
 				StaticData.startShipSpecial = 2;
 			} else if (currentSelection == 2) {
 				StaticData.startingShipHealth = 1000;//550;
-				StaticData.startingShipDamage = 150;//75;
-				StaticData.startingShipSpeed = 400;
+				StaticData.startingShipDamage = 75;//75;
+				StaticData.startingShipSpeed = 300;
 				StaticData.startShipSpecial = 0;
 			}
 			SceneManager.LoadScene ("Main Scene");

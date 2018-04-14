@@ -82,7 +82,7 @@ public class PlayerControls : MonoBehaviour {
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
 		specialManov = StaticData.startShipSpecial;
-		//turnSpeed = accel / 60;
+		//turnSpeed = accel;/// 200;
 
 		if(specialManov == 0)transform.GetChild (0).GetChild (6).gameObject.SetActive (true);
 		if(specialManov == 1)transform.GetChild (0).GetChild (7).gameObject.SetActive (true);
@@ -98,7 +98,7 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		updateTarget ();
+		
 			
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
@@ -165,13 +165,18 @@ public class PlayerControls : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-
+		if (v > 500)
+			v = 500;
+		if (v < -500)
+			v = -500;
 		rb.AddTorque (transform.up * h * turnSpeed);
 		rb.AddTorque (transform.right * v * turnSpeed);
-		if(Input.GetKey(KeyCode.W)) rb.AddForce (transform.forward  * -accel);
+		if (Input.GetKey (KeyCode.W)) {
+			rb.AddForce (transform.forward * -accel);
+		}
 
 
-
+		updateTarget ();
 		if ((Input.GetKey(KeyCode.Space)||Input.GetMouseButton(0)) && !reloading) 
         {
         	fire();
@@ -235,7 +240,7 @@ public class PlayerControls : MonoBehaviour {
 
 	public void updateTarget()
 	{
-		target = transform.position - transform.forward*2000;
+		target = transform.position - transform.forward*1500;
 		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
 		targetObj = null;
 		transform.GetChild (1).transform.position = target;
@@ -243,13 +248,13 @@ public class PlayerControls : MonoBehaviour {
 		foreach(GameObject enemy in enemies)
 		{
 			float max = 0.0f;
-			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 2000 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
+			if (enemy.gameObject.activeSelf && Vector3.Distance(transform.position, enemy.transform.position) < 1500 && Vector3.Distance(transform.position, enemy.transform.position) > 20)
 			{
 				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
 				Vector3 dirFromAtoB = (transform.position - enemy.transform.position);
 
 				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
-				if (dotProd > 0.95 && dotProd > max) {
+				if (dotProd > 0.97 && dotProd > max) {
 					max = dotProd;
 					target = enemy.transform.position + (enemy.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, enemy.transform.position)/bulletSpeed);
 					targetObj = enemy;
@@ -258,6 +263,7 @@ public class PlayerControls : MonoBehaviour {
 				}
 			}
 		}
+		Debug.DrawLine (transform.position, target, Color.green);
 	}
 
 
@@ -275,36 +281,28 @@ public class PlayerControls : MonoBehaviour {
 		}
 		fireRateTimer = 0;
 		//bullets -= 2;
-		Vector3 positon = transform.position;
+
 		Vector3 leftGun = LBarrel.transform.position;
 		Vector3 rightGun = RBarrel.transform.position;
-
 		Quaternion rotation;
 
-		if (target != null)
-		{
-			//rotation = Quaternion.LookRotation( target.transform.position - transform.position);
-			rotation = Quaternion.LookRotation(transform.position - target);
-		}
-		else rotation = transform.rotation;
-
 		Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target) * noise;
+		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target);// * noise;
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
 		bulletL.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletL, 1000f/bulletSpeed);
+		Destroy (bulletL, 1500f/bulletSpeed);
 
 		noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target) * noise;
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 		bulletR.transform.rotation *= noise;
 	
 		bulletR.GetComponent<BulletData>().damage = bulletDamage;
 		bulletR.GetComponent<BulletData>().parentShip = "Player";
-		Destroy (bulletR, 1000f/bulletSpeed);
+		Destroy (bulletR, 1500f/bulletSpeed);
 	}
 
 	public void fireRocket()
@@ -359,9 +357,28 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
+	void OnCollisionEnter(Collision collision)
+	{
+		//print ("Crashed");
+
+	}
+
 
 	void OnTriggerEnter(Collider collision)
 	{
+		if(collision.gameObject.name.Contains("Meteor"))
+		{
+			Vector3 dir = collision.gameObject.transform.position - transform.position;
+			// We then get the opposite (-Vector3) and normalize it
+			dir = -dir.normalized;
+			// And finally we add force in the direction of dir and multiply it by force. 
+			// This will push back the player
+			GetComponent<Rigidbody>().velocity = (dir*collision.gameObject.GetComponent<Rigidbody>().velocity.magnitude*collision.gameObject.transform.localScale.x*2);
+			collision.gameObject.GetComponent<Rigidbody>().velocity = (-dir*GetComponent<Rigidbody>().velocity.magnitude*0.5f);
+			takeDamage (200 * collision.gameObject.transform.localScale.x);
+			print ("Crashed");
+		}
+
 		if(collision.gameObject.name.Contains("shot_prefab") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
 		{
 			float damage = collision.gameObject.GetComponent<BulletData>().damage;
@@ -409,7 +426,7 @@ public class PlayerControls : MonoBehaviour {
 		playerHealthBar.rectTransform.sizeDelta = new Vector2((health/maxHealth) * 110f , 15);
 		playerShieldBar.rectTransform.sizeDelta = new Vector2((100 - (100-shields))*1.1f , 15);
 		playerRollBar.rectTransform.sizeDelta = new Vector2((barrelRollCharge/200) *110f , 15);
-		bulletText.text = bullets + "/200";
+		//bulletText.text = bullets + "/200";
 	 }
 
 	void takeDamage(float damage)
@@ -444,10 +461,10 @@ public class PlayerControls : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Z)  || Input.GetKeyDown(KeyCode.A))
 		{
 			barrelRollRotation = -accel/50;
-			barrelRollForce = accel;
+			barrelRollForce = accel*2;
 		} else {		
 			barrelRollRotation = accel/50;
-			barrelRollForce = -accel;
+			barrelRollForce = -accel*2;
 		}
 		barrelRollCharge -= barrelRollCost;
 		continueToBarrelRoll ();

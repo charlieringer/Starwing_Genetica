@@ -5,9 +5,9 @@ using UnityEngine;
 public class RocketScript : MonoBehaviour {
 	float timer;
 	public GameObject target;
-	int maxSpeed = 35;
+	int maxSpeed = 25;
 	public Vector3 currentVelocity;
-	int maxTurn =  70;
+	int maxTurn =  50;
 
 	// Use this for initialization
 	void Start () {
@@ -40,8 +40,6 @@ public class RocketScript : MonoBehaviour {
 				brain.health -= damage;
 			}
 		}
-		var th = transform.GetChild (0).GetChild (0).GetComponent<ParticleSystem>();
-		th.Stop();
 	}
 
 	public void roamToTarget()

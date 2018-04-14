@@ -13,7 +13,7 @@ public class DummyAI : MonoBehaviour  {
 	public float maxSpeed;
 	public float maxTurn;
 	protected static float NEARBY = 5f;
-	protected static System.Random random = new System.Random();
+	//protected static System.Random random = new System.Random();
 
 	private Vector3 target;
 	private Vector3 currentVelocity = new Vector3(0,0,0);
@@ -34,7 +34,7 @@ public class DummyAI : MonoBehaviour  {
 
 	public void pickRandomRoamingTarget()
 	{
-		target = new Vector3((int)(random.Next(800)) - 400 + 400, (int)(random.Next(800)) - 400, (int)(random.Next(800)) - 400);
+		target = new Vector3(Random.Range(-1000,2000), Random.Range(-300,300), Random.Range(0,1000));
 	}
 
 	public void roamToTarget()
