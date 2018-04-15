@@ -222,7 +222,7 @@ public class EnemyBrain : MonoBehaviour {
 				Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
 				Quaternion noiseyrotation = transform.rotation * noise;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, noiseyrotation);
-				bullet.transform.localScale = new Vector3(1f, map(bulletDamage, 10, 1f), map(bulletDamage, 10, 1f));
+				bullet.transform.localScale = new Vector3(map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.5f));
 
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;

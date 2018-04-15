@@ -5,9 +5,10 @@ using UnityEngine;
 public class RocketScript : MonoBehaviour {
 	float timer;
 	public GameObject target;
-	int maxSpeed = 25;
+	int maxSpeed = 400;
 	public Vector3 currentVelocity;
 	int maxTurn =  75;
+	int arriveDampingDistance = 200;
 
 	// Use this for initialization
 	void Start () {
@@ -49,16 +50,28 @@ public class RocketScript : MonoBehaviour {
 			targetLoc = target.transform.position;
 		else
 			targetLoc = transform.position -transform.forward * 1000;
-		Vector3 desiredVelocity = targetLoc - transform.position;
 
-		desiredVelocity *= maxSpeed;
+		float arriveDistance = Vector3.Distance(targetLoc, transform.position);
+
+		Vector3 desiredVelocity = targetLoc - transform.position;
+		if (arriveDistance < arriveDampingDistance)
+		{
+			float mappedSpeed = map(arriveDistance, 0, arriveDistance, 0, maxSpeed);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
 
 		Vector3 steering = desiredVelocity - currentVelocity;
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
 		currentVelocity += steering;
+		currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
+	}
+
+	float map(float s, float a1, float a2, float b1, float b2)
+	{
+		return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
 	}
 
 }
