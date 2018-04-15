@@ -10,6 +10,10 @@ public class BoosterUIController : MonoBehaviour {
 	float displayTime = 1.5f;
 	float currentDisplayedtime = 0;
 	bool started = false;
+	public AudioClip LaserBoosterSound;
+	public AudioClip ShieldBoosterSound;
+	public AudioClip ThrustersBoosterSound;
+	public AudioSource source;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,12 +25,16 @@ public class BoosterUIController : MonoBehaviour {
 			return;
 		if (!started) {
 			started = true;
-			if (queueOfMessages [0] == 0)
+			if (queueOfMessages [0] == 0) {
 				messageText.text = "SHIELDS CHARGED";
-			else if (queueOfMessages [0] == 1)
+				source.PlayOneShot (ShieldBoosterSound, 1.0f);
+			}else if (queueOfMessages [0] == 1) {
 				messageText.text = "WEAPONS IMPROVED";
-			else if (queueOfMessages [0] == 2)
+				source.PlayOneShot (LaserBoosterSound, 1.0f);
+			} else if (queueOfMessages [0] == 2) {
 				messageText.text = "THRUSTERS UPGRADED";
+				source.PlayOneShot(ThrustersBoosterSound, 1.0f);
+			}
 		}
 		if (currentDisplayedtime + Time.deltaTime > displayTime) {
 			currentDisplayedtime = 0;

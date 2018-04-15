@@ -3,25 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class EnemyManager : MonoBehaviour {
-    //public PlayerHealth playerHealth;       // Reference to the player's heatlh.
     public GameObject player;
     public GameObject enemy;                // The enemy prefab to be spawned.
 	public GameObject GAManager;
 
 	public GameObject pauseManager;
-	//public float spawnTime = 3f;          // How long between each spawn.
-	public int waveSize;					// how many enemies are spawning each wave
-    public List<GameObject> enemies=new List<GameObject>();        //dinamic list of enemies
-    public List<GameObject> deadEnemies=new List<GameObject>();        //dinamic list of dead enemies used to create the GA population and next generation
-	public int initalWavebudget;
+	public int waveSize;			
+    public List<GameObject> enemies=new List<GameObject>();
+    public List<GameObject> deadEnemies=new List<GameObject>();
     public Text shipsRemainingText;
     public Text waveCompleteText;
 	public Text waveStartText;
 	public Text playerScoreText;
 	public GameObject deadEnemyExplosion;
-    //check health. make the enemy die;
 
     private float timeTillNextWave;
     private bool atEndOfWave = false;
@@ -34,43 +31,33 @@ public class EnemyManager : MonoBehaviour {
     public AudioClip WaveCompletedSound;
     public AudioSource source;
 
+	public GameObject ShieldPowerup;
+	public GameObject SpeedPowerup;
+	public GameObject WeaponPowerup;
+
     void Start ()
 	{
         source = GetComponent<AudioSource>();
 		player.GetComponent<PlayerControls> ().enemies = enemies;
-        //GameObject privateEnemy = enemy;
-        // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
-        //InvokeRepeating ("Spawn", privateEnemy, spawnTime, 0);//spawnTime);
-
 	}
 
     private void Update()
     {
+		if (pauseManager.GetComponent<PauseHandler>().isPaused) return;
 		if (currentWave == 0) {
 			updateInitalWave();
-			writeShipsRemianing();
+			writeShipsRemaining();
 			writePlayerScore ();
 			return;
 		}
-		if (pauseManager.GetComponent<PauseHandler>().isPaused)
-			return;
-        //print("enemies.Count:" + enemies.Count);
-        //check the enemy health and if it's lower than 0, distroy the player
        if (enemies.Count > 0)
         {
             for(int enemyIndex=enemies.Count-1; enemyIndex>=0; enemyIndex--)
             {
-                //print("enemyIndex:" + enemyIndex + " enemies[enemyIndex].GetComponent<EnemyBrain>().health:" + enemies[enemyIndex].GetComponent<EnemyBrain>().health);
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
-                //{
-                //    enemies[enemyIndex].GetComponent<Rigidbody>().useGravity = true;
-					//enemies[enemyIndex].transform.Rotate (20, 0, 20);
-                    //enemies.RemoveAt(enemyIndex);
-                    //print("destroied an enemy");
-                //}
-				//if(enemies[enemyIndex].transform.position.y < -200)
 				{
-					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().GetGene ();
+					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().getGenes ();
+					BoosterDrop(genes, enemies[enemyIndex].gameObject.transform.position);
 					foreach (float gene in genes) {
 						playerScore += gene;
 
@@ -88,12 +75,10 @@ public class EnemyManager : MonoBehaviour {
                     enemies.RemoveAt(enemyIndex);
 				}
             }
-            writeShipsRemianing();
+            writeShipsRemaining();
 			writePlayerScore ();
         } else {
-
             updateEndOfWave();
-			//SceneManager.LoadScene ("NextWave");
 		}
     }
 
@@ -104,19 +89,17 @@ public class EnemyManager : MonoBehaviour {
         }
     }
 
-    public void SpawnGA(IDictionary<int, GAenemy> newGAPopulation)
-    {//privateEnemy gameObj (see the other Spawn function) is replaced straight with the public enemy gameobject;
-        //enemies = new List<GameObject>();
+	public void spawnGA(List<float[]> newGAPopulation)
+	{
         currentWave++;
         for (int i = 0; i < waveSize; i++)
         {
-
             // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
             GameObject newEnemy = Instantiate(enemy, GenerateRandomTransform(), enemy.GetComponent<Rigidbody>().rotation);
             newEnemy.GetComponent<EnemyBrain>().player = this.player;
 			newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
-			newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (newGAPopulation [i].GetGene());
-			newEnemy.GetComponent<EnemyBrain> ().pauseManager = pauseManager;
+			newEnemy.GetComponent<EnemyBrain>().setGenoPheno (newGAPopulation [i]);
+			newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
             enemies.Add(newEnemy); //adding all enemies created to the list
 
             //deadEnemies.Add(newEnemy);
@@ -133,21 +116,14 @@ public class EnemyManager : MonoBehaviour {
         GameObject newEnemy = Instantiate(privateEnemy, GenerateRandomTransform(), privateEnemy.GetComponent<Rigidbody>().rotation);
         newEnemy.GetComponent<EnemyBrain>().player = this.player;
         newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
+		newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
 
         float[] rawGenes = new float[6];
-
-        for (int j = 0; j < rawGenes.Length; j++) rawGenes[j] = 1;
-        for (int j = 0; j < initalWavebudget; j++)
-        {
-            int randomIndx = Random.Range(0, rawGenes.Length);
-            rawGenes[randomIndx]++;
-        }
-
-        newEnemy.GetComponent<EnemyBrain>().setGenoPheno(rawGenes);
-
-        newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
-        enemies.Add(newEnemy); //adding all enemies created to the list
-
+		for (int i = 0; i < rawGenes.Length; i++) {
+			rawGenes [i] = Random.value*10;
+		}
+		newEnemy.GetComponent<EnemyBrain> ().setGenoPheno (rawGenes);
+        enemies.Add(newEnemy);
     }
 
     Vector3 GenerateRandomTransform(){
@@ -156,12 +132,10 @@ public class EnemyManager : MonoBehaviour {
 		float y = Random.Range(player.transform.position.y-4000, player.transform.position.y + 4000);
         float z = Random.Range(player.transform.position.z - 4000, player.transform.position.z + 4000);
         pos = new Vector3(x, y, z);
-        transform.position = pos;
-
         return pos;
     }
 
-    private void writeShipsRemianing()
+    private void writeShipsRemaining()
     {
         shipsRemainingText.text = enemies.Count + "/" + waveSize;
     }
@@ -201,13 +175,12 @@ public class EnemyManager : MonoBehaviour {
 
         if(timeTillNextWave < 0.0001)
         {
-            ScaleFitnessVariables();
-            IDictionary<int, GAenemy> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(deadEnemies);
+            scaleFitnessVariables();
+			List<float[]> newPop = GAManager.GetComponent<GAmanager>().getNextWavePopulation(deadEnemies);
 
-            SpawnGA(newPop);
+            spawnGA(newPop);
             if (currentWave % 2 == 1)
             {
-                initalWavebudget +=4;
                 waveSize += 4;
                 makeNewRandomEnemy(enemy);
                 makeNewRandomEnemy(enemy);
@@ -217,8 +190,6 @@ public class EnemyManager : MonoBehaviour {
             }
             atEndOfWave = false;
             waveCompleteWrapper.SetActive(false);
-
-
         }
         displayWaveComplete();
         timeTillNextWave -= Time.deltaTime;
@@ -229,7 +200,7 @@ public class EnemyManager : MonoBehaviour {
 		waveCompleteText.text = timeTillNextWave.ToString("N0");
     }
 
-    private void ScaleFitnessVariables()
+    private void scaleFitnessVariables()
     {
         //getting the max value
         float timeMax = 0;
@@ -238,19 +209,42 @@ public class EnemyManager : MonoBehaviour {
         {
             if (enemy.GetComponent<EnemyBrain>().timeAliveTimer > timeMax) timeMax = enemy.GetComponent<EnemyBrain>().timeAliveTimer;
             if (enemy.GetComponent<EnemyBrain>().damageDealt > damageMax) damageMax = enemy.GetComponent<EnemyBrain>().damageDealt;
-
         }
 
         //mapping from 0 to 1
         foreach (GameObject enemy in deadEnemies)
         {
-            enemy.GetComponent<EnemyBrain>().timeAliveTimer = ValueRemapping(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
-            enemy.GetComponent<EnemyBrain>().damageDealt = ValueRemapping(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
-
+            enemy.GetComponent<EnemyBrain>().timeAliveTimer = map(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
+            enemy.GetComponent<EnemyBrain>().damageDealt = map(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
         }
     }
 
-    private static float ValueRemapping(float initialVal, float initialHigh, float targetHigh)
+	public void BoosterDrop(float[] genes, Vector3 position)
+	{
+		float pBooster = Random.value;
+		if (pBooster > 0.3) return; //70% of the time there is no drop
+
+		List<float> booster = new List< float > ();
+		for (int i = 0; i < 3; i++) booster.Add(genes[i]);
+		int boosterType = 0;
+
+		if (pBooster <= 0.1) boosterType = booster.IndexOf(booster.Max()); //10% we drop based on the type
+		else if (pBooster <= 0.2) boosterType = Random.Range(0, 3); //10% we drop random 
+		//The other 10% we do nothing (so drop a shield)
+			
+		if (boosterType == 0) {
+			GameObject boosterDrop = Instantiate(ShieldPowerup, position, transform.rotation);
+			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+		} else if (boosterType == 1) {
+			GameObject boosterDrop = Instantiate(SpeedPowerup, position, transform.rotation);
+			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+		} else {
+			GameObject boosterDrop = Instantiate(WeaponPowerup, position, transform.rotation);
+			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+		}
+	}
+		
+    private static float map(float initialVal, float initialHigh, float targetHigh)
     {
         return ((initialVal * targetHigh) / initialHigh);
     }

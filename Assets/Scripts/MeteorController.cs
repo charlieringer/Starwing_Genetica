@@ -14,9 +14,9 @@ public class MeteorController : MonoBehaviour {
 	private Rigidbody rb;
 	// Use this for initialization
 	void Awake () {
-		randRotX = Random.RandomRange (-40, 40);
-		randRotY = Random.RandomRange (-40, 40);
-		randRotZ = Random.RandomRange (-40, 40);
+		randRotX = Random.Range (-40, 40);
+		randRotY = Random.Range (-40, 40);
+		randRotZ = Random.Range (-40, 40);
 		rb = GetComponent<Rigidbody> ();
 		health = transform.localScale.x * 500;
 	}

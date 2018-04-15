@@ -7,7 +7,7 @@ public class RocketScript : MonoBehaviour {
 	public GameObject target;
 	int maxSpeed = 25;
 	public Vector3 currentVelocity;
-	int maxTurn =  50;
+	int maxTurn =  75;
 
 	// Use this for initialization
 	void Start () {
@@ -57,7 +57,6 @@ public class RocketScript : MonoBehaviour {
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
 		currentVelocity += steering;
-		//currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
 	}

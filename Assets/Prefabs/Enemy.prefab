@@ -367,7 +367,7 @@ Transform:
   m_GameObject: {fileID: 1863707849954218}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4916501135743476}
   m_Father: {fileID: 4636693135480732}
@@ -407,7 +407,7 @@ Transform:
   m_GameObject: {fileID: 1976594258154676}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4739626692710522}
   m_Father: {fileID: 4683626461159668}
@@ -581,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 1474657250269250}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4118030056224922}
   m_Father: {fileID: 4589505822540876}
@@ -1078,6 +1078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872f27e44bd5044a48128d7cc59454f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &114646821723530796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1089,6 +1090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872f27e44bd5044a48128d7cc59454f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &114901847156794090
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1100,6 +1102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872f27e44bd5044a48128d7cc59454f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!114 &114981976008398862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1116,12 +1119,6 @@ MonoBehaviour:
   bulletPreFab: {fileID: 1186724225514680, guid: 009948f8a0705a44db1061f50c9fd569,
     type: 2}
   pauseManager: {fileID: 0}
-  ShieldPowerup: {fileID: 1354573339614046, guid: 0ffc365ba0db55d4da2f601c07d06db9,
-    type: 2}
-  SpeedPowerup: {fileID: 1681520796527418, guid: c1285a8c34ab0f245966f8cf73e0eadc,
-    type: 2}
-  WeaponPowerup: {fileID: 1488066507976128, guid: 3e6123587623baa408f6a2cdd1f61961,
-    type: 2}
   playerSeekDistance: 400
   playerFleeDistance: 80
   playerFleeBuffer: 140

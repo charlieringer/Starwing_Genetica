@@ -32,7 +32,7 @@ public class StarField : MonoBehaviour {
 			points [i].startSize = starSize;
 		}
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (points == null)

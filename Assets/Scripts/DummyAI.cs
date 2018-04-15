@@ -21,15 +21,11 @@ public class DummyAI : MonoBehaviour  {
 
 	void Awake () {
 		pickRandomRoamingTarget ();
-
-	}
-
-	void Update () {
-		roamToTarget ();
-		checkRoamingLocationProximity ();
 	}
 
 	void FixedUpdate() {
+		roamToTarget ();
+		checkRoamingLocationProximity ();
 	}
 
 	public void pickRandomRoamingTarget()
@@ -39,11 +35,9 @@ public class DummyAI : MonoBehaviour  {
 
 	public void roamToTarget()
 	{
-
 		Vector3 desiredVelocity = target - transform.position;
 
 		float arriveDistance = Vector3.Distance(target, transform.position);
-
 		if (arriveDistance < arriveDampingDistance)
 		{
 			float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
@@ -56,9 +50,7 @@ public class DummyAI : MonoBehaviour  {
 
 		currentVelocity += steering;
 		currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
-		currentVelocity *= 1 - decel;
-		transform.position += currentVelocity * Time.fixedDeltaTime;
-		//transform.position.y = 0f;
+		transform.position += currentVelocity * Time.deltaTime;
 		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
 	}
 

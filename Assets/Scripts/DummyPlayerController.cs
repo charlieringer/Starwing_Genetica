@@ -18,14 +18,10 @@ public class DummyPlayerController : MonoBehaviour {
 		randRotX = Random.RandomRange (-40, 40);
 		randRotY = Random.RandomRange (-40, 40);
 		randRotZ = Random.RandomRange (-40, 40);
-
-		
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		transform.Rotate(randRotX*Time.deltaTime,randRotY*Time.deltaTime, randRotZ*Time.deltaTime);
-
-
 	}
 }

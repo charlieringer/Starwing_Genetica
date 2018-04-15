@@ -54,30 +54,12 @@ public class FleeingPlayer : State<EnemyBrain> {
 
 	public void execute(EnemyBrain agent)
 	{
-		//agent.setPlayerAsTarget ();
-		//agent.fleeTarget ();
-		//agent.checkPlayerFleeBuffer ();
-		//Debug.Log("In Flee Mode");
 		agent.roamToTarget ();
-		agent.checkRoamingLocationProximity ();
-		//agent.checkPlayerSeekProximity ();
+		agent.checkFleeLocationProximity ();
 	}
 }
 
 public class AvoidingBullet : State<EnemyBrain> {
-
-	public void enter(EnemyBrain agent)
-	{
-	}
-
-	public void exit(EnemyBrain agent){}
-
-	public void execute(EnemyBrain agent)
-	{
-	}
-}
-
-public class AvoidingShip : State<EnemyBrain> {
 
 	public void enter(EnemyBrain agent)
 	{

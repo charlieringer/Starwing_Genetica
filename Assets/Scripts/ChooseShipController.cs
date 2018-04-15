@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ChooseScriptController : MonoBehaviour {
+public class ChooseShipController : MonoBehaviour {
 
 	int currentSelection = 1;
 	UIfader[] selectionHighlights = new UIfader[3];
@@ -29,10 +29,6 @@ public class ChooseScriptController : MonoBehaviour {
 		selectionHighlights [1] = selection2.GetComponent<UIfader>();
 		selectionHighlights [2] = selection3.GetComponent<UIfader>();
 
-        source = GetComponent<AudioSource>();
-    }
-
-	void Start () {
 		selectionHighlights [0].setActive(false);
 		selectionHighlights [1].setActive(true);
 		selectionHighlights [2].setActive(false);
@@ -41,7 +37,8 @@ public class ChooseScriptController : MonoBehaviour {
 		randRotY = Random.RandomRange (-200, 200);
 		randRotZ = Random.RandomRange (-200, 200);
 
-	}
+        source = GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -40,9 +40,7 @@ public class PlayerControls : MonoBehaviour {
 	public Text reloadingText;
 
     public AudioClip ShootingSound;
-    public AudioClip LaserBoosterSound;
-    public AudioClip ShieldBoosterSound;
-    public AudioClip ThrustersBoosterSound;
+
     public AudioClip Hit;
     public AudioClip Death;
     public AudioClip ReloadSound;
@@ -185,7 +183,7 @@ public class PlayerControls : MonoBehaviour {
 		if ((Input.GetMouseButton(1)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
 		{
 			fireRocket ();
-			rocketCoolDown = 1.5f;
+			rocketCoolDown = 2.5f;
 			specialCharges -= 1;
 			source.PlayOneShot(ShootingSound, .02f);
 		}
@@ -399,16 +397,13 @@ public class PlayerControls : MonoBehaviour {
 			shields += (collision.gameObject.GetComponent<Booster> ().boostAmount)*2;
 			if (shields >= 100) shields = 100;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(0);
-            source.PlayOneShot(ShieldBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 
 		if(collision.gameObject.name.Contains("SpeedPowerup"))
 		{
 			accel += collision.gameObject.GetComponent<Booster> ().boostAmount;
-			//turnSpeed = accel / 6f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(2);
-            source.PlayOneShot(ThrustersBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 
@@ -416,7 +411,6 @@ public class PlayerControls : MonoBehaviour {
 		{
 			bulletDamage += (collision.gameObject.GetComponent<Booster> ().boostAmount)*0.1f;
 			GetComponent<BoosterUIController>().queueOfMessages.Add(1);
-            source.PlayOneShot(LaserBoosterSound, 1.0f);
             Destroy(collision.gameObject);
 		}
 	}

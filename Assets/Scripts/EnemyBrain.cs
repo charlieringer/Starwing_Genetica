@@ -2,11 +2,11 @@
 using System.Text;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using System.Linq;
+
 
 public class EnemyBrain : MonoBehaviour {
 
-	private float[] gene = new float[7];
+	private float[] genes = new float[7];
 
 	public float health;
 
@@ -15,18 +15,13 @@ public class EnemyBrain : MonoBehaviour {
 	public GameObject player = null;
 	public GameObject bulletPreFab;
 	public GameObject pauseManager = null;
-    public GameObject ShieldPowerup;
-    public GameObject SpeedPowerup;
-    public GameObject WeaponPowerup;
-
 
     public float playerSeekDistance;
 	public float playerFleeDistance;
-	public float playerFleeBuffer;
 	public float fireSpeed;
 	public float bulletSpeed;
 	public float bulletDamage;
-	public float enemiesAvoidDistance;
+	public float avoidDistance;
 	public float arriveDampingOffset;
 	public float arriveDampingDistance;
 	public float playerPathPredictionAmount;
@@ -35,7 +30,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float maxSpeed;
 	public float maxTurn;
-	protected static float NEARBY = 50f;
+	protected static float NEARBY = 5f;
 	protected static System.Random random = new System.Random();
 
 	private Vector3 target;
@@ -45,7 +40,7 @@ public class EnemyBrain : MonoBehaviour {
 	public List<GameObject> otherEnemies;
 
 	public float timeAliveTimer;
-	private bool timerStarted;
+	private bool timeAliveTimerStarted;
 
     private bool hasTriggeredDrop = false;
 
@@ -54,52 +49,31 @@ public class EnemyBrain : MonoBehaviour {
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
-
-
-    }
-		
-	void Update () {
-		
 	}
 		
 	void FixedUpdate() {
+        if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused) return;
 
-
-        if (pauseManager && pauseManager.GetComponent<PauseHandler>().isPaused)
-			return;
-		if (health <= 0) 
-        {
-			transform.Rotate (new Vector3 (random.Next (360), random.Next (360), random.Next (360)) * Time.deltaTime);
-            if (!hasTriggeredDrop)
-            {
-                hasTriggeredDrop = true;
-                BoosterDrop(gene);
-            }
-			return;
-		}
 		stateMachine.update ();
-		if (timerStarted && health > 0)
-			timeAliveTimer += Time.fixedDeltaTime;
+		if (timeAliveTimerStarted && health > 0) timeAliveTimer += Time.deltaTime;
 	}
 
     public void pickRandomRoamingTarget()
     {
-		target = new Vector3((int)player.transform.position.x + (random.Next(2000)) - 1000, (int)player.transform.position.y + (random.Next(2000)) - 1000, (int)player.transform.position.z + (random.Next(2000)) - 1000);
+		Vector3 playerLoc = player.transform.position;
+		target = new Vector3(playerLoc.x + (random.Next(2000)) - 1000, playerLoc.y + (random.Next(2000)) - 1000, playerLoc.z + (random.Next(2000)) - 1000);
     }
 
     public void roamToTarget()
     {
-
         Vector3 desiredVelocity = target - transform.position;
-
         float arriveDistance = Vector3.Distance(target, transform.position);
 
         if (arriveDistance < arriveDampingDistance)
         {
-            float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
+			float mappedSpeed = map(arriveDistance, 0, arriveDistance, 0, maxSpeed);
             desiredVelocity *= mappedSpeed;
-        }
-        else desiredVelocity *= maxSpeed;
+        } else desiredVelocity *= maxSpeed;
 
         Vector3 steering = desiredVelocity - currentVelocity;
         
@@ -108,43 +82,35 @@ public class EnemyBrain : MonoBehaviour {
 		steering += avoidMeteors ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
-
         currentVelocity += steering;
-        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
         currentVelocity *= 1 - decel;
-        //currentVelocity.y = 0f;
         transform.position += currentVelocity * Time.fixedDeltaTime;
-        //transform.position.y = 0f;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
 
     public void seekTarget()
     {
+		Vector3 targetPrediction = player.transform.forward.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime;
+		Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
+		float arriveDistance = Vector3.Distance(target, transform.position);
 
-		Vector3 targetPrediction = target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime;
-        Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
+		if (arriveDistance < arriveDampingDistance)
+		{
+			float mappedSpeed = map(arriveDistance, 0, arriveDistance, 0, maxSpeed);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
 
-        float arriveDistance = Vector3.Distance(target, transform.position);
+		Vector3 steering = desiredVelocity - currentVelocity;
 
-        if (arriveDistance < arriveDampingDistance)
-        {
-            float mappedSpeed = map(arriveDistance + arriveDampingOffset, 0, arriveDampingDistance, 0, maxSpeed);
-            desiredVelocity *= mappedSpeed;
-        }
-        else desiredVelocity *= maxSpeed;
-
-        Vector3 steering = desiredVelocity - currentVelocity;
-        steering += avoidOthers();
-		steering += avoidPlayer ();
+		steering += avoidOthers();
+		steering += avoidPlayer();
 		steering += avoidMeteors ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
-        currentVelocity += steering;
-        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
-        currentVelocity *= 1 - decel;
-        //currentVelocity.y = 0f;
-        transform.position += currentVelocity * Time.fixedDeltaTime;
-        if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
+		currentVelocity += steering;
+		currentVelocity *= 1 - decel;
+		transform.position += currentVelocity * Time.fixedDeltaTime;
+		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
     }
 
     float map(float s, float a1, float a2, float b1, float b2)
@@ -154,37 +120,37 @@ public class EnemyBrain : MonoBehaviour {
 
     public void fleeTarget()
     {
-        Vector3 desiredVelocity = transform.position - target;
+		Vector3 desiredVelocity = target - transform.position;
+		float arriveDistance = Vector3.Distance(target, transform.position);
 
-        desiredVelocity.Normalize();
-        desiredVelocity *= maxSpeed;
+		if (arriveDistance < arriveDampingDistance)
+		{
+			float mappedSpeed = map(arriveDistance, 0, arriveDistance, 0, maxSpeed);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
 
-        Vector3 steering = desiredVelocity - currentVelocity;
+		Vector3 steering = desiredVelocity - currentVelocity;
 
-        
-        steering += avoidOthers();
+		steering += avoidOthers();
 		steering += avoidPlayer();
-		steering += avoidMeteors();
+		steering += avoidMeteors ();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
 
-        currentVelocity += steering;
-        currentVelocity = Vector3.ClampMagnitude(currentVelocity, maxSpeed);
-        currentVelocity *= 1 - decel;
-        //currentVelocity.y = 0f;
-        transform.position += currentVelocity * Time.fixedDeltaTime;
-        transform.rotation = Quaternion.LookRotation(-currentVelocity);
-    }
+		currentVelocity += steering;
+		currentVelocity *= 1 - decel;
+		transform.position += currentVelocity * Time.fixedDeltaTime;
+		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
+	}
 
     public Vector3 avoidOthers()
     {
-        Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
-        Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+        Vector3 ahead = transform.position + currentVelocity.normalized * avoidDistance;
+		Vector3 ahead2 = ahead * 0.5f;
         Vector3 totAvoidForce = new Vector3();
 
         for (int i = 0; i < otherEnemies.Count; i++)
         {
-            Vector3 bounds = otherEnemies[i].transform.GetChild(0).gameObject.GetComponent<Renderer>().bounds.size;
-            float rad = bounds.x > bounds.z ? bounds.x * 2 : bounds.z * 2;
+			float rad = otherEnemies[i].gameObject.transform.localScale.x;
             Vector3 otherEnemyLocation = otherEnemies[i].transform.position;
 
             bool willCollide = Vector3.Distance(otherEnemyLocation, ahead) <= rad ? true : Vector3.Distance(otherEnemyLocation, ahead2) <= rad;
@@ -193,24 +159,21 @@ public class EnemyBrain : MonoBehaviour {
             if (willCollide)
             {
                 Vector3 avoidForce = ahead - otherEnemyLocation;
-                //avoidForce.y = 0.0f;
                 totAvoidForce += avoidForce;
             }
         }
-        totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
         return totAvoidForce;
     }
 
 	public Vector3 avoidMeteors()
 	{
-		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
-		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+		Vector3 ahead = transform.position + currentVelocity.normalized * avoidDistance;
+		Vector3 ahead2 = ahead * 0.5f;
 		Vector3 totAvoidForce = new Vector3();
 
 		foreach(GameObject go in GameObject.FindGameObjectsWithTag("Meteor"))
 		{
-			Vector3 bounds = go.gameObject.transform.localScale;
-			float rad = bounds.x;
+			float rad = go.gameObject.transform.localScale.x;
 			Vector3 meteorLoc = go.transform.position;
 
 			bool willCollide = Vector3.Distance(meteorLoc, ahead) <= rad ? true : Vector3.Distance(meteorLoc, ahead2) <= rad;
@@ -219,22 +182,19 @@ public class EnemyBrain : MonoBehaviour {
 			if (willCollide)
 			{
 				Vector3 avoidForce = ahead - meteorLoc;
-				//avoidForce.y = 0.0f;
 				totAvoidForce += avoidForce;
 			}
 		}
-		totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
 		return totAvoidForce;
 	}
 
 	public Vector3 avoidPlayer()
 	{
-		Vector3 ahead = transform.position + currentVelocity.normalized * enemiesAvoidDistance;
-		Vector3 ahead2 = (transform.position + currentVelocity.normalized * enemiesAvoidDistance) * 0.5f;
+		Vector3 ahead = transform.position + currentVelocity.normalized * avoidDistance;
+		Vector3 ahead2 = ahead * 0.5f;
 		Vector3 totAvoidForce = new Vector3();
 
-		Vector3 bounds = player.transform.localScale;
-		float rad = bounds.x * playerFleeDistance/2 ;
+		float rad = player.transform.localScale.x * playerFleeDistance/2;
 		Vector3 playerLoc = player.transform.position;
 
 		bool willCollide = Vector3.Distance(playerLoc, ahead) <= rad ? true : Vector3.Distance(playerLoc, ahead2) <= rad;
@@ -243,10 +203,8 @@ public class EnemyBrain : MonoBehaviour {
 		if (willCollide)
 		{
 			Vector3 avoidForce = ahead - playerLoc;
-			//avoidForce.y = 0.0f;
 			totAvoidForce += avoidForce;
 		}
-		totAvoidForce = Vector3.ClampMagnitude(totAvoidForce, maxTurn);
 		return totAvoidForce;
 	}
 
@@ -264,7 +222,7 @@ public class EnemyBrain : MonoBehaviour {
 				Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
 				Quaternion noiseyrotation = transform.rotation * noise;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, noiseyrotation);
-				bullet.transform.localScale = new Vector3(ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f), ValueRemapping(bulletDamage, 10, 0.4f));
+				bullet.transform.localScale = new Vector3(1f, map(bulletDamage, 10, 1f), map(bulletDamage, 10, 1f));
 
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
@@ -278,7 +236,7 @@ public class EnemyBrain : MonoBehaviour {
     public void checkPlayerSeekProximity()
     {
         if (player == null) return;
-        if (Vector3.Distance(transform.position, target) < playerSeekDistance)
+        if (Vector3.Distance(transform.position, player.transform.position) < playerSeekDistance)
         {
             stateMachine.changeState(new Seeking());
         }
@@ -293,6 +251,14 @@ public class EnemyBrain : MonoBehaviour {
         }
     }
 
+	public void checkFleeLocationProximity()
+	{
+		if (Vector3.Distance(transform.position, target) < NEARBY)
+		{
+			stateMachine.changeState(new Roaming());
+		}
+	}
+
     public void checkSeekOrRoamProximity()
     {
         if (player == null) return;
@@ -306,19 +272,12 @@ public class EnemyBrain : MonoBehaviour {
     public bool checkPlayerAvoidProximity()
     {
         if (player == null) return false;
-        //if (Vector3.Distance(transform.position, target) < playerFleeDistance)
-		if (Vector3.Distance(transform.position, target) < 200)
+        if (Vector3.Distance(transform.position, target) < playerFleeDistance)
         {
             stateMachine.changeState(new FleeingPlayer());
 			return true;
         }
 		return false;
-    }
-
-    public void checkPlayerFleeBuffer()
-    {
-        if (player == null) return;
-        if (Vector3.Distance(transform.position, target) > playerFleeBuffer+10) stateMachine.changeState(new Roaming());
     }
 
     public void setPlayerAsTarget()
@@ -349,33 +308,32 @@ public class EnemyBrain : MonoBehaviour {
 
     public void setGenoPheno(float[] _genes)
     {
-        gene = _genes;
+		genes = _genes;
 
-        health = (gene[0] * 20) + 40 ;
-        maxSpeed = gene[1] * 50 + 20;
-        bulletSpeed = gene[2] * 600 + 240;
-        bulletDamage = 10 - gene[2];
+        health = (genes[0] * 20) + 40 ;
+        maxSpeed = genes[1] * 50 + 20;
+        bulletSpeed = genes[2] * 300 + 240;
+        bulletDamage = 10 - genes[2];
 
-		if (bulletDamage < 0)
-			bulletDamage = 0;
+		if (bulletDamage < 0) bulletDamage = 0;
 		bulletDamage+=2;
 
-        playerSeekDistance = gene[3] * 160 + 80;
-        playerFleeDistance = gene[4] * 10 + 10;
-        playerFleeBuffer = playerFleeDistance + 400;
-        enemiesAvoidDistance = gene[5] * 16;
+        playerSeekDistance = genes[3] * 160 + 80;
+		playerFleeDistance = genes[4] * 10 + 100;
+
+        avoidDistance = genes[5] * 16;
 
 
-		if (gene [0] > gene [1] && gene [0] > gene [2])
+		if (genes [0] > genes [1] && genes [0] > genes [2])
 			activeModel = 0;
-		else if (gene [1] > gene [2])
+		else if (genes [1] > genes [2])
 			activeModel = 1;
 		else
 			activeModel = 2;
 		transform.GetChild (activeModel).gameObject.SetActive (true); 
 		transform.GetChild (activeModel).GetChild (0).GetComponent<MiniMapShipController> ().target = player;
 
-		float scalingValueIncrement = ValueRemapping(gene[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
+		float scalingValueIncrement = map(genes[0], 9, 2); // the 0-9 value will be remapped to 0-1 value. this will be used to update the scale values.
 		//scale the Thrusters
 		for (int childIndex=1; childIndex < 3; childIndex++)
 		{
@@ -387,101 +345,11 @@ public class EnemyBrain : MonoBehaviour {
 		transform.localScale = new Vector3(1f + scalingValueIncrement, 1f + scalingValueIncrement, 1f + scalingValueIncrement);
     }
 
-    public void BoosterDrop(float[] _genes)
+    
+
+    public float[] getGenes()
     {
-        // get the genes
-        gene = _genes;
-        // p for geneBooster
-        var pBooster = random.NextDouble();
-        // p for shieldBooster
-        var pShield = random.NextDouble();
-
-        List<float> booster = new List< float > ();
-        int BoosterType;
-        float BoosterAmmount;
-
-        // consider only the first 3 genes 
-        for (int i = 0; i < 3; i++)
-        {
-            booster.Add(gene[i]);
-        }
-        // select the gene with the highest value
-        // [0] health - [1] speed - [2] damage
-       
-        BoosterType = booster.IndexOf(booster.Max());
-        BoosterAmmount = booster.Max();
-
-        // chek if booosters are droped
-        if (pBooster <= 0.1)
-        {
-            if (BoosterType == 0) {
-				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				boosterDrop.transform.parent = null;
-			}
-			else if (BoosterType == 1) {
-				GameObject boosterDrop = Instantiate (SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				boosterDrop.transform.parent = null;
-			} else {
-				GameObject boosterDrop = Instantiate (WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-				boosterDrop.GetComponent<Booster> ().boostAmount = BoosterAmmount;
-				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				boosterDrop.transform.parent = null;
-			}
-
-
-        }
-
-        else if (pBooster >= 0.9)
-        {
-            BoosterType = Random.Range(0, 3);
-            BoosterAmmount = booster[BoosterType];
-
-            if (BoosterType == 0)
-            {
-                GameObject boosterDrop = Instantiate(ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-                boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                boosterDrop.transform.parent = null;
-            }
-            else if (BoosterType == 1)
-            {
-                GameObject boosterDrop = Instantiate(SpeedPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-                boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                boosterDrop.transform.parent = null;
-            }
-            else
-            {
-                GameObject boosterDrop = Instantiate(WeaponPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-                boosterDrop.GetComponent<Booster>().boostAmount = BoosterAmmount;
-                //boosterDrop.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                boosterDrop.transform.parent = null;
-            }
-
-        }
-
-        else
-        {
-            if (pShield <= 0.1)
-            {
-				GameObject boosterDrop = Instantiate (ShieldPowerup, transform.position + new Vector3(0, 5, 0), transform.rotation);
-				boosterDrop.GetComponent<Booster> ().boostAmount = gene[0];
-				//boosterDrop.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-				boosterDrop.transform.parent = null;
-            }  
-
-        }
-        
-        }
-
-
-    public float[] GetGene()
-    {
-		return gene;
+		return genes;
 	}
 
     public void updateDamageDealt(float _damage)
@@ -490,7 +358,7 @@ public class EnemyBrain : MonoBehaviour {
     }
 
 
-    private static float ValueRemapping(float initialVal, float initialHigh,  float targetHigh)
+    private static float map(float initialVal, float initialHigh,  float targetHigh)
     {
 		if(initialVal > initialHigh) return targetHigh;
         return ((initialVal*targetHigh)/initialHigh);
@@ -498,7 +366,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	public void startSeekTimer ()
 	{
-		timerStarted = true;
+		timeAliveTimerStarted = true;
 	}
 
 }

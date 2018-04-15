@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GApopulation {
 
-    public IDictionary<int, GAenemy> population;// = new IDictionary<int, GAenemy>();
+    public List<GAenemy> population;// = new IDictionary<int, GAenemy>();
     public int populationSize;
     public System.Random r = new System.Random();
 
@@ -23,55 +23,23 @@ public class GApopulation {
     public GApopulation(List<GameObject> enemyClones)
     {
         this.populationSize = enemyClones.Count;
-        this.population = new Dictionary<int, GAenemy>();
+        this.population = new List<GAenemy>();
         createPopulation(enemyClones);
     }
-
-
+		
     //creates population
     public void createPopulation(List<GameObject> enemyClones)
     {
-        //float[] gene = new float[7]; //there are currently 7 chromosones
-        //randomly 0-9 add values to gene array
-
-        /*for each gameobj in the enemyClones list get the info needed to create the array.
-        this array needs to be passed then in the creation of the GAenemy obj that consequently creates the GApopulation by 
-        adding it to the Idictionary*/
-
-        /*values in the gene array:
-        0: health, 1:speed, 2:bulletSpeed (& bulletDamage) 
-        3:playerSeekDistance, 4:playerFleeDistance, 5:enemiesAvoidDistance //not anymore: 5:playerFleeBuffer, 6:bulletFleeDistance */
-
         int currentPopulationIndex = 0;
         foreach (GameObject enemyClone in enemyClones)
         {
-            float[] gene = new float[6];
-            gene[0] = enemyClone.GetComponent<EnemyBrain>().GetGene()[0]; 
-            gene[1] = enemyClone.GetComponent<EnemyBrain>().GetGene()[1];
-            gene[2] = enemyClone.GetComponent<EnemyBrain>().GetGene()[2]; 
-
-            gene[3] = enemyClone.GetComponent<EnemyBrain>().GetGene()[3];
-            gene[4] = enemyClone.GetComponent<EnemyBrain>().GetGene()[4];
-            gene[5] = enemyClone.GetComponent<EnemyBrain>().GetGene()[5];
+			float[] gene = enemyClone.GetComponent<EnemyBrain>().getGenes();
 
             GAenemy e = new GAenemy(gene,enemyClone.GetComponent<EnemyBrain>().timeAliveTimer, enemyClone.GetComponent<EnemyBrain>().damageDealt);
-            this.population[currentPopulationIndex] = e;
+			this.population.Add(e);
 
             currentPopulationIndex++;
         }
-
-        /*Previous stuff
-         * for (int geneIndex=0;geneIndex< gene.Length; geneIndex++)
-        {
-            gene[geneIndex] = randomValues();
-        }
-
-        for (int index = 0; index < this.populationSize; index++)
-        {
-            GAenemy e = new GAenemy(gene);
-            this.population[index] = e;
-
-        }*/
     }
 
     //selection: tournament selection with prob of 0.7
@@ -80,137 +48,75 @@ public class GApopulation {
         int selectionPropbability = 70;
         int initialPopulationSize = this.populationSize;
         //IDictionary <int, GAenemy> selectedPopulation = this.population;
-        IDictionary<int, GAenemy> selectedPopulation = new Dictionary<int, GAenemy>();
+        List<GAenemy> selectedPopulation = new List<GAenemy>();
 
         int newPopulationIndex = 0;
 
-        //while (selectedPopulation.Count < initialPopulationSize)//uncomment when only the selection is selected in nextGeneration
-
         while (selectedPopulation.Count < initialPopulationSize / 2)
         {
-            int enemyOneIndex = r.Next(0, this.population.Count);
-            int enemyTwoIndex = r.Next(0, this.population.Count);
+            int enemyOneIndex = r.Next(0, population.Count);
+            int enemyTwoIndex = r.Next(0, population.Count);
 
-            GAenemy e1 = new GAenemy(this.population[enemyOneIndex].GetGene(),
-                this.population[enemyOneIndex].getLifeSpam(),
+            GAenemy e1 = new GAenemy(population[enemyOneIndex].getGenes(),
+                population[enemyOneIndex].getLifeSpan(),
                 this.population[enemyOneIndex].getPlayerDamage());
 
-            GAenemy e2 = new GAenemy(this.population[enemyTwoIndex].GetGene(),
-                this.population[enemyTwoIndex].getLifeSpam(),
+            GAenemy e2 = new GAenemy(this.population[enemyTwoIndex].getGenes(),
+                this.population[enemyTwoIndex].getLifeSpan(),
                 this.population[enemyTwoIndex].getPlayerDamage());
 
             if (r.Next(0, 100) > selectionPropbability)
-            {   if (e1.getFitness() > e2.getFitness())
-                {
-                    selectedPopulation[newPopulationIndex] = e2;
-                }else
-                {
-                    selectedPopulation[newPopulationIndex] = e1;
-                }
-
+            {   
+				if (e1.getFitness() > e2.getFitness()) selectedPopulation.Add(e2);
+                else selectedPopulation.Add (e1);
             }
             else
             {
-                if (e1.getFitness() > e2.getFitness())
-                {
-                    selectedPopulation[newPopulationIndex] = e1;
-                }
-                else
-                {
-                    selectedPopulation[newPopulationIndex] = e2;
-                }
-
+				if (e1.getFitness() > e2.getFitness()) selectedPopulation.Add(e1);
+				else selectedPopulation.Add(e2);
             }
 
             newPopulationIndex++;
         }
-
-        //clear all pop from the initial dict
-        this.population.Clear();
-
-        //add all selected pop to the init dict
-        for (int i = 0; i < selectedPopulation.Count; i++)
-        {
-            this.population[i] = selectedPopulation[i];
-        }
-   
+		this.population = selectedPopulation;
     }
 
-    //crossover (returns an offspring)
     public void crossOver()
     {
-        IDictionary<int, GAenemy> offspringPopulation=new Dictionary<int, GAenemy>();
-        int newPopulationSize = 0; //= this.population.Count * 2; //two times the original population. The parents are added to the population
+        List<GAenemy> offspringPopulation=new List<GAenemy>();
+		int offspringSize = this.population.Count; //
 
-        //while (this.population.Count  != newPopulationSize) //uncomment when only the mutation is selected in nextGeneration
-        while (this.population.Count*2 != newPopulationSize)
+		while (offspringPopulation.Count <= offspringSize)
         {
-            //randomly pick 2 individuals from pop and crossover them
-            GAenemy e1 = this.population[r.Next(0, this.population.Count)];
-            GAenemy e2 = this.population[r.Next(0, this.population.Count)];
+            GAenemy e1 = population[r.Next(0, population.Count)];
+            GAenemy e2 = population[r.Next(0, population.Count)];
 
-            //for each gene in the chromozone (NOTE: ADD all the genes in an array for easier acces) 0,2
             GAenemy newOffspring = newChild(e1, e2);
-            offspringPopulation[newPopulationSize] = newOffspring;
-            newPopulationSize++;
+			offspringPopulation.Add(newOffspring);
         }
-
-        //clear all pop from the initial dict
-        this.population.Clear();
-
-        //add the offspring to the whole population
-        //int initialPopulationSize = this.population.Count;
-        for (int i =0; i < offspringPopulation.Count; i++)
-        {
-            this.population[i] = offspringPopulation[i]; 
-        }
+		this.population.AddRange(offspringPopulation);
     }
-
-    //mutation (returns a offspring)
+		
     public void mutation()
-    {   //create a new population to mutate
-        IDictionary<int, GAenemy> mutatedPopulation = new Dictionary<int, GAenemy>();
-        float[] mutatedGene = new float[6];
-
-
+	{
         //for all the genes in the chormosome, add a gausian.
         for (int index =0; index < this.population.Count; index++)
         {
-            mutatedPopulation[index] = new GAenemy(mutatedGene,0,0);//the lifespam and damage dealt is set  to 0 as there won't be any fitness comparison and these values are going to be updated in-game
-
-            mutatedPopulation[index].setHealth(this.population[index].getHealth() + Gaussian(0, 0.8));//gaussian is called with mean and sddev (sddev:0.7 to 1.5)
-            mutatedPopulation[index].setSpeed(this.population[index].getSpeed() + Gaussian(0, 0.8));
-            mutatedPopulation[index].setBulletSpeed(this.population[index].getBulletSpeed() + Gaussian(0, 0.8));
-
-            
-            mutatedPopulation[index].setPlayerFleeDistance(this.population[index].getPlayerFleeDistance() + Gaussian(0, 0.8));
-            mutatedPopulation[index].setPlayerSeekDistance(this.population[index].getPlayerSeekDistance() + Gaussian(0, 0.8));
-            mutatedPopulation[index].setEnemiesAvoidDistance(this.population[index].getEnemiesAvoidDistance() + Gaussian(0, 0.8));
-
-
-
-            //this is for TEST ONLY, will be adjusted in game with game variables
-            //the lifespam and playerdamage have to change as they are part of the fitness function
-            //mutatedPopulation[index].ChangeLifeSpamRand();
-            //mutatedPopulation[index].ChangePlayerDamageRand();
-
+			float[] genes = population [index].getGenes ();
+			for (int i = 0; i < genes.Length; i++) {
+				genes [i] += Gaussian (0, 0.8);
+				genes [i] = genes [i] % 10;
+			}
+			population[index].setData(genes,0f,0f);//the lifespam and damage dealt is set  to 0 as there won't be any fitness comparison and these values are going to be updated in-game
         }
-
-        //clear all pop from the initial dict
-        this.population.Clear();
-
-        //add the offspring to the whole population
-        //int initialPopulationSize = this.population.Count;
-        for (int i = 0; i < mutatedPopulation.Count; i++)
-        {
-            this.population[i] = mutatedPopulation[i];
-        }
-
     }
 
-    public IDictionary<int, GAenemy> getDictionary() { return this.population; }
+	public List<float[]> getPopulationOfGenes() { 
+		List<float[]> allGenes = new List<float[]> ();
+		for (int i = 0; i < population.Count; i++) allGenes.Add (population [i].getGenes());
+		return allGenes; 
+	}
     
-
     //next generation
     public void generateNextGeneration()
     {
@@ -218,37 +124,22 @@ public class GApopulation {
         selection();
         crossOver();
         mutation();
-
     } 
-
-    //OTHER
-    //temp function for rand values
-    private int randomValues()
-    {
-        return r.Next(0, 10);
-    }
 
     GAenemy newChild(GAenemy e1, GAenemy e2)
     {
-        int geneLen = e1.GetGene().Length; //store the lenght of a gene
-        float[] newGene = new float[geneLen]; //create another array to store the new gene values
+        int geneLen = e1.getGenes().Length; //store the lenght of a gene
+		float[] newGenes = new float[geneLen]; //create another array to store the new gene values
 
         //iterate and randomly decide which parent pass on its gene
-        for (int geneIndex=0; geneIndex<e1.GetGene().Length; geneIndex++)
+        for (int geneIndex=0; geneIndex<e1.getGenes().Length; geneIndex++)
         {
-            if (r.Next(0, 2) == 0)
-            {
-                newGene[geneIndex] = e1.GetGene()[geneIndex];
-            }
-            else
-            {
-                newGene[geneIndex] = e2.GetGene()[geneIndex];
-
-            }
+            if (r.Next(0, 2) == 0) newGenes[geneIndex] = e1.getGenes()[geneIndex];
+            else newGenes[geneIndex] = e2.getGenes()[geneIndex];
         }
 
         //create and return the child
-        GAenemy newChild = new GAenemy(newGene, 0, 0);
+        GAenemy newChild = new GAenemy(newGenes, 0, 0);
         return newChild;
     }
 
@@ -262,7 +153,5 @@ public class GApopulation {
 
         double y1 = System.Math.Sqrt(-2.0 * System.Math.Log(x1)) * System.Math.Cos(2.0 * System.Math.PI * x2);
         return (float) (y1 * stddev + mean);
-    }
-
-    
+    }  
 }
