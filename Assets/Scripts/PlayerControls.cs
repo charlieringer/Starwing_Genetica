@@ -71,6 +71,9 @@ public class PlayerControls : MonoBehaviour {
 	bool hasPlow = false;
 	float plowTimer = 0.0f;
 
+	bool deathTimerStarted;
+	float deathTimer;
+
 	private float turnSpeed = 10;
 	
 	void Awake()
@@ -80,39 +83,62 @@ public class PlayerControls : MonoBehaviour {
 		bulletDamage = StaticData.startingShipDamage;
 		accel = StaticData.startingShipSpeed;
 		specialManov = StaticData.startShipSpecial;
-		//turnSpeed = accel;/// 200;
 
 		if(specialManov == 0)transform.GetChild (0).GetChild (6).gameObject.SetActive (true);
 		if(specialManov == 1)transform.GetChild (0).GetChild (7).gameObject.SetActive (true);
 		if(specialManov == 2)transform.GetChild (0).GetChild (8).gameObject.SetActive (true);
+
+		source = GetComponent<AudioSource>();
+		rb = GetComponent<Rigidbody> ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		maxHealth = health;
-        source = GetComponent<AudioSource>();
-		rb = GetComponent<Rigidbody> ();
     }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		
-			
-		if (hitAlert.activeSelf)
-			hitAlert.SetActive (false);
-    
-		updatePlayerHeathText();
-
 		if (pauseManager.GetComponent<PauseHandler>().isPaused)
 			return;
-	
-		if (!uturning && !barrelRolling && (barrelRollCharge >= 20) && (Input.GetKeyDown (KeyCode.Z) || Input.GetKeyDown (KeyCode.X) || Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D))) {
-				doABarrelRoll ();
+
+		if (hitAlert.activeSelf)
+			hitAlert.SetActive (false);
+
+		updatePlayerHeathText();
+
+		if (health <= 0 && ! deathTimerStarted) {
+			shield.GetComponent<MeshRenderer> ().material.color = new Color (0f,0f,0f,0f);
+			source.PlayOneShot(Death, .1f);
+			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
+			GetComponent<Rigidbody>().useGravity = true;
+			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
+			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
+			LeftParticle.Stop();
+			RightParticle.Stop();
+			deathTimerStarted = true;
 		}
 
-		if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetMouseButton (1) || Input.GetKeyDown (KeyCode.F))) {
-			doAUTurn ();
+		if (deathTimerStarted) {
+			deathTimer += Time.deltaTime;
+			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
+			print (deathTimer);
+			if (deathTimer > 5) {
+				Cursor.lockState = CursorLockMode.None;
+				// Hide cursor when locking
+				Cursor.visible = (Cursor.lockState != CursorLockMode.Locked);
+				SceneManager.LoadScene ("GameOver");
+			}
+			return;
 		}
+	
+		//Check for special move
+
+		if (!uturning && !barrelRolling) {
+			if ((barrelRollCharge >= 10) && (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D))) 
+				doABarrelRoll ();
+			if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetMouseButton (1) || Input.GetKeyDown (KeyCode.F))) 
+				doAUTurn ();
+		} 
 
 		barrelRollCharge += Time.fixedDeltaTime * 4;
 		if (barrelRollCharge > 200)
@@ -127,24 +153,6 @@ public class PlayerControls : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.R) && !reloading) {
 			reloading = true;
 			reloadingText.text = "RELOADING";
-		}
-
-		if (health <= 0) {
-			shield.GetComponent<MeshRenderer> ().material.color = new Color (0f,0f,0f,0f);
-            source.PlayOneShot(Death, .1f);
-            transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
-			GetComponent<Rigidbody>().useGravity = true;
-			ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
-			ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
-			LeftParticle.Stop();
-			RightParticle.Stop();
-			if (transform.position.y < -400) {
-				Cursor.lockState = CursorLockMode.None;
-				// Hide cursor when locking
-				Cursor.visible = (Cursor.lockState != CursorLockMode.Locked);
-				SceneManager.LoadScene ("GameOver");
-			}
-			return;
 		}
 
 		if (reloading) {
@@ -163,10 +171,8 @@ public class PlayerControls : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 
-		if (v > 500)
-			v = 500;
-		if (v < -500)
-			v = -500;
+		if (v > 500) v = 500; //limit turning
+		if (v < -500) v = -500; //limit turning
 		rb.AddTorque (transform.up * h * turnSpeed);
 		rb.AddTorque (transform.right * v * turnSpeed);
 		if (Input.GetKey (KeyCode.W)) {
@@ -282,7 +288,6 @@ public class PlayerControls : MonoBehaviour {
 
 		Vector3 leftGun = LBarrel.transform.position;
 		Vector3 rightGun = RBarrel.transform.position;
-		Quaternion rotation;
 
 		Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
 		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target);// * noise;

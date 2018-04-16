@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class EnemyBrain : MonoBehaviour {
 
-	private float[] genes = new float[7];
+	private float[] genes = new float[5];
 
 	public float health;
 
@@ -41,8 +41,6 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float timeAliveTimer;
 	private bool timeAliveTimerStarted;
-
-    private bool hasTriggeredDrop = false;
 
 	private int activeModel;
 
@@ -222,7 +220,7 @@ public class EnemyBrain : MonoBehaviour {
 				Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
 				Quaternion noiseyrotation = transform.rotation * noise;
 				GameObject bullet = Instantiate (bulletPreFab, transform.position, noiseyrotation);
-				bullet.transform.localScale = new Vector3(map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.5f));
+				bullet.transform.localScale = new Vector3(map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.5f), map(bulletDamage, 10, 0.3f));
 
 				bullet.GetComponent<Rigidbody> ().velocity = bullet.transform.forward * -bulletSpeed;
                 bullet.GetComponent<BulletData>().damage = bulletDamage;
@@ -310,18 +308,15 @@ public class EnemyBrain : MonoBehaviour {
     {
 		genes = _genes;
 
-        health = (genes[0] * 20) + 40 ;
-        maxSpeed = genes[1] * 50 + 20;
-        bulletSpeed = genes[2] * 300 + 240;
-        bulletDamage = 10 - genes[2];
+        health = (genes[0] * 10) + 70 ;//70-170
+		maxSpeed = (10-genes[0]) * 25 + 100;//100-350
+        bulletSpeed = genes[1] * 50 + 500;//500-1000
+		bulletDamage = (10 - genes[1]) + 5;//5-15
 
-		if (bulletDamage < 0) bulletDamage = 0;
-		bulletDamage+=2;
+        playerSeekDistance = genes[2] * 160 + 80;
+		playerFleeDistance = genes[3] * 10 + 100;
 
-        playerSeekDistance = genes[3] * 160 + 80;
-		playerFleeDistance = genes[4] * 10 + 100;
-
-        avoidDistance = genes[5] * 16;
+        avoidDistance = genes[4] * 16;
 
 
 		if (genes [0] > genes [1] && genes [0] > genes [2])

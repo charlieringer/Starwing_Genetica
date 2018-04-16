@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GAenemy  {
-    float[] genes = new float[6];
+    float[] genes;
 
     //used to calculate fitness
     float playerDamage;
@@ -12,6 +12,7 @@ public class GAenemy  {
 
     public GAenemy(float[] newGene, float _lifeSpam, float _damage)
     {
+		genes = new float[newGene.Length];
         for(int i = 0; i < this.genes.Length; i++){ this.genes[i] = newGene[i]; }
         
         this.playerDamage = _damage;

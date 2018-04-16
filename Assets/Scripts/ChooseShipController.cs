@@ -33,9 +33,9 @@ public class ChooseShipController : MonoBehaviour {
 		selectionHighlights [1].setActive(true);
 		selectionHighlights [2].setActive(false);
 
-		randRotX = Random.RandomRange (-200, 200);
-		randRotY = Random.RandomRange (-200, 200);
-		randRotZ = Random.RandomRange (-200, 200);
+		randRotX = Random.Range (-200, 200);
+		randRotY = Random.Range (-200, 200);
+		randRotZ = Random.Range (-200, 200);
 
         source = GetComponent<AudioSource>();
     }

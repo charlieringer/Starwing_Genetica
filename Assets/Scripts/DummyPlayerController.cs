@@ -15,9 +15,9 @@ public class DummyPlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		randRotX = Random.RandomRange (-40, 40);
-		randRotY = Random.RandomRange (-40, 40);
-		randRotZ = Random.RandomRange (-40, 40);
+		randRotX = Random.Range (-40, 40);
+		randRotY = Random.Range (-40, 40);
+		randRotZ = Random.Range (-40, 40);
 	}
 	
 	// Update is called once per frame

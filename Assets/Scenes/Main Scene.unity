@@ -35584,7 +35584,7 @@ MonoBehaviour:
   enemy: {fileID: 1298231865522550, guid: 82568fcaf942a422da169eea19000dc8, type: 2}
   GAManager: {fileID: 1366092520}
   pauseManager: {fileID: 1649242529}
-  waveSize: 16
+  waveSize: 10
   enemies: []
   deadEnemies: []
   shipsRemainingText: {fileID: 467838139}

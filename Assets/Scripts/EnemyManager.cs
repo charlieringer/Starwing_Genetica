@@ -118,7 +118,7 @@ public class EnemyManager : MonoBehaviour {
         newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 		newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
 
-        float[] rawGenes = new float[6];
+        float[] rawGenes = new float[5];
 		for (int i = 0; i < rawGenes.Length; i++) {
 			rawGenes [i] = Random.value*10;
 		}
@@ -181,9 +181,13 @@ public class EnemyManager : MonoBehaviour {
             spawnGA(newPop);
             if (currentWave % 2 == 1)
             {
-                waveSize += 4;
-                makeNewRandomEnemy(enemy);
-                makeNewRandomEnemy(enemy);
+//                waveSize += 4;
+//                makeNewRandomEnemy(enemy);
+//                makeNewRandomEnemy(enemy);
+//				makeNewRandomEnemy(enemy);
+//				makeNewRandomEnemy(enemy);
+
+				waveSize += 2;
 				makeNewRandomEnemy(enemy);
 				makeNewRandomEnemy(enemy);
 

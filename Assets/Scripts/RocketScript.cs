@@ -27,7 +27,7 @@ public class RocketScript : MonoBehaviour {
 
 		var exp = transform.GetChild (1).GetComponent<ParticleSystem>();
 		exp.Play();
-		Destroy(gameObject, exp.duration);
+		Destroy(gameObject, 0.2f);
 
 		Collider[] others = Physics.OverlapSphere (transform.position, 300);
 
