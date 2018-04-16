@@ -100,9 +100,6 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (pauseManager.GetComponent<PauseHandler>().isPaused)
-			return;
-
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
 
@@ -176,7 +173,7 @@ public class PlayerControls : MonoBehaviour {
 		v = (v == 0) ? Input.GetAxis("VerticalM") : v*7;
 		float forward = Input.GetAxis ("Accel");
 
-		print ("Hori: " + h + "Vert: " + v);
+		//print ("Hori: " + h + "Vert: " + v);
 
 		if (v > 500) v = 500; //limit turning
 		if (v < -500) v = -500; //limit turning
