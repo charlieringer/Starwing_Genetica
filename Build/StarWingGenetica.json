@@ -1,0 +1,13 @@
+{
+"companyName": "DefaultCompany",
+"productName": "StarwingGenetica",
+"dataUrl": "StarWingGenetica.data.unityweb",
+"asmCodeUrl": "StarWingGenetica.asm.code.unityweb",
+"asmMemoryUrl": "StarWingGenetica.asm.memory.unityweb",
+"asmFrameworkUrl": "StarWingGenetica.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
