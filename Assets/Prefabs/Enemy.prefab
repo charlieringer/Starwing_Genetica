@@ -1121,11 +1121,10 @@ MonoBehaviour:
   pauseManager: {fileID: 0}
   playerSeekDistance: 400
   playerFleeDistance: 80
-  playerFleeBuffer: 140
-  fireSpeed: 0.15
+  fireSpeed: 0.3
   bulletSpeed: 400
   bulletDamage: 10
-  enemiesAvoidDistance: 80
+  avoidDistance: 0
   arriveDampingOffset: 120
   arriveDampingDistance: 400
   playerPathPredictionAmount: 10

@@ -313,16 +313,20 @@ public class EnemyBrain : MonoBehaviour {
         bulletSpeed = genes[1] * 50 + 500;//500-1000
 		bulletDamage = (10 - genes[1]) + 5;//5-15
 
-        playerSeekDistance = genes[2] * 160 + 80;
-		playerFleeDistance = genes[3] * 10 + 100;
+//        playerSeekDistance = genes[2] * 160 + 80;
+//		playerFleeDistance = genes[3] * 10 + 100;
+//        avoidDistance = genes[4] * 16;
 
-        avoidDistance = genes[4] * 16;
+		playerSeekDistance = 5 * 160 + 80;
+		playerFleeDistance = 5 * 10 + 100;
+		avoidDistance = 5 * 16;
 
 
-		if (genes [0] > genes [1] && genes [0] > genes [2])
+		//if (genes [0] > genes [1] && genes [0] > genes [2])
+		if (genes [0] > genes [1])
 			activeModel = 0;
-		else if (genes [1] > genes [2])
-			activeModel = 1;
+		//else if (genes [1] > genes [2])
+		//	activeModel = 1;
 		else
 			activeModel = 2;
 		transform.GetChild (activeModel).gameObject.SetActive (true); 

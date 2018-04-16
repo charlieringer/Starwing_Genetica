@@ -25,6 +25,7 @@ public class PlayerControls : MonoBehaviour {
 	public GameObject RBarrel;
 	public GameObject hitAlert;
 	public GameObject shield;
+	public GameObject deathSmoke;
 
 	private Vector3 target;
 	private GameObject targetObj;
@@ -94,6 +95,7 @@ public class PlayerControls : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
     }
 	
 	// Update is called once per frame
@@ -116,12 +118,13 @@ public class PlayerControls : MonoBehaviour {
 			LeftParticle.Stop();
 			RightParticle.Stop();
 			deathTimerStarted = true;
+			deathSmoke.SetActive (true);
+			shield.SetActive (false);
 		}
 
 		if (deathTimerStarted) {
 			deathTimer += Time.deltaTime;
 			transform.Rotate (new Vector3 (Random.Range (0, 360), Random.Range  (0, 360), Random.Range  (0, 360)) * Time.deltaTime);
-			print (deathTimer);
 			if (deathTimer > 5) {
 				Cursor.lockState = CursorLockMode.None;
 				// Hide cursor when locking
@@ -132,11 +135,10 @@ public class PlayerControls : MonoBehaviour {
 		}
 	
 		//Check for special move
-
 		if (!uturning && !barrelRolling) {
-			if ((barrelRollCharge >= 10) && (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.D))) 
+			if ((barrelRollCharge >= 10) && (Input.GetAxis("BarrelR") == 1 || Input.GetAxis("BarrelL") == 1)) 
 				doABarrelRoll ();
-			if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && (Input.GetMouseButton (1) || Input.GetKeyDown (KeyCode.F))) 
+			if (specialManov == 0 && specialCharges > 0 && !uturning && !barrelRolling && Input.GetAxis ("Fire2") == 1) 
 				doAUTurn ();
 		} 
 
@@ -167,26 +169,31 @@ public class PlayerControls : MonoBehaviour {
 			}
 		}
 
-		
-		float h = Input.GetAxis("Horizontal");
-		float v = Input.GetAxis("Vertical");
+
+		float h = Input.GetAxis("Horizontal"); 
+		float v = Input.GetAxis("Vertical"); 
+		h = (h == 0) ? Input.GetAxis("HorizontalM") : h*10;
+		v = (v == 0) ? Input.GetAxis("VerticalM") : v*7;
+		float forward = Input.GetAxis ("Accel");
+
+		print ("Hori: " + h + "Vert: " + v);
 
 		if (v > 500) v = 500; //limit turning
 		if (v < -500) v = -500; //limit turning
 		rb.AddTorque (transform.up * h * turnSpeed);
 		rb.AddTorque (transform.right * v * turnSpeed);
-		if (Input.GetKey (KeyCode.W)) {
+		if (forward == 1) {
 			rb.AddForce (transform.forward * -accel);
 		}
 
 
 		updateTarget ();
-		if ((Input.GetKey(KeyCode.Space)||Input.GetMouseButton(0)) && !reloading) 
+		if (Input.GetAxis("Fire1")  == 1 && !reloading) 
         {
         	fire();
         	source.PlayOneShot(ShootingSound, .02f);
         }
-		if ((Input.GetMouseButton(1)||Input.GetKey(KeyCode.F)) && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
+		if (Input.GetAxis ("Fire2") == 1 && !reloading && rocketCoolDown == 0 && specialManov == 1 && specialCharges > 0) 
 		{
 			fireRocket ();
 			rocketCoolDown = 2.5f;
@@ -194,7 +201,7 @@ public class PlayerControls : MonoBehaviour {
 			source.PlayOneShot(ShootingSound, .02f);
 		}
 
-		if ((Input.GetMouseButton(1)||Input.GetKey(KeyCode.F)) && specialManov == 2 && hasPlow == false && specialCharges > 0) 
+		if (Input.GetAxis ("Fire2") == 1 && specialManov == 2 && hasPlow == false && specialCharges > 0) 
 		{
 			hasPlow = true;
 			specialCharges -= 1;
@@ -244,6 +251,25 @@ public class PlayerControls : MonoBehaviour {
 
 	public void updateTarget()
 	{
+		if (targetObj != null && targetObj.gameObject.activeSelf) {
+			if (Vector3.Distance(transform.position, targetObj.transform.position) < 1500 && Vector3.Distance(transform.position, targetObj.transform.position) > 20)
+			{
+				//Basically here, if we have a target lock we keep it, and allow a little more leniency on it for the ship moving around.
+				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
+				Vector3 dirFromAtoB = (transform.position - targetObj.transform.position);
+
+				float dotProd = Vector3.Dot(dirFromAtoB.normalized, transform.forward.normalized);
+				if (dotProd > 0.95) {
+					target = targetObj.transform.position + (targetObj.GetComponent<EnemyBrain>().currentVelocity * Vector3.Distance(transform.position, targetObj.transform.position)/bulletSpeed);
+					transform.GetChild (1).transform.position = targetObj.transform.position;
+					transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.red;
+					return;
+				}
+			}
+		}
+
+
+
 		target = transform.position - transform.forward*1500;
 		transform.GetChild (1).GetChild (0).GetComponent<Renderer> ().material.color = Color.white;
 		targetObj = null;
@@ -290,7 +316,7 @@ public class PlayerControls : MonoBehaviour {
 		Vector3 rightGun = RBarrel.transform.position;
 
 		Quaternion noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target);// * noise;
+		Quaternion leftRotation = Quaternion.LookRotation (leftGun - target) * noise;
 		GameObject bulletL = Instantiate (bulletPreFab, leftGun, leftRotation);
 		bulletL.GetComponent<Rigidbody> ().velocity = (bulletL.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity;
 		bulletL.GetComponent<BulletData>().damage = bulletDamage;
@@ -298,7 +324,7 @@ public class PlayerControls : MonoBehaviour {
 		Destroy (bulletL, 1500f/bulletSpeed);
 
 		noise = Quaternion.Euler(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
-		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target);// * noise;
+		Quaternion rightRotation = Quaternion.LookRotation(rightGun - target) * noise;
 		GameObject bulletR = Instantiate (bulletPreFab, rightGun, rightRotation);
 		bulletR.GetComponent<Rigidbody> ().velocity =  (bulletR.transform.forward * -bulletSpeed) + GetComponent<Rigidbody>().velocity; 
 		bulletR.transform.rotation *= noise;
@@ -321,7 +347,7 @@ public class PlayerControls : MonoBehaviour {
     public void handleThrusterEffect()
     {
         float h = Input.GetAxis("Horizontal");
-		float v = Input.GetKey(KeyCode.W) ? 1 : 0;
+		float v = Input.GetAxis ("Accel");
 
         ParticleSystem LeftParticle = LThruster.GetComponent<ParticleSystem>();
         ParticleSystem RightParticle = RThruster.GetComponent<ParticleSystem>();
@@ -360,13 +386,6 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
-	void OnCollisionEnter(Collision collision)
-	{
-		//print ("Crashed");
-
-	}
-
-
 	void OnTriggerEnter(Collider collision)
 	{
 		if(collision.gameObject.name.Contains("Meteor"))
@@ -379,7 +398,6 @@ public class PlayerControls : MonoBehaviour {
 			GetComponent<Rigidbody>().velocity = (dir*collision.gameObject.GetComponent<Rigidbody>().velocity.magnitude*collision.gameObject.transform.localScale.x*2);
 			collision.gameObject.GetComponent<Rigidbody>().velocity = (-dir*GetComponent<Rigidbody>().velocity.magnitude*0.5f);
 			takeDamage (200 * collision.gameObject.transform.localScale.x);
-			print ("Crashed");
 		}
 
 		if(collision.gameObject.name.Contains("shot_prefab") && collision.gameObject.GetComponent<BulletData>().parentShip != "Player")
@@ -457,7 +475,7 @@ public class PlayerControls : MonoBehaviour {
 	{
 		barrelRolling = true;
 		barrelRollTotalTurn = 0;
-		if(Input.GetKeyDown(KeyCode.Z)  || Input.GetKeyDown(KeyCode.A))
+		if(Input.GetAxis("BarrelR") == 0)
 		{
 			barrelRollRotation = -accel/50;
 			barrelRollForce = accel*2;

@@ -45,11 +45,9 @@ public class FleeingPlayer : State<EnemyBrain> {
 	{
 		//agent.setPlayerAsTarget ();
 		agent.pickRandomRoamingTarget();
-		Debug.Log("In Flee Mode");
 	}
 
 	public void exit(EnemyBrain agent){
-		Debug.Log("Out Flee Mode");
 	}
 
 	public void execute(EnemyBrain agent)

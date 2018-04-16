@@ -35,6 +35,8 @@ public class EnemyManager : MonoBehaviour {
 	public GameObject SpeedPowerup;
 	public GameObject WeaponPowerup;
 
+	int enemiesKilled = 0;
+
     void Start ()
 	{
         source = GetComponent<AudioSource>();
@@ -56,6 +58,7 @@ public class EnemyManager : MonoBehaviour {
             {
                 if (enemies[enemyIndex].GetComponent<EnemyBrain>().health <=0)
 				{
+					enemiesKilled++;
 					float[] genes = enemies [enemyIndex].GetComponent<EnemyBrain> ().getGenes ();
 					BoosterDrop(genes, enemies[enemyIndex].gameObject.transform.position);
 					foreach (float gene in genes) {
@@ -118,7 +121,7 @@ public class EnemyManager : MonoBehaviour {
         newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 		newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
 
-        float[] rawGenes = new float[5];
+        float[] rawGenes = new float[2];
 		for (int i = 0; i < rawGenes.Length; i++) {
 			rawGenes [i] = Random.value*10;
 		}
@@ -228,23 +231,27 @@ public class EnemyManager : MonoBehaviour {
 		float pBooster = Random.value;
 		if (pBooster > 0.3) return; //70% of the time there is no drop
 
-		List<float> booster = new List< float > ();
-		for (int i = 0; i < 3; i++) booster.Add(genes[i]);
+//		List<float> booster = new List< float > ();
+//		for (int i = 0; i < 3; i++) booster.Add(genes[i]);
 		int boosterType = 0;
 
-		if (pBooster <= 0.1) boosterType = booster.IndexOf(booster.Max()); //10% we drop based on the type
+		//if (pBooster <= 0.1) boosterType = booster.IndexOf(booster.Max()); //10% we drop based on the type
+		if (pBooster <= 0.1) boosterType = Random.Range(0, 3); //10% we drop based on the type
 		else if (pBooster <= 0.2) boosterType = Random.Range(0, 3); //10% we drop random 
 		//The other 10% we do nothing (so drop a shield)
 			
 		if (boosterType == 0) {
 			GameObject boosterDrop = Instantiate(ShieldPowerup, position, transform.rotation);
-			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			//boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			boosterDrop.GetComponent<Booster>().boostAmount = 5;
 		} else if (boosterType == 1) {
 			GameObject boosterDrop = Instantiate(SpeedPowerup, position, transform.rotation);
-			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			//boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			boosterDrop.GetComponent<Booster>().boostAmount = 5;
 		} else {
 			GameObject boosterDrop = Instantiate(WeaponPowerup, position, transform.rotation);
-			boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			//boosterDrop.GetComponent<Booster>().boostAmount = booster[boosterType];
+			boosterDrop.GetComponent<Booster>().boostAmount = 5;
 		}
 	}
 		

@@ -16,11 +16,11 @@ public class PauseHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (isPaused && Input.GetKeyDown (KeyCode.Escape)) {
+		if (isPaused && Input.GetAxis ("Cancel") ==1) {
             SceneManager.LoadScene ("Menu");
 		}
 
-		if (Input.GetKeyDown (KeyCode.P))
+		if (Input.GetAxis ("Pause") ==1)
         {
 			isPaused = !isPaused;
 			pausedPanel.SetActive (isPaused);
