@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PauseHandler : MonoBehaviour {
 	public bool isPaused = false;
-	public bool canPauseUnpause = true;
 	public GameObject pausedPanel;
+	public GameObject startWave;
+	public GameObject newWave;
+
+	bool startWaveWasOn = false;
+	bool newWaveWasOn = false;
 
     // Use this for initialization
     void Start () {
@@ -24,8 +28,27 @@ public class PauseHandler : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown("joystick button 9"))
         {
 			isPaused = !isPaused;
-			if (isPaused) Time.timeScale = 0;
-			else Time.timeScale = 1;
+			if (isPaused) {
+				Time.timeScale = 0;
+				if (startWave.activeSelf) {
+					startWave.SetActive (false);
+					startWaveWasOn = true;
+				}
+				if (newWave.activeSelf) {
+					newWave.SetActive (false);
+					newWaveWasOn = true;
+				}
+			} else {
+				Time.timeScale = 1;
+				if (startWaveWasOn) {
+					startWave.SetActive (true);
+					startWaveWasOn = false;
+				}
+				if (newWaveWasOn) {
+					newWave.SetActive (true);
+					newWaveWasOn = false;
+				}
+			}
 			pausedPanel.SetActive (isPaused);
 
 			if (isPaused)

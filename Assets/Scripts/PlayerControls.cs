@@ -100,6 +100,8 @@ public class PlayerControls : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 		if (hitAlert.activeSelf)
 			hitAlert.SetActive (false);
 

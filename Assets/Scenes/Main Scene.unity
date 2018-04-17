@@ -1012,6 +1012,16 @@ Prefab:
       propertyPath: pausedPanel
       value: 
       objectReference: {fileID: 1126245171}
+    - target: {fileID: 114763115697459510, guid: 58e4218b68f7b479fb5876f9403b3b2a,
+        type: 2}
+      propertyPath: newWave
+      value: 
+      objectReference: {fileID: 28513009}
+    - target: {fileID: 114763115697459510, guid: 58e4218b68f7b479fb5876f9403b3b2a,
+        type: 2}
+      propertyPath: startWave
+      value: 
+      objectReference: {fileID: 1159850630}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 58e4218b68f7b479fb5876f9403b3b2a, type: 2}
   m_IsPrefabParent: 0
@@ -1736,7 +1746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1126245172
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1746,7 +1756,7 @@ RectTransform:
   m_GameObject: {fileID: 1126245171}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2054964072}
   - {fileID: 749692997}

@@ -50,6 +50,8 @@ public class EnemyBrain : MonoBehaviour {
 	}
 		
 	void FixedUpdate() {
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 		stateMachine.update ();
 		if (timeAliveTimerStarted && health > 0) timeAliveTimer += Time.deltaTime;
 	}

@@ -45,6 +45,8 @@ public class EnemyManager : MonoBehaviour {
 
     private void Update()
     {
+		if (pauseManager.GetComponent<PauseHandler>().isPaused)
+			return;
 		if (currentWave == 0) {
 			updateInitalWave();
 			writeShipsRemaining();
