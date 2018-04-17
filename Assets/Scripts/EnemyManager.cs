@@ -210,21 +210,35 @@ public class EnemyManager : MonoBehaviour {
 
     private void scaleFitnessVariables()
     {
+		float damageTotal = 0;
+		float timeTotal = 0;
+		float fitnessTotal = 0;
         //getting the max value
         float timeMax = 0;
         float damageMax = 0;
         foreach (GameObject enemy in deadEnemies)
         {
-            if (enemy.GetComponent<EnemyBrain>().timeAliveTimer > timeMax) timeMax = enemy.GetComponent<EnemyBrain>().timeAliveTimer;
-            if (enemy.GetComponent<EnemyBrain>().damageDealt > damageMax) damageMax = enemy.GetComponent<EnemyBrain>().damageDealt;
+           // if (enemy.GetComponent<EnemyBrain>().timeAliveTimer > timeMax) timeMax = enemy.GetComponent<EnemyBrain>().timeAliveTimer;
+            //if (enemy.GetComponent<EnemyBrain>().damageDealt > damageMax) damageMax = enemy.GetComponent<EnemyBrain>().damageDealt;
+			damageTotal += enemy.GetComponent<EnemyBrain>().damageDealt;
+			timeTotal += enemy.GetComponent<EnemyBrain>().timeAliveTimer;
+			fitnessTotal += (enemy.GetComponent<EnemyBrain> ().damageDealt / enemy.GetComponent<EnemyBrain> ().timeAliveTimer);
         }
 
         //mapping from 0 to 1
-        foreach (GameObject enemy in deadEnemies)
-        {
-            enemy.GetComponent<EnemyBrain>().timeAliveTimer = map(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
-            enemy.GetComponent<EnemyBrain>().damageDealt = map(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
-        }
+        //foreach (GameObject enemy in deadEnemies)
+        //{
+            //enemy.GetComponent<EnemyBrain>().timeAliveTimer = map(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
+            //enemy.GetComponent<EnemyBrain>().damageDealt = map(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
+			//fitnessTotal += map(enemy.GetComponent<EnemyBrain>().timeAliveTimer, timeMax, 1);
+			//fitnessTotal += map(enemy.GetComponent<EnemyBrain>().damageDealt, damageMax, 1);
+
+        //}
+
+		float average = fitnessTotal / (float)deadEnemies.Count;
+		float averageD = damageTotal / (float)deadEnemies.Count;
+		float averageT = timeTotal / (float)deadEnemies.Count;
+		print ("Average Fitness: " + fitnessTotal + " Average damage: " + averageD + " Average time: " + averageT);
     }
 
 	public void BoosterDrop(float[] genes, Vector3 position)
