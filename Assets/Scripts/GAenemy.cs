@@ -17,14 +17,13 @@ public class GAenemy  {
         
         this.playerDamage = _damage;
         this.lifeSpan = _lifeSpam;
-
     }
     //create the enemy object
     //calculates fitness: sum of the player damage and the lifespam;
     public float getFitness()
     {
 		//return playerDamage + lifeSpan;
-		return playerDamage/lifeSpan;
+		return playerDamage;///lifeSpan;
     }
 
 	public void setGenes(float[] g)

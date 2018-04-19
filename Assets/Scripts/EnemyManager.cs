@@ -36,6 +36,7 @@ public class EnemyManager : MonoBehaviour {
 	public GameObject WeaponPowerup;
 
 	int enemiesKilled = 0;
+	int numbGenes = 3;
 
     void Start ()
 	{
@@ -122,7 +123,7 @@ public class EnemyManager : MonoBehaviour {
         newEnemy.GetComponent<EnemyBrain>().otherEnemies = this.enemies;
 		newEnemy.GetComponent<EnemyBrain>().pauseManager = pauseManager;
 
-        float[] rawGenes = new float[2];
+        float[] rawGenes = new float[numbGenes];
 		for (int i = 0; i < rawGenes.Length; i++) {
 			rawGenes [i] = Random.value*10;
 		}

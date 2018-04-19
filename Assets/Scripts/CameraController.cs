@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour {
 
 		float turnAmount = h;
 
-		lastRotationOffset = Quaternion.Lerp(lastRotationOffset, staticRotationOffset * Quaternion.Euler (0, 0, turnAmount), 0.05f); 
+		lastRotationOffset = Quaternion.RotateTowards(lastRotationOffset, staticRotationOffset * Quaternion.Euler (0, 0, turnAmount), Time.deltaTime*15); 
 
 		transform.rotation = target.transform.rotation * lastRotationOffset;
 	}

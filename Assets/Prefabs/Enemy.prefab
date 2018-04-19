@@ -1125,11 +1125,13 @@ MonoBehaviour:
   bulletSpeed: 400
   bulletDamage: 10
   avoidDistance: 0
-  arriveDampingOffset: 120
+  arriveDampingOffset: 20
   arriveDampingDistance: 400
   playerPathPredictionAmount: 10
   damageDealt: 0
   decel: 0.1
+  accuracy: 0
+  canFlank: 0
   maxSpeed: 100
   maxTurn: 50
   currentVelocity: {x: 0, y: 0, z: 0}
