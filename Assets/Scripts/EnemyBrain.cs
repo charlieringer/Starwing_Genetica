@@ -127,7 +127,36 @@ public class EnemyBrain : MonoBehaviour {
 
 	public void followPlayer()
 	{
+		Vector3 gapBehind = player.GetComponent<Rigidbody>().velocity * -1;
+		gapBehind = gapBehind.normalized * 200;
+		Vector3 target = player.transform.position + gapBehind;
+		Vector3 desiredVelocity = target - transform.position;
+
+		float arriveDistance = Vector3.Distance(target, transform.position);
+
+		if (arriveDistance-arriveDampingOffset < arriveDampingDistance)
+		{
+			//print ("Damping seek movement.  Real distance is: " + arriveDistance + " Fake distance is: " + (arriveDistance-arriveDampingOffset) + "max speed:  " + maxSpeed + " Mapped Speed: " +   maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance));
+			//float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
+			//steering *= mappedSpeed;
+			float mappedSpeed = maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
+
+		Vector3 steering = desiredVelocity - currentVelocity;
+
+		steering += avoidPlayer();
+		steering += avoidMeteors ();
+		steering += avoidOthers();
+		steering = Vector3.ClampMagnitude(steering, maxTurn);
+
+		currentVelocity += steering;
+		currentVelocity *= 1 - decel;
+		transform.position += currentVelocity * Time.fixedDeltaTime;
+		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(transform.position - player.transform.position);
 		print ("Following player");
+		Debug.DrawLine (transform.position, transform.position * 100f, Color.blue);
+
 	}
 
     float map(float s, float a1, float a2, float b1, float b2)
@@ -263,9 +292,20 @@ public class EnemyBrain : MonoBehaviour {
 
     }
 
+	public void checkStillBehind()
+	{
+		if (player == null) return;
+		Vector3 playerLook = (player.transform.position - transform.position);
+		float dotProd = Vector3.Dot(playerLook.normalized, transform.forward.normalized);
+		print (dotProd);
+		if (dotProd > -0.5) {
+			print ("Can be seen now");
+			stateMachine.changeState(new Roaming());
+		}
+	}
+
     public bool checkPlayerAvoidProximity()
     {
-		
         if (player == null) return true;
 
         if (Vector3.Distance(transform.position, target) < playerFleeDistance)
@@ -327,24 +367,15 @@ public class EnemyBrain : MonoBehaviour {
     {
 		genes = _genes;
 
-        health = (genes[0] * 10) + 70 ;//70-170 //Mechanic
-		maxSpeed = (10-genes[0]) * 25 + 100;//100-350
+        health = (genes[0] * 10) + 70 ;//70-170 //Mechanic - Sheild? Only protects front?
+		maxSpeed = (10-genes[0]) * 25 + 100;//100-350 // Mechanic - Flanking?
 
-        bulletSpeed = genes[1] * 50 + 500;//500-1000
-		bulletDamage = (10 - genes[1]) + 5;//5-15
+		bulletSpeed = genes[1] * 50 + 500;//500-1000 // Mechanic - Spray arounds
+		bulletDamage = (10 - genes[1]) + 5;//5-15 // Mechanic - Homing bullets
 
 
-		accuracy = ((10-genes [2]) / 2f); //0-5
-		fireSpeed = (genes[2]/30) + 0.2f;//0.2 - 0.53
-
-		//playerSeekDistance = genes[2] * 160 + 80;
-//		playerFleeDistance = genes[3] * 10 + 100;
-//        avoidDistance = genes[4] * 16;
-
-		playerSeekDistance = 5 * 160 + 80;
-		//playerFleeDistance = 5 * 10 + 100;
-		avoidDistance = 100;
-
+		accuracy = ((10-genes [2]) / 2f); //0-5 //
+		fireSpeed = (genes[2]/30) + 0.2f;//0.2 - 0.52 //
 
 		//if (genes [0] > genes [1] && genes [0] > genes [2])
 		if (genes [0] > genes [1])

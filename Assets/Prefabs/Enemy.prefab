@@ -1119,12 +1119,12 @@ MonoBehaviour:
   bulletPreFab: {fileID: 1186724225514680, guid: 009948f8a0705a44db1061f50c9fd569,
     type: 2}
   pauseManager: {fileID: 0}
-  playerSeekDistance: 400
+  playerSeekDistance: 900
   playerFleeDistance: 150
   fireSpeed: 0.3
   bulletSpeed: 400
   bulletDamage: 10
-  avoidDistance: 50
+  avoidDistance: 100
   arriveDampingOffset: 100
   arriveDampingDistance: 200
   playerPathPredictionAmount: 10

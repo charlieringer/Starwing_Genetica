@@ -70,10 +70,10 @@ public class FollowingPlayer : State<EnemyBrain> {
 	{
 		agent.setPlayerAsTarget ();
 		agent.followPlayer ();
-		bool changedState = agent.checkPlayerAvoidProximity ();
-		if (changedState) return;
+		//bool changedState = agent.checkPlayerAvoidProximity ();
+		//if (changedState) return;
 		agent.fire ();
-		agent.checkSeekOrRoamProximity ();
+		agent.checkStillBehind ();
 	}
 }
 
