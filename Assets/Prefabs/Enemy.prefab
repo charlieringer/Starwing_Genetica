@@ -1120,19 +1120,19 @@ MonoBehaviour:
     type: 2}
   pauseManager: {fileID: 0}
   playerSeekDistance: 400
-  playerFleeDistance: 80
+  playerFleeDistance: 150
   fireSpeed: 0.3
   bulletSpeed: 400
   bulletDamage: 10
-  avoidDistance: 0
-  arriveDampingOffset: 20
-  arriveDampingDistance: 400
+  avoidDistance: 50
+  arriveDampingOffset: 100
+  arriveDampingDistance: 200
   playerPathPredictionAmount: 10
   damageDealt: 0
   decel: 0.1
   accuracy: 0
   canFlank: 0
-  maxSpeed: 100
+  maxSpeed: 150
   maxTurn: 50
   currentVelocity: {x: 0, y: 0, z: 0}
   otherEnemies: []

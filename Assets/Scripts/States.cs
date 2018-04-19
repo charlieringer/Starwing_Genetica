@@ -57,6 +57,27 @@ public class FleeingPlayer : State<EnemyBrain> {
 	}
 }
 
+public class FollowingPlayer : State<EnemyBrain> {
+
+	public void enter(EnemyBrain agent)
+	{
+		agent.setPlayerAsTarget ();
+	}
+
+	public void exit(EnemyBrain agent){}
+
+	public void execute(EnemyBrain agent)
+	{
+		agent.setPlayerAsTarget ();
+		agent.followPlayer ();
+		bool changedState = agent.checkPlayerAvoidProximity ();
+		if (changedState) return;
+		agent.fire ();
+		agent.checkSeekOrRoamProximity ();
+	}
+}
+
+
 public class AvoidingBullet : State<EnemyBrain> {
 
 	public void enter(EnemyBrain agent)

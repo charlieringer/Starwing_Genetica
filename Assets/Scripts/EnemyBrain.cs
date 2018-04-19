@@ -22,7 +22,7 @@ public class EnemyBrain : MonoBehaviour {
 	public float bulletSpeed;
 	public float bulletDamage;
 	public float avoidDistance;
-	//public float arriveDampingOffset;
+	public float arriveDampingOffset;
 	public float arriveDampingDistance;
 	public float playerPathPredictionAmount;
 	public float damageDealt = 0f;
@@ -32,7 +32,7 @@ public class EnemyBrain : MonoBehaviour {
 
 	public float maxSpeed;
 	public float maxTurn;
-	protected static float NEARBY = 50f;
+	protected static float NEARBY = 105f;
 	protected static System.Random random = new System.Random();
 
 	private Vector3 target;
@@ -49,7 +49,7 @@ public class EnemyBrain : MonoBehaviour {
     void Awake () {
 		stateMachine = new StateMachine<EnemyBrain> (this);
 		stateMachine.init(new Roaming ());
-		canFlank = false;
+		canFlank = true;
 	}
 		
 	void FixedUpdate() {
@@ -69,98 +69,71 @@ public class EnemyBrain : MonoBehaviour {
     {
         Vector3 desiredVelocity = target - transform.position;
 
+		float arriveDistance = Vector3.Distance(target, transform.position);
+
+		if (arriveDistance-arriveDampingOffset < arriveDampingDistance)
+		{
+			//print ("Damping seek movement.  Real distance is: " + arriveDistance + " Fake distance is: " + (arriveDistance-arriveDampingOffset) + "max speed:  " + maxSpeed + " Mapped Speed: " +   maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance));
+			//float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
+			//steering *= mappedSpeed;
+			float mappedSpeed = maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
+
         Vector3 steering = desiredVelocity - currentVelocity;
-        
 
 		steering += avoidPlayer();
 		//steering += avoidMeteors ();
 		steering += avoidOthers();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
-		steering = steering.normalized;
-
-		float arriveDistance = Vector3.Distance(target, transform.position);
-		if (arriveDistance < arriveDampingDistance)
-		{
-			//float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
-			//steering *= mappedSpeed;
-			steering *= maxSpeed*(float)(arriveDistance/arriveDampingDistance);
-		} else steering *= maxSpeed;
-
-		//steering = Vector3.ClampMagnitude(steering, maxSpeed);
 
         currentVelocity += steering;
         currentVelocity *= 1 - decel;
         transform.position += currentVelocity * Time.fixedDeltaTime;
         if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
 		Debug.DrawLine (transform.position, target, Color.white);
-		if(currentVelocity.magnitude < 0.1) print("HELP");
     }
 
     public void seekTarget()
     {
+		//print ("Seeking player");
 		Vector3 targetPrediction = player.transform.forward.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime;
 		Vector3 desiredVelocity = (target + targetPrediction) - transform.position;
+
+		float arriveDistance = Vector3.Distance(target, transform.position);
+
+		if (arriveDistance-arriveDampingOffset < arriveDampingDistance)
+		{
+			//print ("Damping seek movement.  Real distance is: " + arriveDistance + " Fake distance is: " + (arriveDistance-arriveDampingOffset) + "max speed:  " + maxSpeed + " Mapped Speed: " +   maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance));
+			//float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
+			//steering *= mappedSpeed;
+			float mappedSpeed = maxSpeed*(float)((arriveDistance-arriveDampingOffset)/arriveDampingDistance);
+			desiredVelocity *= mappedSpeed;
+		} else desiredVelocity *= maxSpeed;
 
 		Vector3 steering = desiredVelocity - currentVelocity;
 
 		steering += avoidPlayer();
-		//steering += avoidMeteors ();
+		steering += avoidMeteors ();
 		steering += avoidOthers();
 		steering = Vector3.ClampMagnitude(steering, maxTurn);
-		steering = steering.normalized;
 
-		float arriveDistance = Vector3.Distance(target, transform.position);
-		if (arriveDistance < arriveDampingDistance)
-		{
-			float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
-			//steering *= mappedSpeed;
-			steering *= maxSpeed*(float)(arriveDistance/arriveDampingDistance);
-		} else steering *= maxSpeed;
-
-		steering = Vector3.ClampMagnitude(steering, maxSpeed);
 		currentVelocity += steering;
 		currentVelocity *= 1 - decel;
-	
-			
 		transform.position += currentVelocity * Time.fixedDeltaTime;
 		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
 		Debug.DrawLine (transform.position, target, Color.red);
     }
 
+	public void followPlayer()
+	{
+		print ("Following player");
+	}
+
     float map(float s, float a1, float a2, float b1, float b2)
     {
         return b1 + (s - a1) * (b2 - b1) / (a2 - a1);
     }
-
-    public void fleeTarget()
-    {
-		Vector3 desiredVelocity = target - transform.position;
-		Vector3 steering = desiredVelocity - currentVelocity;
-
-		steering += avoidPlayer();
-		//steering += avoidMeteors ();
-		steering += avoidOthers();
-		steering = Vector3.ClampMagnitude(steering, maxTurn);
-		steering = steering.normalized;
-
-		float arriveDistance = Vector3.Distance(target, transform.position);
-		if (arriveDistance < arriveDampingDistance)
-		{
-			float mappedSpeed = map(arriveDistance, 0, arriveDampingDistance, 0, maxSpeed);
-			//steering *= mappedSpeed;
-			steering *= maxSpeed*(float)(arriveDistance/arriveDampingDistance);
-		} else steering *= maxSpeed;
-
-		steering = Vector3.ClampMagnitude(steering, maxSpeed);
-
-
-		currentVelocity += steering;
-		currentVelocity *= 1 - decel;
-		transform.position += currentVelocity * Time.fixedDeltaTime;
-		if (currentVelocity.magnitude != 0) transform.rotation = Quaternion.LookRotation(-currentVelocity);
-		Debug.DrawLine (transform.position, target, Color.blue);
-		if(currentVelocity.magnitude < 0.1) print("HELP");
-	}
 
     public Vector3 avoidOthers()
     {
@@ -182,7 +155,7 @@ public class EnemyBrain : MonoBehaviour {
                 totAvoidForce += avoidForce;
             }
         }
-        return totAvoidForce;
+		return Vector3.ClampMagnitude(totAvoidForce, maxTurn/2);
     }
 
 	public Vector3 avoidMeteors()
@@ -205,7 +178,7 @@ public class EnemyBrain : MonoBehaviour {
 				totAvoidForce += avoidForce;
 			}
 		}
-		return totAvoidForce;
+		return Vector3.ClampMagnitude(totAvoidForce, maxTurn/2);
 	}
 
 	public Vector3 avoidPlayer()
@@ -225,7 +198,7 @@ public class EnemyBrain : MonoBehaviour {
 			Vector3 avoidForce = ahead - playerLoc;
 			totAvoidForce += avoidForce;
 		}
-		return totAvoidForce;
+		return Vector3.ClampMagnitude(totAvoidForce, maxTurn/2);
 	}
 
     public void fire()
@@ -293,18 +266,21 @@ public class EnemyBrain : MonoBehaviour {
     public bool checkPlayerAvoidProximity()
     {
 		
-        if (player == null) return false;
-		if (canFlank) {
-			//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
-			Vector3 playerLook = (player.transform.position - transform.position);
-			float dotProd = Vector3.Dot(playerLook.normalized, transform.forward.normalized);
+        if (player == null) return true;
 
-			if (dotProd < 0) {
-				return false;
-			}
-		}
         if (Vector3.Distance(transform.position, target) < playerFleeDistance)
         {
+			if (canFlank) {
+				//Vector3 dirFromAtoB = (transform.position - (target + (target.normalized * player.GetComponent<Rigidbody>().velocity.magnitude * playerPathPredictionAmount * Time.fixedDeltaTime))).normalized;
+				Vector3 playerLook = (player.transform.position - transform.position);
+				float dotProd = Vector3.Dot(playerLook.normalized, transform.forward.normalized);
+
+				if (dotProd < -0.5) {
+					stateMachine.changeState(new FollowingPlayer());
+					print ("Should run away but na");
+					return false;
+				}
+			}
             stateMachine.changeState(new FleeingPlayer());
 			return true;
         }
@@ -366,7 +342,7 @@ public class EnemyBrain : MonoBehaviour {
 //        avoidDistance = genes[4] * 16;
 
 		playerSeekDistance = 5 * 160 + 80;
-		playerFleeDistance = 5 * 10 + 100;
+		//playerFleeDistance = 5 * 10 + 100;
 		avoidDistance = 100;
 
 
